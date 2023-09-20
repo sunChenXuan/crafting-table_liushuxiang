@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 public class CommonCacheOperator {
 
     /** 所有缓存Key的前缀 */
-    private static final String CACHE_KEY_PREFIX = "Cache:";
+    private static final String CACHE_KEY_PREFIX = "Cache:craftingTable";
 
     @Resource
     private RedisTemplate<String, Object> redisTemplate;

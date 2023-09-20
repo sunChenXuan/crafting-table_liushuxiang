@@ -4,7 +4,7 @@
   "avatar": "",
   "version": "4.6.0",
   "createdTime": "2023-9-19 16:18:58",
-  "updatedTime": "2023-9-20 14:22:41",
+  "updatedTime": "2023-9-20 11:38:04",
   "dbConns": [],
   "profile": {
     "default": {
@@ -616,6 +616,269 @@
   },
   "entities": [
     {
+      "id": "B4470391-2330-4BA3-BCE1-D04A0BCFFB56",
+      "env": {
+        "base": {
+          "nameSpace": "",
+          "codeRoot": ""
+        }
+      },
+      "defKey": "common_entity",
+      "defName": "通用基础字段实体",
+      "comment": "",
+      "properties": {
+        "partitioned by": "(date string)",
+        "row format delimited": "",
+        "fields terminated by ','": "",
+        "collection items terminated by '-'": "",
+        "map keys terminated by ':'": "",
+        "store as textfile;": ""
+      },
+      "nameTemplate": "{defKey}[{defName}]",
+      "notes": {},
+      "headers": [
+        {
+          "refKey": "hideInGraph",
+          "hideInGraph": true
+        },
+        {
+          "refKey": "defKey",
+          "freeze": false,
+          "hideInGraph": false
+        },
+        {
+          "refKey": "defName",
+          "freeze": false,
+          "hideInGraph": false
+        },
+        {
+          "refKey": "primaryKey",
+          "freeze": false,
+          "hideInGraph": false
+        },
+        {
+          "refKey": "notNull",
+          "freeze": false,
+          "hideInGraph": true
+        },
+        {
+          "refKey": "autoIncrement",
+          "freeze": false,
+          "hideInGraph": true
+        },
+        {
+          "refKey": "domain",
+          "freeze": false,
+          "hideInGraph": true
+        },
+        {
+          "refKey": "len",
+          "freeze": false,
+          "hideInGraph": false
+        },
+        {
+          "refKey": "scale",
+          "freeze": false,
+          "hideInGraph": false
+        },
+        {
+          "refKey": "defaultValue",
+          "freeze": false,
+          "hideInGraph": true
+        },
+        {
+          "refKey": "type",
+          "freeze": false,
+          "hideInGraph": false
+        },
+        {
+          "refKey": "comment",
+          "freeze": false,
+          "hideInGraph": true
+        },
+        {
+          "refKey": "refDict",
+          "freeze": false,
+          "hideInGraph": true
+        },
+        {
+          "refKey": "isStandard",
+          "freeze": false,
+          "hideInGraph": false
+        },
+        {
+          "refKey": "uiHint",
+          "freeze": false,
+          "hideInGraph": true
+        },
+        {
+          "refKey": "extProps",
+          "freeze": false,
+          "hideInGraph": true
+        },
+        {
+          "refKey": "attr1",
+          "freeze": false,
+          "hideInGraph": true
+        },
+        {
+          "refKey": "attr2",
+          "freeze": false,
+          "hideInGraph": true
+        },
+        {
+          "refKey": "attr3",
+          "freeze": false,
+          "hideInGraph": true
+        },
+        {
+          "refKey": "attr4",
+          "freeze": false,
+          "hideInGraph": true
+        },
+        {
+          "refKey": "attr5",
+          "freeze": false,
+          "hideInGraph": true
+        },
+        {
+          "refKey": "attr6",
+          "freeze": false,
+          "hideInGraph": true
+        },
+        {
+          "refKey": "attr7",
+          "freeze": false,
+          "hideInGraph": true
+        },
+        {
+          "refKey": "attr8",
+          "freeze": false,
+          "hideInGraph": true
+        },
+        {
+          "refKey": "attr9",
+          "freeze": false,
+          "hideInGraph": true
+        }
+      ],
+      "fields": [
+        {
+          "defKey": "pk_id",
+          "defName": "id",
+          "comment": "",
+          "type": "VARCHAR",
+          "len": 20,
+          "scale": "",
+          "primaryKey": true,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": true,
+          "refDict": "",
+          "extProps": {},
+          "notes": {},
+          "attr1": "",
+          "attr2": "",
+          "attr3": "",
+          "attr4": "",
+          "attr5": "",
+          "attr6": "",
+          "attr7": "",
+          "attr8": "",
+          "attr9": "",
+          "id": "9B7EEEB4-CA03-42E7-A96E-C33C4CB25CBB"
+        },
+        {
+          "defKey": "delete_flag",
+          "defName": "删除标志",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": false,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": true,
+          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
+          "refDict": "",
+          "uiHint": "",
+          "id": "26DC7D31-3CE4-453D-B31D-47ECE4C28B4B"
+        },
+        {
+          "defKey": "create_time",
+          "defName": "创建时间",
+          "comment": "",
+          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": false,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": true,
+          "refDict": "",
+          "uiHint": "",
+          "id": "A7377D5D-8678-4A32-AC94-88675C94975B"
+        },
+        {
+          "defKey": "created_by",
+          "defName": "创建用户",
+          "comment": "",
+          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": false,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "uiHint": "",
+          "id": "F6346872-53CD-4E66-9014-179B778B0D2C"
+        },
+        {
+          "defKey": "updated_time",
+          "defName": "修改时间",
+          "comment": "",
+          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": false,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": true,
+          "refDict": "",
+          "uiHint": "",
+          "id": "98F6A59C-55FB-4572-90E7-8416B114E8CF"
+        },
+        {
+          "defKey": "updated_by",
+          "defName": "修改用户",
+          "comment": "",
+          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": false,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "uiHint": "",
+          "id": "A9152A20-B76D-450D-AFFC-FC16CC35B1AE"
+        }
+      ],
+      "correlations": [],
+      "indexes": []
+    },
+    {
       "id": "28CE585D-BEF1-4B15-A041-0DCADEEC2948",
       "env": {
         "base": {
@@ -624,7 +887,7 @@
         }
       },
       "defKey": "t_project",
-      "defName": "项目",
+      "defName": "项目管理",
       "comment": "",
       "properties": {
         "partitioned by": "(date string)",
@@ -3093,7 +3356,7 @@
         }
       },
       "defKey": "t_customer",
-      "defName": "客户",
+      "defName": "客户管理",
       "comment": "",
       "properties": {
         "partitioned by": "(date string)",
@@ -5358,8 +5621,8 @@
           "codeRoot": ""
         }
       },
-      "defKey": "t_customer_inspection",
-      "defName": "客户巡检",
+      "defKey": "t_inspection",
+      "defName": "巡检管理",
       "comment": "",
       "properties": {
         "partitioned by": "(date string)",
@@ -5551,37 +5814,10 @@
           "attr7": "",
           "attr8": "",
           "attr9": "",
-          "id": "3E1B84C5-3E72-4866-8BA9-B9A7D7FB0C13"
-        },
-        {
-          "defKey": "inspection_type",
-          "defName": "巡检类型",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "\"\"",
-          "hideInGraph": false,
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "refDict": "",
-          "extProps": {},
-          "notes": {},
-          "attr1": "",
-          "attr2": "",
-          "attr3": "",
-          "attr4": "",
-          "attr5": "",
-          "attr6": "",
-          "attr7": "",
-          "attr8": "",
-          "attr9": "",
           "id": "F8AA1350-40E1-4AA8-BA83-3A97AE446770"
         },
         {
-          "defKey": "user_name",
+          "defKey": "user",
           "defName": "联系人",
           "comment": "",
           "type": "",
@@ -5605,61 +5841,7 @@
           "attr7": "",
           "attr8": "",
           "attr9": "",
-          "id": "EBDE366B-AC0D-427D-B821-4EB13F9BD732"
-        },
-        {
-          "defKey": "phone",
-          "defName": "联系电话",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "\"\"",
-          "hideInGraph": false,
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "refDict": "",
-          "extProps": {},
-          "notes": {},
-          "attr1": "",
-          "attr2": "",
-          "attr3": "",
-          "attr4": "",
-          "attr5": "",
-          "attr6": "",
-          "attr7": "",
-          "attr8": "",
-          "attr9": "",
           "id": "319925C5-1F5C-47C8-9F51-10FFD702F462"
-        },
-        {
-          "defKey": "start_time",
-          "defName": "开始时间",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": false,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": true,
-          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
-          "refDict": "",
-          "extProps": {},
-          "notes": {},
-          "attr1": "",
-          "attr2": "",
-          "attr3": "",
-          "attr4": "",
-          "attr5": "",
-          "attr6": "",
-          "attr7": "",
-          "attr8": "",
-          "attr9": "",
-          "id": "4EFD51FB-F12E-4C91-8CE1-D835F8798B57"
         },
         {
           "defKey": "longitude",
@@ -5716,8 +5898,35 @@
           "id": "FE25BAE0-2650-4A50-993D-A40A82209323"
         },
         {
-          "defKey": "remark",
-          "defName": "巡检内容",
+          "defKey": "inspection_type",
+          "defName": "巡检项目",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "\"\"",
+          "hideInGraph": false,
+          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
+          "refDict": "",
+          "extProps": {},
+          "notes": {},
+          "attr1": "",
+          "attr2": "",
+          "attr3": "",
+          "attr4": "",
+          "attr5": "",
+          "attr6": "",
+          "attr7": "",
+          "attr8": "",
+          "attr9": "",
+          "id": "EF61388B-788E-4FFF-855F-7F06BBE7696C"
+        },
+        {
+          "defKey": "remark_report",
+          "defName": "巡检报告",
           "comment": "",
           "type": "",
           "len": "",
@@ -5741,6 +5950,61 @@
           "attr8": "",
           "attr9": "",
           "id": "DFABF372-A81A-4FEF-AB2D-45C60F23E89F"
+        },
+        {
+          "defKey": "remark_1_1",
+          "defName": "备注",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "\"\"",
+          "hideInGraph": false,
+          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
+          "refDict": "",
+          "extProps": {},
+          "notes": {},
+          "attr1": "",
+          "attr2": "",
+          "attr3": "",
+          "attr4": "",
+          "attr5": "",
+          "attr6": "",
+          "attr7": "",
+          "attr8": "",
+          "attr9": "",
+          "id": "B9A52CEA-94EC-440E-9741-3452F90F3811"
+        },
+        {
+          "defKey": "remark",
+          "defName": "备注",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "\"\"",
+          "hideInGraph": false,
+          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
+          "refDict": null,
+          "extProps": {},
+          "notes": {},
+          "attr1": "",
+          "attr2": "",
+          "attr3": "",
+          "attr4": "",
+          "attr5": "",
+          "attr6": "",
+          "attr7": "",
+          "attr8": "",
+          "attr9": "",
+          "id": "FBA98AEF-36DF-49BC-B3BC-AC35EC8873C8",
+          "uiHint": null
         },
         {
           "defKey": "delete_flag",
@@ -5894,8 +6158,8 @@
           "codeRoot": ""
         }
       },
-      "defKey": "t_computer_inspection",
-      "defName": "机房巡检",
+      "defKey": "t_inspection_flow",
+      "defName": "巡检流水",
       "comment": "",
       "properties": {
         "partitioned by": "(date string)",
@@ -6206,15 +6470,15 @@
           "defKey": "remark_report",
           "defName": "巡检报告",
           "comment": "",
-          "type": "TEXT",
+          "type": "",
           "len": "",
           "scale": "",
           "primaryKey": false,
           "notNull": true,
           "autoIncrement": false,
-          "defaultValue": "",
+          "defaultValue": "\"\"",
           "hideInGraph": false,
-          "domain": "",
+          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
           "refDict": null,
           "extProps": {},
           "notes": {},
@@ -6231,8 +6495,8 @@
           "uiHint": null
         },
         {
-          "defKey": "work_plan",
-          "defName": "作业计划",
+          "defKey": "remark_1_1",
+          "defName": "备注",
           "comment": "",
           "type": "",
           "len": "",
@@ -6257,439 +6521,10 @@
           "attr9": "",
           "id": "B9A52CEA-94EC-440E-9741-3452F90F3811",
           "uiHint": null
-        },
-        {
-          "defKey": "delete_flag",
-          "defName": "删除标志",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": false,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": true,
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "refDict": null,
-          "extProps": {},
-          "notes": {},
-          "attr1": "",
-          "attr2": "",
-          "attr3": "",
-          "attr4": "",
-          "attr5": "",
-          "attr6": "",
-          "attr7": "",
-          "attr8": "",
-          "attr9": "",
-          "id": "6F96858A-7DBE-4BF8-8A36-0BCDA54B9106",
-          "uiHint": null
-        },
-        {
-          "defKey": "create_time",
-          "defName": "创建时间",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": false,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": true,
-          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
-          "refDict": null,
-          "extProps": {},
-          "notes": {},
-          "attr1": "",
-          "attr2": "",
-          "attr3": "",
-          "attr4": "",
-          "attr5": "",
-          "attr6": "",
-          "attr7": "",
-          "attr8": "",
-          "attr9": "",
-          "id": "8FFB46A2-2EF7-4805-B1D2-29884D05F3BD",
-          "uiHint": null
-        },
-        {
-          "defKey": "created_by",
-          "defName": "创建用户",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": false,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "refDict": null,
-          "extProps": {},
-          "notes": {},
-          "attr1": "",
-          "attr2": "",
-          "attr3": "",
-          "attr4": "",
-          "attr5": "",
-          "attr6": "",
-          "attr7": "",
-          "attr8": "",
-          "attr9": "",
-          "id": "385EC872-2526-4465-8F5B-59546FB0704A",
-          "uiHint": null
-        },
-        {
-          "defKey": "updated_time",
-          "defName": "修改时间",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": false,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": true,
-          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
-          "refDict": null,
-          "extProps": {},
-          "notes": {},
-          "attr1": "",
-          "attr2": "",
-          "attr3": "",
-          "attr4": "",
-          "attr5": "",
-          "attr6": "",
-          "attr7": "",
-          "attr8": "",
-          "attr9": "",
-          "id": "2CC998B0-3AA3-4E61-8484-46784AF13025",
-          "uiHint": null
-        },
-        {
-          "defKey": "updated_by",
-          "defName": "修改用户",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": false,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": false,
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "refDict": null,
-          "extProps": {},
-          "notes": {},
-          "attr1": "",
-          "attr2": "",
-          "attr3": "",
-          "attr4": "",
-          "attr5": "",
-          "attr6": "",
-          "attr7": "",
-          "attr8": "",
-          "attr9": "",
-          "id": "A98606AE-4211-4FF3-B970-7EFFC43C7E46",
-          "uiHint": null
-        }
-      ],
-      "correlations": [],
-      "indexes": []
-    },
-    {
-      "id": "38E49461-835D-44DC-BE1D-5B5EA3198E84",
-      "env": {
-        "base": {
-          "nameSpace": "",
-          "codeRoot": ""
-        }
-      },
-      "defKey": "t_daily",
-      "defName": "日报",
-      "comment": "",
-      "properties": {
-        "partitioned by": "(date string)",
-        "row format delimited": "",
-        "fields terminated by ','": "",
-        "collection items terminated by '-'": "",
-        "map keys terminated by ':'": "",
-        "store as textfile;": ""
-      },
-      "nameTemplate": "{defKey}[{defName}]",
-      "notes": {},
-      "headers": [
-        {
-          "refKey": "hideInGraph",
-          "hideInGraph": true
-        },
-        {
-          "refKey": "defKey",
-          "freeze": false,
-          "hideInGraph": false
-        },
-        {
-          "refKey": "defName",
-          "freeze": false,
-          "hideInGraph": false
-        },
-        {
-          "refKey": "primaryKey",
-          "freeze": false,
-          "hideInGraph": false
-        },
-        {
-          "refKey": "notNull",
-          "freeze": false,
-          "hideInGraph": true
-        },
-        {
-          "refKey": "autoIncrement",
-          "freeze": false,
-          "hideInGraph": true
-        },
-        {
-          "refKey": "domain",
-          "freeze": false,
-          "hideInGraph": true
-        },
-        {
-          "refKey": "len",
-          "freeze": false,
-          "hideInGraph": false
-        },
-        {
-          "refKey": "scale",
-          "freeze": false,
-          "hideInGraph": false
-        },
-        {
-          "refKey": "defaultValue",
-          "freeze": false,
-          "hideInGraph": true
-        },
-        {
-          "refKey": "type",
-          "freeze": false,
-          "hideInGraph": false
-        },
-        {
-          "refKey": "comment",
-          "freeze": false,
-          "hideInGraph": true
-        },
-        {
-          "refKey": "refDict",
-          "freeze": false,
-          "hideInGraph": true
-        },
-        {
-          "refKey": "isStandard",
-          "freeze": false,
-          "hideInGraph": false
-        },
-        {
-          "refKey": "uiHint",
-          "freeze": false,
-          "hideInGraph": true
-        },
-        {
-          "refKey": "extProps",
-          "freeze": false,
-          "hideInGraph": true
-        },
-        {
-          "refKey": "attr1",
-          "freeze": false,
-          "hideInGraph": true
-        },
-        {
-          "refKey": "attr2",
-          "freeze": false,
-          "hideInGraph": true
-        },
-        {
-          "refKey": "attr3",
-          "freeze": false,
-          "hideInGraph": true
-        },
-        {
-          "refKey": "attr4",
-          "freeze": false,
-          "hideInGraph": true
-        },
-        {
-          "refKey": "attr5",
-          "freeze": false,
-          "hideInGraph": true
-        },
-        {
-          "refKey": "attr6",
-          "freeze": false,
-          "hideInGraph": true
-        },
-        {
-          "refKey": "attr7",
-          "freeze": false,
-          "hideInGraph": true
-        },
-        {
-          "refKey": "attr8",
-          "freeze": false,
-          "hideInGraph": true
-        },
-        {
-          "refKey": "attr9",
-          "freeze": false,
-          "hideInGraph": true
-        }
-      ],
-      "fields": [
-        {
-          "defKey": "pk_id",
-          "defName": "id",
-          "comment": "",
-          "type": "VARCHAR",
-          "len": 20,
-          "scale": "",
-          "primaryKey": true,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": true,
-          "refDict": null,
-          "extProps": {},
-          "notes": {},
-          "attr1": "",
-          "attr2": "",
-          "attr3": "",
-          "attr4": "",
-          "attr5": "",
-          "attr6": "",
-          "attr7": "",
-          "attr8": "",
-          "attr9": "",
-          "id": "F49AD47E-E1EC-4E60-AE84-5DD10D019CC9",
-          "domain": null,
-          "uiHint": null
-        },
-        {
-          "defKey": "object_name",
-          "defName": "项目名称",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "\"\"",
-          "hideInGraph": false,
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "refDict": null,
-          "extProps": {},
-          "notes": {},
-          "attr1": "",
-          "attr2": "",
-          "attr3": "",
-          "attr4": "",
-          "attr5": "",
-          "attr6": "",
-          "attr7": "",
-          "attr8": "",
-          "attr9": "",
-          "id": "F8AA1350-40E1-4AA8-BA83-3A97AE446770",
-          "uiHint": null
-        },
-        {
-          "defKey": "time",
-          "defName": "时间",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": false,
-          "autoIncrement": false,
-          "defaultValue": "",
-          "hideInGraph": true,
-          "domain": "7CFFA0D3-6A93-4DDC-BC10-DF21211064DC",
-          "refDict": "",
-          "extProps": {},
-          "notes": {},
-          "attr1": "",
-          "attr2": "",
-          "attr3": "",
-          "attr4": "",
-          "attr5": "",
-          "attr6": "",
-          "attr7": "",
-          "attr8": "",
-          "attr9": "",
-          "id": "D5C66208-0EA6-441C-8D9D-C0129A934592"
-        },
-        {
-          "defKey": "longitude",
-          "defName": "经度",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "\"\"",
-          "hideInGraph": false,
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "refDict": "",
-          "extProps": {},
-          "notes": {},
-          "attr1": "",
-          "attr2": "",
-          "attr3": "",
-          "attr4": "",
-          "attr5": "",
-          "attr6": "",
-          "attr7": "",
-          "attr8": "",
-          "attr9": "",
-          "id": "B9D1841B-02CB-4F4B-B773-153A553B3D27"
-        },
-        {
-          "defKey": "latitude",
-          "defName": "纬度",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "\"\"",
-          "hideInGraph": false,
-          "domain": "9092C4E0-1A54-4859-ABBB-5B62DBC27573",
-          "refDict": "",
-          "extProps": {},
-          "notes": {},
-          "attr1": "",
-          "attr2": "",
-          "attr3": "",
-          "attr4": "",
-          "attr5": "",
-          "attr6": "",
-          "attr7": "",
-          "attr8": "",
-          "attr9": "",
-          "id": "8CD66AE4-A644-4F36-96BD-1C99D09A56E9"
         },
         {
           "defKey": "remark",
-          "defName": "内容",
+          "defName": "备注",
           "comment": "",
           "type": "",
           "len": "",
@@ -6712,7 +6547,7 @@
           "attr7": "",
           "attr8": "",
           "attr9": "",
-          "id": "B9A52CEA-94EC-440E-9741-3452F90F3811",
+          "id": "FBA98AEF-36DF-49BC-B3BC-AC35EC8873C8",
           "uiHint": null
         },
         {

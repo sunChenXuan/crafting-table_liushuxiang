@@ -19,12 +19,28 @@
 			<a-form-item label="联系电话：" name="projectPhone">
 				<a-input v-model:value="formData.projectPhone" placeholder="请输入联系电话" allow-clear />
 			</a-form-item>
-			<a-form-item label="负责人：" name="projectHeadUsers">
+			<!-- <a-form-item label="负责人：" name="projectHeadUsers">
 				<a-checkbox-group v-model:value="formData.projectHeadUsers" placeholder="请选择负责人" :options="projectHeadUsersOptions" />
 			</a-form-item>
 			<a-form-item label="职工：" name="projectUsers">
 				<a-checkbox-group v-model:value="formData.projectUsers" placeholder="请选择职工" :options="projectUsersOptions" />
+			</a-form-item> -->
+
+			<a-form-item label="负责人：" name="projectHeadUsers">
+				<a-button type="primary" @click="openHeadUserSelector">选择人员</a-button>
+				<br />
+				<a-tag class="mt-3" v-for="(user, index) in projectHeadUsers" color="cyan" :key="index" @close="removeHeadUserTag(index)">{{
+					user.name
+				}}</a-tag>
 			</a-form-item>
+			<a-form-item label="职工：" name="projectUsers">
+				<a-button type="primary" @click="openUserSelector">选择人员</a-button>
+				<br />
+				<a-tag class="mt-3" v-for="(user, index) in projectUsers" color="cyan" :key="index" @close="removeUserTag(index)">{{
+					user.name
+				}}</a-tag>
+			</a-form-item>
+
 			<a-form-item label="项目沟通：" name="projectCommunication">
 				<a-input v-model:value="formData.projectCommunication" placeholder="请输入项目沟通" allow-clear />
 			</a-form-item>
@@ -67,13 +83,30 @@
 			<a-button type="primary" @click="onSubmit" :loading="submitLoading">保存</a-button>
 		</template>
 	</xn-form-container>
+	<user-selector-plus
+		ref="headUserSelectorPlusRef"
+		:org-tree-api="selectorApiFunction.orgTreeApi"
+		:user-page-api="selectorApiFunction.userPageApi"
+		:checked-user-list-api="selectorApiFunction.checkedUserListApi"
+		@onBack="headUserBack"
+	/>
+	<user-selector-plus
+		ref="userSelectorPlusRef"
+		:org-tree-api="selectorApiFunction.orgTreeApi"
+		:user-page-api="selectorApiFunction.userPageApi"
+		:checked-user-list-api="selectorApiFunction.checkedUserListApi"
+		@onBack="userBack"
+	/>
 </template>
 
 <script setup name="tProjectForm">
-	import tool from '@/utils/tool'
+	// import tool from '@/utils/tool'
 	import { cloneDeep } from 'lodash-es'
 	import { required } from '@/utils/formRules'
 	import tProjectApi from '@/api/biz/tProjectApi'
+	import userApi from '@/api/sys/userApi'
+	import userCenterApi from '@/api/sys/userCenterApi'
+	// import UserSelectorPlus from '@/components/Selector/userSelectorPlus.vue'
 	// 抽屉状态
 	const visible = ref(false)
 	const emit = defineEmits({ successful: null })
@@ -81,9 +114,82 @@
 	// 表单数据
 	const formData = ref({})
 	const submitLoading = ref(false)
-	const projectHeadUsersOptions = ref([])
-	const projectUsersOptions = ref([])
+	let projectHeadUsers = ref([])
+	let projectUsers = ref([])
+	const headUserSelectorPlusRef = ref()
+	const userSelectorPlusRef = ref()
+	// const projectHeadUsersOptions = ref([])
+	// const projectUsersOptions = ref([])
 
+	// 打开人员选择器
+	const openHeadUserSelector = () => {
+		let ids = []
+		// 打开之前选判断我们刚刚是否选过
+		if (projectHeadUsers.value.length > 0) {
+			projectHeadUsers.value.forEach((item) => {
+				ids.push(item.id)
+			})
+		}
+		headUserSelectorPlusRef.value.showUserPlusModal(ids)
+	}
+	// 人员选择回调
+	const headUserBack = (value) => {
+		projectHeadUsers.value = value
+	}
+	// 删除某用户
+	const removeHeadUserTag = (index) => {
+		projectHeadUsers.value.splice(index, 1)
+	}
+	// 打开人员选择器
+	const openUserSelector = () => {
+		let ids = []
+		// 打开之前选判断我们刚刚是否选过
+		if (projectUsers.value.length > 0) {
+			projectUsers.value.forEach((item) => {
+				ids.push(item.id)
+			})
+		}
+		userSelectorPlusRef.value.showUserPlusModal(ids)
+	}
+	// 人员选择回调
+	const userBack = (value) => {
+		projectUsers.value = value
+	}
+	// 删除某用户
+	const removeUserTag = (index) => {
+		projectUsers.value.splice(index, 1)
+	}
+	// 添加接收人
+	const convFormData = () => {
+		let ids = []
+		projectHeadUsers.value.forEach((item) => {
+			ids.push(item.id)
+		})
+		formData.value.projectHeadUsers = ids
+		ids = []
+		projectUsers.value.forEach((item) => {
+			ids.push(item.id)
+		})
+		formData.value.projectUsers = ids
+	}
+	// 传递设计器需要的API
+	const selectorApiFunction = {
+		orgTreeApi: (param) => {
+			return userApi.userOrgTreeSelector(param).then((data) => {
+				return Promise.resolve(data)
+			})
+		},
+		userPageApi: (param) => {
+			return userApi.userSelector(param).then((data) => {
+				return Promise.resolve(data)
+			})
+		},
+		checkedUserListApi: (param) => {
+			return userCenterApi.userCenterGetUserListByIdList(param).then((data) => {
+				return Promise.resolve(data)
+			})
+		}
+	}
 	// 打开抽屉
 	const onOpen = (record) => {
 		visible.value = true
@@ -93,8 +199,8 @@
 			recordData.projectUsers = JSON.parse(recordData.projectUsers)
 			formData.value = Object.assign({}, recordData)
 		}
-		projectHeadUsersOptions.value = tool.dictList('GENDER')
-		projectUsersOptions.value = tool.dictList('GENDER')
+		// projectHeadUsersOptions.value = tool.dictList('GENDER')
+		// projectUsersOptions.value = tool.dictList('GENDER')
 	}
 	// 关闭抽屉
 	const onClose = () => {
@@ -123,6 +229,16 @@
 	// 验证并提交数据
 	const onSubmit = () => {
 		formRef.value.validate().then(() => {
+			if (projectHeadUsers.value.length < 1) {
+				message.warning('未选择接收消息人员')
+				return
+			}
+			convFormData()
+			if (projectUsers.value.length < 1) {
+				message.warning('未选择接收消息人员')
+				return
+			}
+			convFormData()
 			submitLoading.value = true
 			const formDataParam = cloneDeep(formData.value)
 			formDataParam.projectHeadUsers = JSON.stringify(formDataParam.projectHeadUsers)

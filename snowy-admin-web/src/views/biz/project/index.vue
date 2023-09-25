@@ -17,16 +17,16 @@
 						<a-input v-model:value="searchFormState.projectPhone" placeholder="请输入联系电话" />
 					</a-form-item>
 				</a-col>
-				<a-col :span="6" v-show="advanced">
+				<!-- <a-col :span="6" v-show="advanced">
 					<a-form-item label="负责人" name="projectHeadUsers">
 						<a-select v-model:value="searchFormState.projectHeadUsers" placeholder="请选择负责人" :options="projectHeadUsersOptions" />
 					</a-form-item>
-				</a-col>
-				<a-col :span="6" v-show="advanced">
+				</a-col> -->
+				<!-- <a-col :span="6" v-show="advanced">
 					<a-form-item label="职工" name="projectUsers">
 						<a-select v-model:value="searchFormState.projectUsers" placeholder="请选择职工" :options="projectUsersOptions" />
 					</a-form-item>
-				</a-col>
+				</a-col> -->
 				<a-col :span="6" v-show="advanced">
 					<a-form-item label="项目开始时间" name="projectStartTime">
 						<a-range-picker v-model:value="searchFormState.projectStartTime" show-time />
@@ -71,12 +71,12 @@
 				</a-space>
 			</template>
 			<template #bodyCell="{ column, record }">
-				<template v-if="column.dataIndex === 'projectHeadUsers'">
+				<!-- <template v-if="column.dataIndex === 'projectHeadUsers'">
 					<a-tag v-for="textValue in JSON.parse(record.projectHeadUsers)" :key="textValue" color="green">{{ $TOOL.dictTypeData('GENDER', textValue) }}</a-tag>
 				</template>
 				<template v-if="column.dataIndex === 'projectUsers'">
 					<a-tag v-for="textValue in JSON.parse(record.projectUsers)" :key="textValue" color="green">{{ $TOOL.dictTypeData('GENDER', textValue) }}</a-tag>
-				</template>
+				</template> -->
 				<template v-if="column.dataIndex === 'action'">
 					<a-space>
 						<a @click="formRef.onOpen(record)" v-if="hasPerm('tProjectEdit')">编辑</a>
@@ -166,18 +166,6 @@
 		{
 			title: '存在问题',
 			dataIndex: 'existingProblems'
-		},
-		{
-			title: '创建用户',
-			dataIndex: 'createdBy'
-		},
-		{
-			title: '修改时间',
-			dataIndex: 'updatedTime'
-		},
-		{
-			title: '修改用户',
-			dataIndex: 'updatedBy'
 		},
 	]
 	// 操作栏通过权限判断是否显示

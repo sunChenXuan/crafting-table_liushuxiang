@@ -37,16 +37,16 @@
 						<a-range-picker v-model:value="searchFormState.authorizationEndTime" show-time />
 					</a-form-item>
 				</a-col>
-				<a-col :span="6" v-show="advanced">
+				<!-- <a-col :span="6" v-show="advanced">
 					<a-form-item label="系统设备提醒人" name="equipmentSysUsers">
 						<a-select v-model:value="searchFormState.equipmentSysUsers" placeholder="请选择系统设备提醒人" :options="equipmentSysUsersOptions" />
 					</a-form-item>
-				</a-col>
-				<a-col :span="6" v-show="advanced">
+				</a-col> -->
+				<!-- <a-col :span="6" v-show="advanced">
 					<a-form-item label="设备提醒人" name="equipmentUsers">
 						<a-select v-model:value="searchFormState.equipmentUsers" placeholder="请选择设备提醒人" :options="equipmentUsersOptions" />
 					</a-form-item>
-				</a-col>
+				</a-col> -->
 				<a-col :span="6">
 					<a-button type="primary" @click="table.refresh(true)">查询</a-button>
 					<a-button style="margin: 0 8px" @click="reset">重置</a-button>
@@ -88,10 +88,14 @@
 					{{ $TOOL.dictTypeData('GENDER', record.equipmentManufacturer) }}
 				</template>
 				<template v-if="column.dataIndex === 'equipmentSysUsers'">
-					<a-tag v-for="textValue in JSON.parse(record.equipmentSysUsers)" :key="textValue" color="green">{{ $TOOL.dictTypeData('GENDER', textValue) }}</a-tag>
+					<a-tag class="mt-3" v-for="(user, index) in record.equipmentSysUserList" color="cyan" :key="index">{{
+						user.name
+					}}</a-tag>
 				</template>
 				<template v-if="column.dataIndex === 'equipmentUsers'">
-					<a-tag v-for="textValue in JSON.parse(record.equipmentUsers)" :key="textValue" color="green">{{ $TOOL.dictTypeData('GENDER', textValue) }}</a-tag>
+					<a-tag class="mt-3" v-for="(user, index) in record.equipmentUserList" color="cyan" :key="index">{{
+						user.name
+					}}</a-tag>
 				</template>
 				<template v-if="column.dataIndex === 'action'">
 					<a-space>
@@ -158,19 +162,7 @@
 		{
 			title: '设备提醒人',
 			dataIndex: 'equipmentUsers'
-		},
-		{
-			title: '创建用户',
-			dataIndex: 'createdBy'
-		},
-		{
-			title: '修改时间',
-			dataIndex: 'updatedTime'
-		},
-		{
-			title: '修改用户',
-			dataIndex: 'updatedBy'
-		},
+		}
 	]
 	// 操作栏通过权限判断是否显示
 	if (hasPerm(['tEquipmentMaintenanceEdit', 'tEquipmentMaintenanceDelete'])) {

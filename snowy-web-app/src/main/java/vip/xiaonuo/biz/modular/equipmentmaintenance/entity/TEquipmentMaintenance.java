@@ -13,11 +13,14 @@
 package vip.xiaonuo.biz.modular.equipmentmaintenance.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonRawValue;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import vip.xiaonuo.sys.modular.user.result.SysUserMini;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 设备维保实体
@@ -65,10 +68,12 @@ public class TEquipmentMaintenance {
 
     /** 系统设备提醒人 */
     @ApiModelProperty(value = "系统设备提醒人", position = 9)
+    @JsonRawValue
     private String equipmentSysUsers;
 
     /** 设备提醒人 */
     @ApiModelProperty(value = "设备提醒人", position = 10)
+    @JsonRawValue
     private String equipmentUsers;
 
     /** 删除标志 */
@@ -93,4 +98,11 @@ public class TEquipmentMaintenance {
     /** 修改用户 */
     @ApiModelProperty(value = "修改用户", position = 15)
     private String updatedBy;
+
+    /* ====额外的字段==== */
+    @TableField(exist = false)
+    private List<SysUserMini> equipmentSysUserList;
+
+    @TableField(exist = false)
+    private List<SysUserMini> equipmentUserList;
 }

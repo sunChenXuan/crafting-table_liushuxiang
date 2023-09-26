@@ -29,10 +29,18 @@
 				<a-date-picker v-model:value="formData.authorizationEndTime" value-format="YYYY-MM-DD HH:mm:ss" show-time placeholder="请选择授权结束时间" style="width: 100%" />
 			</a-form-item>
 			<a-form-item label="系统设备提醒人：" name="equipmentSysUsers">
-				<a-checkbox-group v-model:value="formData.equipmentSysUsers" placeholder="请选择系统设备提醒人" :options="equipmentSysUsersOptions" />
+				<a-button type="primary" @click="openSysUserSelector">系统提醒人</a-button>
+				<br />
+				<a-tag class="mt-3" v-for="(user, index) in formData.equipmentSysUserList" color="cyan" :key="index">{{
+					user.name
+				}}</a-tag>
 			</a-form-item>
 			<a-form-item label="设备提醒人：" name="equipmentUsers">
-				<a-checkbox-group v-model:value="formData.equipmentUsers" placeholder="请选择设备提醒人" :options="equipmentUsersOptions" />
+				<a-button type="primary" @click="openUserSelector">设备提醒人</a-button>
+				<br />
+				<a-tag class="mt-3" v-for="(user, index) in formData.equipmentUserList" color="cyan" :key="index">{{
+					user.name
+				}}</a-tag>
 			</a-form-item>
 			<a-form-item label="创建用户：" name="createdBy">
 				<a-input v-model:value="formData.createdBy" placeholder="请输入创建用户" allow-clear />
@@ -49,13 +57,21 @@
 			<a-button type="primary" @click="onSubmit" :loading="submitLoading">保存</a-button>
 		</template>
 	</xn-form-container>
+	<user-selector-plus
+		ref="userSelectorPlusRef"
+		:org-tree-api="selectorApiFunction.orgTreeApi"
+		:user-page-api="selectorApiFunction.userPageApi"
+		:checked-user-list-api="selectorApiFunction.checkedUserListApi"
+		@onBack="userBack"
+	/>
 </template>
 
 <script setup name="tEquipmentMaintenanceForm">
 	import tool from '@/utils/tool'
 	import { cloneDeep } from 'lodash-es'
-	import { required } from '@/utils/formRules'
 	import tEquipmentMaintenanceApi from '@/api/biz/tEquipmentMaintenanceApi'
+	import userApi from '@/api/sys/userApi'
+	import userCenterApi from '@/api/sys/userCenterApi'
 	// 抽屉状态
 	const visible = ref(false)
 	const emit = defineEmits({ successful: null })
@@ -65,23 +81,72 @@
 	const submitLoading = ref(false)
 	const equipmentTypeOptions = ref([])
 	const equipmentManufacturerOptions = ref([])
-	const equipmentSysUsersOptions = ref([])
-	const equipmentUsersOptions = ref([])
+	// 回显需要
+	const userSelectorPlusRef = ref()
+	const ifSys = ref(false)
 
 	// 打开抽屉
 	const onOpen = (record) => {
 		visible.value = true
 		if (record) {
 			let recordData = cloneDeep(record)
-			recordData.equipmentSysUsers = JSON.parse(recordData.equipmentSysUsers)
-			recordData.equipmentUsers = JSON.parse(recordData.equipmentUsers)
 			formData.value = Object.assign({}, recordData)
 		}
 		equipmentTypeOptions.value = tool.dictList('GENDER')
 		equipmentManufacturerOptions.value = tool.dictList('GENDER')
-		equipmentSysUsersOptions.value = tool.dictList('GENDER')
-		equipmentUsersOptions.value = tool.dictList('GENDER')
 	}
+
+
+	// 打开人员选择器Head
+	const openSysUserSelector = () => {
+		ifSys.value = true
+		userSelectorPlusRef.value.showUserPlusModal(formData.value.equipmentSysUsers)
+	}
+	// 打开人员选择器
+	const openUserSelector = () => {
+		ifSys.value = false
+		userSelectorPlusRef.value.showUserPlusModal(formData.value.equipmentUsers)
+	}
+	// 人员选择回调
+	const userBack = (value) => {
+		if (ifSys.value) {
+			formData.value.equipmentSysUserList = value
+		} else {
+			formData.value.equipmentUserList = value
+		}
+	}
+	// 添加接收人
+	const convFormData = () => {
+		let headIds = []
+		formData.value.equipmentSysUserList.forEach((item) => {
+			headIds.push(item.id)
+		})
+		formData.value.equipmentSysUsers = headIds
+		let ids = []
+		formData.value.equipmentUserList.forEach((item) => {
+			ids.push(item.id)
+		})
+		formData.value.equipmentUsers = ids
+	}
+	// 传递设计器需要的API
+	const selectorApiFunction = {
+		orgTreeApi: (param) => {
+			return userApi.userOrgTreeSelector(param).then((data) => {
+				return Promise.resolve(data)
+			})
+		},
+		userPageApi: (param) => {
+			return userApi.userSelector(param).then((data) => {
+				return Promise.resolve(data)
+			})
+		},
+		checkedUserListApi: (param) => {
+			return userCenterApi.userCenterGetUserListByIdList(param).then((data) => {
+				return Promise.resolve(data)
+			})
+		}
+	}
+
 	// 关闭抽屉
 	const onClose = () => {
 		formRef.value.resetFields()
@@ -95,6 +160,15 @@
 	const onSubmit = () => {
 		formRef.value.validate().then(() => {
 			submitLoading.value = true
+			if (formData.value.equipmentUserList.length < 1) {
+				message.warning('未选择负责人')
+				return
+			}
+			if (formData.value.equipmentUserList.length < 1) {
+				message.warning('未选职工')
+				return
+			}
+			convFormData()
 			const formDataParam = cloneDeep(formData.value)
 			formDataParam.equipmentSysUsers = JSON.stringify(formDataParam.equipmentSysUsers)
 			formDataParam.equipmentUsers = JSON.stringify(formDataParam.equipmentUsers)

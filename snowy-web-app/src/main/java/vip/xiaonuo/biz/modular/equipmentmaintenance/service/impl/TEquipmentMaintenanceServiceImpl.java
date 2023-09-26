@@ -16,6 +16,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollStreamUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -28,10 +29,14 @@ import vip.xiaonuo.biz.modular.equipmentmaintenance.param.TEquipmentMaintenanceE
 import vip.xiaonuo.biz.modular.equipmentmaintenance.param.TEquipmentMaintenanceIdParam;
 import vip.xiaonuo.biz.modular.equipmentmaintenance.param.TEquipmentMaintenancePageParam;
 import vip.xiaonuo.biz.modular.equipmentmaintenance.service.TEquipmentMaintenanceService;
+import vip.xiaonuo.biz.modular.project.entity.TProject;
 import vip.xiaonuo.common.enums.CommonSortOrderEnum;
 import vip.xiaonuo.common.exception.CommonException;
 import vip.xiaonuo.common.page.CommonPageRequest;
+import vip.xiaonuo.sys.modular.user.param.SysUserIdListParam;
+import vip.xiaonuo.sys.modular.user.service.SysUserService;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -42,6 +47,8 @@ import java.util.List;
  **/
 @Service
 public class TEquipmentMaintenanceServiceImpl extends ServiceImpl<TEquipmentMaintenanceMapper, TEquipmentMaintenance> implements TEquipmentMaintenanceService {
+    @Resource
+    private SysUserService sysUserService;
 
     @Override
     public Page<TEquipmentMaintenance> page(TEquipmentMaintenancePageParam tEquipmentMaintenancePageParam) {
@@ -80,7 +87,20 @@ public class TEquipmentMaintenanceServiceImpl extends ServiceImpl<TEquipmentMain
         } else {
             queryWrapper.lambda().orderByAsc(TEquipmentMaintenance::getPkId);
         }
-        return this.page(CommonPageRequest.defaultPage(), queryWrapper);
+        final Page<TEquipmentMaintenance> page = this.page(CommonPageRequest.defaultPage(), queryWrapper);
+        // 填充补充字段
+        for (TEquipmentMaintenance em : page.getRecords()) {
+            SysUserIdListParam sysUserIdListParam = new SysUserIdListParam();
+            if (em.getEquipmentUsers() != null && !em.getEquipmentUsers().isEmpty()){
+                sysUserIdListParam.setIdList(JSONArray.parseArray(em.getEquipmentUsers(), String.class));
+                em.setEquipmentUserList(sysUserService.getUserListByIdList(sysUserIdListParam));
+            }
+            if (em.getEquipmentSysUsers() != null && !em.getEquipmentSysUsers().isEmpty()){
+                sysUserIdListParam.setIdList(JSONArray.parseArray(em.getEquipmentSysUsers(), String.class));
+                em.setEquipmentSysUserList(sysUserService.getUserListByIdList(sysUserIdListParam));
+            }
+        }
+        return page;
     }
 
     @Transactional(rollbackFor = Exception.class)

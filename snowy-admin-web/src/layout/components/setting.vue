@@ -313,7 +313,7 @@
 	.snowy-setting-layout-menu-doublerow::before {
 		z-index: 1;
 		width: 16%;
-		background-color: #001529;
+		background-color: #0081ff;
 		content: '';
 	}
 	.snowy-setting-layout-menu-doublerow-inner {
@@ -342,7 +342,7 @@
 	}
 	.snowy-setting-layout-menu-classical::before {
 		z-index: 1;
-		background-color: #001529;
+		background-color: #0081ff;
 		content: '';
 	}
 	.snowy-setting-layout-menu-classical::after {

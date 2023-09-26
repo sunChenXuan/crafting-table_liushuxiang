@@ -64,7 +64,7 @@
 		text-align: center;
 		height: 160px;
 		line-height: 150px;
-		background: #364d79;
+		background: #0049ff;
 		overflow: hidden;
 	}
 

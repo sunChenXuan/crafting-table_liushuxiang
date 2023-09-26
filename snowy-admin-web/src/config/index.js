@@ -31,13 +31,13 @@ const DEFAULT_CONFIG = {
 	REQUEST_CACHE: false,
 
 	// 布局 经典：classical，双排菜单：doublerow
-	SNOWY_LAYOUT: 'classical',
+	SNOWY_LAYOUT: 'doublerow',
 
 	// 菜单是否折叠
 	SNOWY_MENU_COLLAPSE: false,
 
 	// 模块坞
-	SNOWY_MODULE_UNFOLD_OPEN: true,
+	SNOWY_MODULE_UNFOLD_OPEN: false,
 
 	// 是否开启多标签
 	SNOWY_LAYOUT_TAGS_OPEN: true,
@@ -52,7 +52,7 @@ const DEFAULT_CONFIG = {
 	SNOWY_TOP_HANDER_THEME_COLOR_SPREAD: false,
 
 	// 侧边菜单是否排他展开
-	SNOWY_SIDE_UNIQUE_OPEN: true,
+	SNOWY_SIDE_UNIQUE_OPEN: false,
 
 	// 语言
 	LANG: 'zh-cn',
@@ -61,7 +61,7 @@ const DEFAULT_CONFIG = {
 	COLOR: '#1890FF',
 
 	// 默认整体主题
-	SNOWY_THEME: 'dark',
+	SNOWY_THEME: 'light',
 
 	// 整体表单风格
 	SNOWY_FORM_STYLE: 'drawer',

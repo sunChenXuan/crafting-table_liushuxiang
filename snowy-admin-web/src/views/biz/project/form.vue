@@ -121,8 +121,6 @@
 		projectDescription: [required('请输入项目描述')],
 		projectContacts: [required('请输入联系人')],
 		projectPhone: [required('请输入联系电话')],
-		projectHeadUsers: [required('请输入负责人')],
-		projectUsers: [required('请输入职工')],
 		projectCommunication: [required('请输入项目沟通')],
 		projectRisk: [required('请输入项目风险')],
 		purchasingManagement: [required('请输入采购管理')],

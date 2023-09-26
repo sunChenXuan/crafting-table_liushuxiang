@@ -31,7 +31,9 @@ import vip.xiaonuo.biz.modular.projectfile.service.TProjectFileService;
 import vip.xiaonuo.common.enums.CommonSortOrderEnum;
 import vip.xiaonuo.common.exception.CommonException;
 import vip.xiaonuo.common.page.CommonPageRequest;
+import vip.xiaonuo.dev.modular.file.service.DevFileService;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -42,6 +44,9 @@ import java.util.List;
  **/
 @Service
 public class TProjectFileServiceImpl extends ServiceImpl<TProjectFileMapper, TProjectFile> implements TProjectFileService {
+
+    @Resource
+    private DevFileService devFileService;
 
     @Override
     public Page<TProjectFile> page(TProjectFilePageParam tProjectFilePageParam) {
@@ -62,7 +67,11 @@ public class TProjectFileServiceImpl extends ServiceImpl<TProjectFileMapper, TPr
         } else {
             queryWrapper.lambda().orderByAsc(TProjectFile::getPkId);
         }
-        return this.page(CommonPageRequest.defaultPage(), queryWrapper);
+        final Page<TProjectFile> page = this.page(CommonPageRequest.defaultPage(), queryWrapper);
+        for (TProjectFile pf : page.getRecords()) {
+            pf.setDevFile(devFileService.queryEntity(pf.getUkFileId()));
+        }
+        return page;
     }
 
     @Transactional(rollbackFor = Exception.class)

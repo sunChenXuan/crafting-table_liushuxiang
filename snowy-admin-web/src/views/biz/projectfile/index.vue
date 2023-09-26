@@ -3,18 +3,24 @@
 		<a-form ref="searchFormRef" name="advanced_search" :model="searchFormState" class="ant-advanced-search-form">
 			<a-row :gutter="24">
 				<a-col :span="6">
+					<a-form-item label="项目名称" name="idxProjectId">
+						<a-input disabled v-model:value="route.query.projectName" placeholder="请在项目管理选择项目" />
+					</a-form-item>
+				</a-col>
+				<!-- <a-col :span="6">
 					<a-form-item label="项目id" name="idxProjectId">
 						<a-input v-model:value="searchFormState.idxProjectId" placeholder="请输入项目id" />
 					</a-form-item>
-				</a-col>
-				<a-col :span="6">
+				</a-col> -->
+				<!-- <a-col :span="6">
 					<a-form-item label="文件id" name="ukFileId">
 						<a-input v-model:value="searchFormState.ukFileId" placeholder="请输入文件id" />
 					</a-form-item>
-				</a-col>
+				</a-col> -->
 				<a-col :span="6">
 					<a-form-item label="文档类型" name="projectFileType">
-						<a-select v-model:value="searchFormState.projectFileType" placeholder="请选择文档类型" :options="projectFileTypeOptions" />
+						<a-select v-model:value="searchFormState.projectFileType" placeholder="请选择文档类型"
+							:options="projectFileTypeOptions" />
 					</a-form-item>
 				</a-col>
 				<a-col :span="6">
@@ -23,32 +29,21 @@
 				</a-col>
 			</a-row>
 		</a-form>
-		<s-table
-			ref="table"
-			:columns="columns"
-			:data="loadData"
-			:alert="options.alert.show"
-			bordered
-			:row-key="(record) => record.pkId"
-			:tool-config="toolConfig"
-			:row-selection="options.rowSelection"
-		>
+		<s-table ref="table" :columns="columns" :data="loadData" :alert="options.alert.show" bordered
+			:row-key="(record) => record.pkId" :tool-config="toolConfig" :row-selection="options.rowSelection">
 			<template #operator class="table-operator">
 				<a-space>
 					<a-button type="primary" @click="formRef.onOpen()" v-if="hasPerm('tProjectFileAdd')">
 						<template #icon><plus-outlined /></template>
 						新增
 					</a-button>
-					<xn-batch-delete
-						v-if="hasPerm('tProjectFileBatchDelete')"
-						:selectedRowKeys="selectedRowKeys"
-						@batchDelete="deleteBatchTProjectFile"
-					/>
+					<xn-batch-delete v-if="hasPerm('tProjectFileBatchDelete')" :selectedRowKeys="selectedRowKeys"
+						@batchDelete="deleteBatchTProjectFile" />
 				</a-space>
 			</template>
 			<template #bodyCell="{ column, record }">
 				<template v-if="column.dataIndex === 'projectFileType'">
-					{{ $TOOL.dictTypeData('GENDER', record.projectFileType) }}
+					{{ $TOOL.dictTypeData('PROJECT_FILE_TYPE', record.projectFileType) }}
 				</template>
 				<template v-if="column.dataIndex === 'action'">
 					<a-space>
@@ -66,92 +61,104 @@
 </template>
 
 <script setup name="projectfile">
-	import tool from '@/utils/tool'
-	import Form from './form.vue'
-	import tProjectFileApi from '@/api/biz/tProjectFileApi'
-	let searchFormState = reactive({})
-	const searchFormRef = ref()
-	const table = ref()
-	const formRef = ref()
-	const toolConfig = { refresh: true, height: true, columnSetting: true, striped: false }
-	const columns = [
-		{
-			title: '项目id',
-			dataIndex: 'idxProjectId'
-		},
-		{
-			title: '文件id',
-			dataIndex: 'ukFileId'
-		},
-		{
-			title: '文档类型',
-			dataIndex: 'projectFileType'
-		},
-		{
-			title: '创建用户',
-			dataIndex: 'createdBy'
-		},
-		{
-			title: '修改时间',
-			dataIndex: 'updatedTime'
-		},
-		{
-			title: '修改用户',
-			dataIndex: 'updatedBy'
-		},
-	]
-	// 操作栏通过权限判断是否显示
-	if (hasPerm(['tProjectFileEdit', 'tProjectFileDelete'])) {
-		columns.push({
-			title: '操作',
-			dataIndex: 'action',
-			align: 'center',
-			width: '150px'
-		})
-	}
-	const selectedRowKeys = ref([])
-	// 列表选择配置
-	const options = {
-		// columns数字类型字段加入 needTotal: true 可以勾选自动算账
-		alert: {
-			show: true,
-			clear: () => {
-				selectedRowKeys.value = ref([])
-			}
-		},
-		rowSelection: {
-			onChange: (selectedRowKey, selectedRows) => {
-				selectedRowKeys.value = selectedRowKey
-			}
+import tool from '@/utils/tool'
+import Form from './form.vue'
+import tProjectFileApi from '@/api/biz/tProjectFileApi'
+import { useRoute } from 'vue-router'
+let searchFormState = reactive({})
+const searchFormRef = ref()
+const table = ref()
+const formRef = ref()
+const toolConfig = { refresh: true, height: true, columnSetting: true, striped: false }
+const columns = [
+	{
+		title: '项目id',
+		dataIndex: 'idxProjectId'
+	},
+	{
+		title: '文件id',
+		dataIndex: 'ukFileId'
+	},
+	{
+		title: '文档类型',
+		dataIndex: 'projectFileType'
+	},
+	{
+		title: '创建用户',
+		dataIndex: 'createdBy'
+	},
+	{
+		title: '修改时间',
+		dataIndex: 'updatedTime'
+	},
+	{
+		title: '修改用户',
+		dataIndex: 'updatedBy'
+	},
+]
+// 操作栏通过权限判断是否显示
+if (hasPerm(['tProjectFileEdit', 'tProjectFileDelete'])) {
+	columns.push({
+		title: '操作',
+		dataIndex: 'action',
+		align: 'center',
+		width: '150px'
+	})
+}
+const selectedRowKeys = ref([])
+// 列表选择配置
+const options = {
+	// columns数字类型字段加入 needTotal: true 可以勾选自动算账
+	alert: {
+		show: true,
+		clear: () => {
+			selectedRowKeys.value = ref([])
+		}
+	},
+	rowSelection: {
+		onChange: (selectedRowKey, selectedRows) => {
+			selectedRowKeys.value = selectedRowKey
 		}
 	}
-	const loadData = (parameter) => {
-		const searchFormParam = JSON.parse(JSON.stringify(searchFormState))
-		return tProjectFileApi.tProjectFilePage(Object.assign(parameter, searchFormParam)).then((data) => {
-			return data
-		})
-	}
-	// 重置
-	const reset = () => {
-		searchFormRef.value.resetFields()
+}
+const loadData = (parameter) => {
+	searchFormState.idxProjectId = route.query.pkId
+	console.log(route.query.pkId)
+	const searchFormParam = JSON.parse(JSON.stringify(searchFormState))
+	return tProjectFileApi.tProjectFilePage(Object.assign(parameter, searchFormParam)).then((data) => {
+		return data
+	})
+}
+// 重置
+const reset = () => {
+	searchFormRef.value.resetFields()
+	table.value.refresh(true)
+}
+// 删除
+const deleteTProjectFile = (record) => {
+	let params = [
+		{
+			pkId: record.pkId
+		}
+	]
+	tProjectFileApi.tProjectFileDelete(params).then(() => {
 		table.value.refresh(true)
-	}
-	// 删除
-	const deleteTProjectFile = (record) => {
-		let params = [
-			{
-				pkId: record.pkId
-			}
-		]
-		tProjectFileApi.tProjectFileDelete(params).then(() => {
-			table.value.refresh(true)
-		})
-	}
-	// 批量删除
-	const deleteBatchTProjectFile = (params) => {
-		tProjectFileApi.tProjectFileDelete(params).then(() => {
-			table.value.clearRefreshSelected()
-		})
-	}
-	const projectFileTypeOptions = tool.dictList('PROJECT_FILE_TYPE')
+	})
+}
+// 批量删除
+const deleteBatchTProjectFile = (params) => {
+	tProjectFileApi.tProjectFileDelete(params).then(() => {
+		table.value.clearRefreshSelected()
+	})
+}
+const projectFileTypeOptions = tool.dictList('PROJECT_FILE_TYPE')
+
+// 获取路由传参
+const route = useRoute()
+const pkId = route.query.pkId
+const projectName = route.query.projectName
+onMounted(() => {
+	// // 这里可以使用 pkId 和 projectName 变量  
+	// console.log(route.query)
+})
 </script>

@@ -11,22 +11,22 @@
 				<a-input v-model:value="formData.serialNumber" placeholder="请输入序列号" allow-clear />
 			</a-form-item>
 			<a-form-item label="设备类型：" name="fixedAssetType">
-				<a-checkbox-group v-model:value="formData.fixedAssetType" placeholder="请选择设备类型" :options="fixedAssetTypeOptions" />
+				<a-select v-model:value="formData.fixedAssetType" placeholder="请选择设备类型" :options="fixedAssetTypeOptions" />
 			</a-form-item>
 			<a-form-item label="cpu：" name="fixedAssetCpu">
-				<a-radio-group v-model:value="formData.fixedAssetCpu" placeholder="请选择cpu" :options="fixedAssetCpuOptions" />
+				<a-input v-model:value="formData.fixedAssetCpu" placeholder="请输入cpu" allow-clear />
 			</a-form-item>
 			<a-form-item label="内存：" name="fixedAssetMemory">
-				<a-checkbox-group v-model:value="formData.fixedAssetMemory" placeholder="请选择内存" :options="fixedAssetMemoryOptions" />
+				<a-input v-model:value="formData.fixedAssetMemory" placeholder="请输入内存" allow-clear />
 			</a-form-item>
 			<a-form-item label="固态硬盘：" name="fixedAssetSsd">
-				<a-checkbox-group v-model:value="formData.fixedAssetSsd" placeholder="请选择固态硬盘" :options="fixedAssetSsdOptions" />
+				<a-input v-model:value="formData.fixedAssetSsd" placeholder="请输入固态硬盘" allow-clear />
 			</a-form-item>
 			<a-form-item label="机械硬盘：" name="fixedAssetDisk">
-				<a-checkbox-group v-model:value="formData.fixedAssetDisk" placeholder="请选择机械硬盘" :options="fixedAssetDiskOptions" />
+				<a-input v-model:value="formData.fixedAssetDisk" placeholder="请输入机械硬盘" allow-clear />
 			</a-form-item>
 			<a-form-item label="显卡：" name="fixedAssetGpu">
-				<a-checkbox-group v-model:value="formData.fixedAssetGpu" placeholder="请选择显卡" :options="fixedAssetGpuOptions" />
+				<a-input v-model:value="formData.fixedAssetGpu" placeholder="请输入显卡" allow-clear />
 			</a-form-item>
 			<a-form-item label="配件：" name="fixedAssetAccessory">
 				<a-input v-model:value="formData.fixedAssetAccessory" placeholder="请输入配件" allow-clear />
@@ -61,30 +61,15 @@
 	const formData = ref({})
 	const submitLoading = ref(false)
 	const fixedAssetTypeOptions = ref([])
-	const fixedAssetCpuOptions = ref([])
-	const fixedAssetMemoryOptions = ref([])
-	const fixedAssetSsdOptions = ref([])
-	const fixedAssetDiskOptions = ref([])
-	const fixedAssetGpuOptions = ref([])
 
 	// 打开抽屉
 	const onOpen = (record) => {
 		visible.value = true
 		if (record) {
 			let recordData = cloneDeep(record)
-			recordData.fixedAssetType = JSON.parse(recordData.fixedAssetType)
-			recordData.fixedAssetMemory = JSON.parse(recordData.fixedAssetMemory)
-			recordData.fixedAssetSsd = JSON.parse(recordData.fixedAssetSsd)
-			recordData.fixedAssetDisk = JSON.parse(recordData.fixedAssetDisk)
-			recordData.fixedAssetGpu = JSON.parse(recordData.fixedAssetGpu)
 			formData.value = Object.assign({}, recordData)
 		}
-		fixedAssetTypeOptions.value = tool.dictList('GENDER')
-		fixedAssetCpuOptions.value = tool.dictList('GENDER')
-		fixedAssetMemoryOptions.value = tool.dictList('GENDER')
-		fixedAssetSsdOptions.value = tool.dictList('GENDER')
-		fixedAssetDiskOptions.value = tool.dictList('GENDER')
-		fixedAssetGpuOptions.value = tool.dictList('GENDER')
+		fixedAssetTypeOptions.value = tool.dictList('FIXED_ASSET_TYPE')
 	}
 	// 关闭抽屉
 	const onClose = () => {
@@ -100,11 +85,6 @@
 		formRef.value.validate().then(() => {
 			submitLoading.value = true
 			const formDataParam = cloneDeep(formData.value)
-			formDataParam.fixedAssetType = JSON.stringify(formDataParam.fixedAssetType)
-			formDataParam.fixedAssetMemory = JSON.stringify(formDataParam.fixedAssetMemory)
-			formDataParam.fixedAssetSsd = JSON.stringify(formDataParam.fixedAssetSsd)
-			formDataParam.fixedAssetDisk = JSON.stringify(formDataParam.fixedAssetDisk)
-			formDataParam.fixedAssetGpu = JSON.stringify(formDataParam.fixedAssetGpu)
 			tFixedAssetApi
 				.tFixedAssetSubmitForm(formDataParam, formDataParam.pkId)
 				.then(() => {

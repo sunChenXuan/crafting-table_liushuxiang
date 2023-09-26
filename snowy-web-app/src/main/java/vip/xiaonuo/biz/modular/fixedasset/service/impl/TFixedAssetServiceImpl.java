@@ -53,19 +53,19 @@ public class TFixedAssetServiceImpl extends ServiceImpl<TFixedAssetMapper, TFixe
             queryWrapper.lambda().eq(TFixedAsset::getFixedAssetType, tFixedAssetPageParam.getFixedAssetType());
         }
         if(ObjectUtil.isNotEmpty(tFixedAssetPageParam.getFixedAssetCpu())) {
-            queryWrapper.lambda().eq(TFixedAsset::getFixedAssetCpu, tFixedAssetPageParam.getFixedAssetCpu());
+            queryWrapper.lambda().like(TFixedAsset::getFixedAssetCpu, tFixedAssetPageParam.getFixedAssetCpu());
         }
         if(ObjectUtil.isNotEmpty(tFixedAssetPageParam.getFixedAssetMemory())) {
-            queryWrapper.lambda().eq(TFixedAsset::getFixedAssetMemory, tFixedAssetPageParam.getFixedAssetMemory());
+            queryWrapper.lambda().like(TFixedAsset::getFixedAssetMemory, tFixedAssetPageParam.getFixedAssetMemory());
         }
         if(ObjectUtil.isNotEmpty(tFixedAssetPageParam.getFixedAssetSsd())) {
-            queryWrapper.lambda().eq(TFixedAsset::getFixedAssetSsd, tFixedAssetPageParam.getFixedAssetSsd());
+            queryWrapper.lambda().like(TFixedAsset::getFixedAssetSsd, tFixedAssetPageParam.getFixedAssetSsd());
         }
         if(ObjectUtil.isNotEmpty(tFixedAssetPageParam.getFixedAssetDisk())) {
-            queryWrapper.lambda().eq(TFixedAsset::getFixedAssetDisk, tFixedAssetPageParam.getFixedAssetDisk());
+            queryWrapper.lambda().like(TFixedAsset::getFixedAssetDisk, tFixedAssetPageParam.getFixedAssetDisk());
         }
         if(ObjectUtil.isNotEmpty(tFixedAssetPageParam.getFixedAssetGpu())) {
-            queryWrapper.lambda().eq(TFixedAsset::getFixedAssetGpu, tFixedAssetPageParam.getFixedAssetGpu());
+            queryWrapper.lambda().like(TFixedAsset::getFixedAssetGpu, tFixedAssetPageParam.getFixedAssetGpu());
         }
         if(ObjectUtil.isNotEmpty(tFixedAssetPageParam.getFixedAssetAccessory())) {
             queryWrapper.lambda().like(TFixedAsset::getFixedAssetAccessory, tFixedAssetPageParam.getFixedAssetAccessory());

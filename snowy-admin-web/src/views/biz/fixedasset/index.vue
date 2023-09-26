@@ -14,27 +14,27 @@
 				</a-col>
 				<a-col :span="6">
 					<a-form-item label="cpu" name="fixedAssetCpu">
-						<a-select v-model:value="searchFormState.fixedAssetCpu" placeholder="请选择cpu" :options="fixedAssetCpuOptions" />
+						<a-input v-model:value="searchFormState.fixedAssetCpu" placeholder="请输入cpu" />
 					</a-form-item>
 				</a-col>
 				<a-col :span="6" v-show="advanced">
 					<a-form-item label="内存" name="fixedAssetMemory">
-						<a-select v-model:value="searchFormState.fixedAssetMemory" placeholder="请选择内存" :options="fixedAssetMemoryOptions" />
+						<a-input v-model:value="searchFormState.fixedAssetMemory" placeholder="请输入内存" />
 					</a-form-item>
 				</a-col>
 				<a-col :span="6" v-show="advanced">
 					<a-form-item label="固态硬盘" name="fixedAssetSsd">
-						<a-select v-model:value="searchFormState.fixedAssetSsd" placeholder="请选择固态硬盘" :options="fixedAssetSsdOptions" />
+						<a-input v-model:value="searchFormState.fixedAssetSsd" placeholder="请输入固态硬盘" />
 					</a-form-item>
 				</a-col>
 				<a-col :span="6" v-show="advanced">
 					<a-form-item label="机械硬盘" name="fixedAssetDisk">
-						<a-select v-model:value="searchFormState.fixedAssetDisk" placeholder="请选择机械硬盘" :options="fixedAssetDiskOptions" />
+						<a-input v-model:value="searchFormState.fixedAssetDisk" placeholder="请输入机械硬盘" />
 					</a-form-item>
 				</a-col>
 				<a-col :span="6" v-show="advanced">
 					<a-form-item label="显卡" name="fixedAssetGpu">
-						<a-select v-model:value="searchFormState.fixedAssetGpu" placeholder="请选择显卡" :options="fixedAssetGpuOptions" />
+						<a-input v-model:value="searchFormState.fixedAssetGpu" placeholder="请输入显卡" />
 					</a-form-item>
 				</a-col>
 				<a-col :span="6" v-show="advanced">
@@ -77,22 +77,7 @@
 			</template>
 			<template #bodyCell="{ column, record }">
 				<template v-if="column.dataIndex === 'fixedAssetType'">
-					<a-tag v-for="textValue in JSON.parse(record.fixedAssetType)" :key="textValue" color="green">{{ $TOOL.dictTypeData('GENDER', textValue) }}</a-tag>
-				</template>
-				<template v-if="column.dataIndex === 'fixedAssetCpu'">
-					{{ $TOOL.dictTypeData('GENDER', record.fixedAssetCpu) }}
-				</template>
-				<template v-if="column.dataIndex === 'fixedAssetMemory'">
-					<a-tag v-for="textValue in JSON.parse(record.fixedAssetMemory)" :key="textValue" color="green">{{ $TOOL.dictTypeData('GENDER', textValue) }}</a-tag>
-				</template>
-				<template v-if="column.dataIndex === 'fixedAssetSsd'">
-					<a-tag v-for="textValue in JSON.parse(record.fixedAssetSsd)" :key="textValue" color="green">{{ $TOOL.dictTypeData('GENDER', textValue) }}</a-tag>
-				</template>
-				<template v-if="column.dataIndex === 'fixedAssetDisk'">
-					<a-tag v-for="textValue in JSON.parse(record.fixedAssetDisk)" :key="textValue" color="green">{{ $TOOL.dictTypeData('GENDER', textValue) }}</a-tag>
-				</template>
-				<template v-if="column.dataIndex === 'fixedAssetGpu'">
-					<a-tag v-for="textValue in JSON.parse(record.fixedAssetGpu)" :key="textValue" color="green">{{ $TOOL.dictTypeData('GENDER', textValue) }}</a-tag>
+					{{ $TOOL.dictTypeData('PROJECT_FILE_TYPE', record.fixedAssetType) }}
 				</template>
 				<template v-if="column.dataIndex === 'action'">
 					<a-space>
@@ -222,10 +207,5 @@
 			table.value.clearRefreshSelected()
 		})
 	}
-	const fixedAssetTypeOptions = tool.dictList('GENDER')
-	const fixedAssetCpuOptions = tool.dictList('GENDER')
-	const fixedAssetMemoryOptions = tool.dictList('GENDER')
-	const fixedAssetSsdOptions = tool.dictList('GENDER')
-	const fixedAssetDiskOptions = tool.dictList('GENDER')
-	const fixedAssetGpuOptions = tool.dictList('GENDER')
+	const fixedAssetTypeOptions = tool.dictList('FIXED_ASSET_TYPE')
 </script>

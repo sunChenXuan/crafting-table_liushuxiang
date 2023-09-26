@@ -92,8 +92,8 @@
 			let recordData = cloneDeep(record)
 			formData.value = Object.assign({}, recordData)
 		}
-		equipmentTypeOptions.value = tool.dictList('GENDER')
-		equipmentManufacturerOptions.value = tool.dictList('GENDER')
+		equipmentTypeOptions.value = tool.dictList('EQUIPMENT_TYPE')
+		equipmentManufacturerOptions.value = tool.dictList('EQUIPMENT_MANUFACTURER')
 	}
 
 

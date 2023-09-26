@@ -54,7 +54,7 @@
 			let recordData = cloneDeep(record)
 			formData.value = Object.assign({}, recordData)
 		}
-		projectFileTypeOptions.value = tool.dictList('GENDER')
+		projectFileTypeOptions.value = tool.dictList('PROJECT_FILE_TYPE')
 	}
 	// 关闭抽屉
 	const onClose = () => {

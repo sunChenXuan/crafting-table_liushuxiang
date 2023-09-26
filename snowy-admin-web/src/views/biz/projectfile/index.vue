@@ -153,5 +153,5 @@
 			table.value.clearRefreshSelected()
 		})
 	}
-	const projectFileTypeOptions = tool.dictList('GENDER')
+	const projectFileTypeOptions = tool.dictList('PROJECT_FILE_TYPE')
 </script>

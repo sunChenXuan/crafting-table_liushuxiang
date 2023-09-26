@@ -82,10 +82,10 @@
 			</template>
 			<template #bodyCell="{ column, record }">
 				<template v-if="column.dataIndex === 'equipmentType'">
-					{{ $TOOL.dictTypeData('GENDER', record.equipmentType) }}
+					{{ $TOOL.dictTypeData('EQUIPMENT_TYPE', record.equipmentType) }}
 				</template>
 				<template v-if="column.dataIndex === 'equipmentManufacturer'">
-					{{ $TOOL.dictTypeData('GENDER', record.equipmentManufacturer) }}
+					{{ $TOOL.dictTypeData('EQUIPMENT_MANUFACTURER', record.equipmentManufacturer) }}
 				</template>
 				<template v-if="column.dataIndex === 'equipmentSysUsers'">
 					<a-tag class="mt-3" v-for="(user, index) in record.equipmentSysUserList" color="cyan" :key="index">{{
@@ -229,8 +229,6 @@
 			table.value.clearRefreshSelected()
 		})
 	}
-	const equipmentTypeOptions = tool.dictList('GENDER')
-	const equipmentManufacturerOptions = tool.dictList('GENDER')
-	const equipmentSysUsersOptions = tool.dictList('GENDER')
-	const equipmentUsersOptions = tool.dictList('GENDER')
+	const equipmentTypeOptions = tool.dictList('EQUIPMENT_TYPE')
+	const equipmentManufacturerOptions = tool.dictList('EQUIPMENT_MANUFACTURER')
 </script>

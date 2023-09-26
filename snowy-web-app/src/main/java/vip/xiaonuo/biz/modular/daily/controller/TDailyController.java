@@ -23,15 +23,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import vip.xiaonuo.common.annotation.CommonLog;
-import vip.xiaonuo.common.pojo.CommonResult;
-import vip.xiaonuo.common.pojo.CommonValidList;
 import vip.xiaonuo.biz.modular.daily.entity.TDaily;
 import vip.xiaonuo.biz.modular.daily.param.TDailyAddParam;
 import vip.xiaonuo.biz.modular.daily.param.TDailyEditParam;
 import vip.xiaonuo.biz.modular.daily.param.TDailyIdParam;
 import vip.xiaonuo.biz.modular.daily.param.TDailyPageParam;
 import vip.xiaonuo.biz.modular.daily.service.TDailyService;
+import vip.xiaonuo.common.annotation.CommonLog;
+import vip.xiaonuo.common.pojo.CommonResult;
+import vip.xiaonuo.common.pojo.CommonValidList;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;

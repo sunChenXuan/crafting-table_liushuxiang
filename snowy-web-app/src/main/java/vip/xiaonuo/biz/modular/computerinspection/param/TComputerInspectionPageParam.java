@@ -15,8 +15,6 @@ package vip.xiaonuo.biz.modular.computerinspection.param;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
-import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * 机房巡检查询参数

@@ -15,8 +15,6 @@ package vip.xiaonuo.biz.modular.fixedassetfile.param;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
-import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * 固定资产文件查询参数

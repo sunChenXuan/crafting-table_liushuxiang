@@ -23,15 +23,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import vip.xiaonuo.common.annotation.CommonLog;
-import vip.xiaonuo.common.pojo.CommonResult;
-import vip.xiaonuo.common.pojo.CommonValidList;
 import vip.xiaonuo.biz.modular.fixedassetfile.entity.TFixedAssetFile;
 import vip.xiaonuo.biz.modular.fixedassetfile.param.TFixedAssetFileAddParam;
 import vip.xiaonuo.biz.modular.fixedassetfile.param.TFixedAssetFileEditParam;
 import vip.xiaonuo.biz.modular.fixedassetfile.param.TFixedAssetFileIdParam;
 import vip.xiaonuo.biz.modular.fixedassetfile.param.TFixedAssetFilePageParam;
 import vip.xiaonuo.biz.modular.fixedassetfile.service.TFixedAssetFileService;
+import vip.xiaonuo.common.annotation.CommonLog;
+import vip.xiaonuo.common.pojo.CommonResult;
+import vip.xiaonuo.common.pojo.CommonValidList;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;

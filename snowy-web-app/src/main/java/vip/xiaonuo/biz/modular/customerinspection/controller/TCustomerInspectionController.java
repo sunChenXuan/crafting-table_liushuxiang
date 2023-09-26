@@ -23,15 +23,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import vip.xiaonuo.common.annotation.CommonLog;
-import vip.xiaonuo.common.pojo.CommonResult;
-import vip.xiaonuo.common.pojo.CommonValidList;
 import vip.xiaonuo.biz.modular.customerinspection.entity.TCustomerInspection;
 import vip.xiaonuo.biz.modular.customerinspection.param.TCustomerInspectionAddParam;
 import vip.xiaonuo.biz.modular.customerinspection.param.TCustomerInspectionEditParam;
 import vip.xiaonuo.biz.modular.customerinspection.param.TCustomerInspectionIdParam;
 import vip.xiaonuo.biz.modular.customerinspection.param.TCustomerInspectionPageParam;
 import vip.xiaonuo.biz.modular.customerinspection.service.TCustomerInspectionService;
+import vip.xiaonuo.common.annotation.CommonLog;
+import vip.xiaonuo.common.pojo.CommonResult;
+import vip.xiaonuo.common.pojo.CommonValidList;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;

@@ -21,9 +21,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import vip.xiaonuo.common.enums.CommonSortOrderEnum;
-import vip.xiaonuo.common.exception.CommonException;
-import vip.xiaonuo.common.page.CommonPageRequest;
 import vip.xiaonuo.biz.modular.customer.entity.TCustomer;
 import vip.xiaonuo.biz.modular.customer.mapper.TCustomerMapper;
 import vip.xiaonuo.biz.modular.customer.param.TCustomerAddParam;
@@ -31,6 +28,9 @@ import vip.xiaonuo.biz.modular.customer.param.TCustomerEditParam;
 import vip.xiaonuo.biz.modular.customer.param.TCustomerIdParam;
 import vip.xiaonuo.biz.modular.customer.param.TCustomerPageParam;
 import vip.xiaonuo.biz.modular.customer.service.TCustomerService;
+import vip.xiaonuo.common.enums.CommonSortOrderEnum;
+import vip.xiaonuo.common.exception.CommonException;
+import vip.xiaonuo.common.page.CommonPageRequest;
 
 import java.util.List;
 

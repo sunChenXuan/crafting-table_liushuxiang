@@ -15,8 +15,6 @@ package vip.xiaonuo.biz.modular.daily.param;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
-import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * 日报查询参数

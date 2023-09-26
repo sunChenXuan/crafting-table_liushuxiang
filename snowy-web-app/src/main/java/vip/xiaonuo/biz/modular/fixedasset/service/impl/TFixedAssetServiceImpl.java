@@ -21,9 +21,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import vip.xiaonuo.common.enums.CommonSortOrderEnum;
-import vip.xiaonuo.common.exception.CommonException;
-import vip.xiaonuo.common.page.CommonPageRequest;
 import vip.xiaonuo.biz.modular.fixedasset.entity.TFixedAsset;
 import vip.xiaonuo.biz.modular.fixedasset.mapper.TFixedAssetMapper;
 import vip.xiaonuo.biz.modular.fixedasset.param.TFixedAssetAddParam;
@@ -31,6 +28,9 @@ import vip.xiaonuo.biz.modular.fixedasset.param.TFixedAssetEditParam;
 import vip.xiaonuo.biz.modular.fixedasset.param.TFixedAssetIdParam;
 import vip.xiaonuo.biz.modular.fixedasset.param.TFixedAssetPageParam;
 import vip.xiaonuo.biz.modular.fixedasset.service.TFixedAssetService;
+import vip.xiaonuo.common.enums.CommonSortOrderEnum;
+import vip.xiaonuo.common.exception.CommonException;
+import vip.xiaonuo.common.page.CommonPageRequest;
 
 import java.util.List;
 

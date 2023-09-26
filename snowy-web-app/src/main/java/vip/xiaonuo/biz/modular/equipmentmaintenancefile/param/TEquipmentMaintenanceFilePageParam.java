@@ -15,8 +15,6 @@ package vip.xiaonuo.biz.modular.equipmentmaintenancefile.param;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
-import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * 设备维保文件查询参数

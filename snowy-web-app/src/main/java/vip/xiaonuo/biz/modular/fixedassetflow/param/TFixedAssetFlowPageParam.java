@@ -15,8 +15,6 @@ package vip.xiaonuo.biz.modular.fixedassetflow.param;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
-import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * 固定资产借还流水查询参数

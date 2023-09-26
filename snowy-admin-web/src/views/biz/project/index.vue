@@ -71,11 +71,12 @@
 				</a-space>
 			</template>
 			<template #bodyCell="{ column, record }">
-				<!-- <template v-if="column.dataIndex === 'projectHeadUsers'">
-					<a-tag v-for="textValue in JSON.parse(record.projectHeadUsers)" :key="textValue" color="green">{{ $TOOL.dictTypeData('GENDER', textValue) }}</a-tag>
-				</template> -->
+				<template v-if="column.dataIndex === 'projectHeadUsers'">
+					<a-tag class="mt-3" v-for="(user, index) in record.projectHeadUserList" color="cyan" :key="index">{{
+						user.name
+					}}</a-tag>
+				</template>
 				<template v-if="column.dataIndex === 'projectUsers'">
-					<!-- <a-tag v-for="textValue in JSON.parse(record.projectUsers)" :key="textValue" color="green">{{ $TOOL.dictTypeData('GENDER', textValue) }}</a-tag> -->
 					<a-tag class="mt-3" v-for="(user, index) in record.projectUserList" color="cyan" :key="index">{{
 						user.name
 					}}</a-tag>
@@ -236,6 +237,4 @@
 			table.value.clearRefreshSelected()
 		})
 	}
-	const projectHeadUsersOptions = tool.dictList('GENDER')
-	const projectUsersOptions = tool.dictList('GENDER')
 </script>

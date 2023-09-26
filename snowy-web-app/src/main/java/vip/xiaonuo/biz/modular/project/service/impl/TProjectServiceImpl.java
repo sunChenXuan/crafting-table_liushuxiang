@@ -81,10 +81,17 @@ public class TProjectServiceImpl extends ServiceImpl<TProjectMapper, TProject> i
             queryWrapper.lambda().orderByAsc(TProject::getPkId);
         }
         final Page<TProject> page = this.page(CommonPageRequest.defaultPage(), queryWrapper);
+        // 填充补充字段
         for (TProject tp : page.getRecords()) {
             SysUserIdListParam sysUserIdListParam = new SysUserIdListParam();
-            sysUserIdListParam.setIdList(JSONArray.parseArray(tp.getProjectUsers(), String.class));
-            tp.setProjectUserList(sysUserService.getUserListByIdList(sysUserIdListParam));
+            if (tp.getProjectUsers() != null && !tp.getProjectUsers().isEmpty()){
+                sysUserIdListParam.setIdList(JSONArray.parseArray(tp.getProjectUsers(), String.class));
+                tp.setProjectUserList(sysUserService.getUserListByIdList(sysUserIdListParam));
+            }
+            if (tp.getProjectHeadUsers() != null && !tp.getProjectHeadUsers().isEmpty()){
+                sysUserIdListParam.setIdList(JSONArray.parseArray(tp.getProjectHeadUsers(), String.class));
+                tp.setProjectHeadUserList(sysUserService.getUserListByIdList(sysUserIdListParam));
+            }
         }
         return page;
     }

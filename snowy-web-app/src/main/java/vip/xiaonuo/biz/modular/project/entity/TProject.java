@@ -123,6 +123,10 @@ public class TProject {
     @ApiModelProperty(value = "修改用户", position = 21)
     private String updatedBy;
 
+    /* ====额外的字段==== */
+    @TableField(exist = false)
+    private List<SysUserMini> projectHeadUserList;
+
     @TableField(exist = false)
     private List<SysUserMini> projectUserList;
 }

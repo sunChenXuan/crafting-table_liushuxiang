@@ -24,8 +24,6 @@
 			</a-form-item>
 			<a-form-item label="职工：" name="projectUsers">
 				<a-checkbox-group v-model:value="formData.projectUsers" placeholder="请选择职工" :options="projectUsersOptions" />
-				
-				<a @click="openRoleUserSelector(record)">授权用户</a>
 			</a-form-item>
 			<a-form-item label="项目沟通：" name="projectCommunication">
 				<a-input v-model:value="formData.projectCommunication" placeholder="请输入项目沟通" allow-clear />
@@ -69,13 +67,6 @@
 			<a-button type="primary" @click="onSubmit" :loading="submitLoading">保存</a-button>
 		</template>
 	</xn-form-container>
-	<user-selector-plus
-		ref="userselectorPlusRef"
-		:org-tree-api="selectorApiFunction.orgTreeApi"
-		:user-page-api="selectorApiFunction.userPageApi"
-		:checked-user-list-api="selectorApiFunction.checkedUserListApi"
-		@onBack="userCallBack"
-	/>
 </template>
 
 <script setup name="tProjectForm">
@@ -83,8 +74,6 @@
 	import { cloneDeep } from 'lodash-es'
 	import { required } from '@/utils/formRules'
 	import tProjectApi from '@/api/biz/tProjectApi'
-	import roleApi from '@/api/sys/roleApi'
-	import userCenterApi from '@/api/sys/userCenterApi'
 	// 抽屉状态
 	const visible = ref(false)
 	const emit = defineEmits({ successful: null })
@@ -94,57 +83,6 @@
 	const submitLoading = ref(false)
 	const projectHeadUsersOptions = ref([])
 	const projectUsersOptions = ref([])
-	const userselectorPlusRef = ref()
-	// 记录数据
-	const recordCacheData = ref({})
-	// 临时数据
-	const record = {id : 100}
-
-
-	// 打开用户选择器
-	const openRoleUserSelector = (record) => {
-		// 打开人员选择器的时候，缓存一个记录数据
-		recordCacheData.value = record
-		// 查询接口，查到这个角色是多少个用户都有它
-		const param = {
-			id: record.id
-		}
-		roleApi.roleOwnUser(param).then((data) => {
-			userselectorPlusRef.value.showUserPlusModal(data)
-		})
-	}
-	// 人员选择器回调
-	const userCallBack = (value) => {
-		console.log("我点了确定")
-		// const param = {
-		// 	id: recordCacheData.value.id,
-		// 	grantInfoList: value.map((item) => {
-		// 		return item.id
-		// 	})
-		// }
-		// roleApi.roleGrantUser(param).then(() => {})
-	}
-	// 传递设计器需要的API
-	const selectorApiFunction = {
-		orgTreeApi: (param) => {
-			return roleApi.roleOrgTreeSelector(param).then((data) => {
-				return Promise.resolve(data)
-			})
-		},
-		userPageApi: (param) => {
-			return roleApi.roleUserSelector(param).then((data) => {
-				return Promise.resolve(data)
-			})
-		},
-		checkedUserListApi: (param) => {
-			return userCenterApi.userCenterGetUserListByIdList({
-				idList: ["1704983452810579969"]
-			}).then((data) => {
-				return Promise.resolve(data)
-			})
-		}
-	}
-
 
 	// 打开抽屉
 	const onOpen = (record) => {

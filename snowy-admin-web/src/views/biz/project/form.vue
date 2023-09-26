@@ -20,10 +20,15 @@
 				<a-input v-model:value="formData.projectPhone" placeholder="请输入联系电话" allow-clear />
 			</a-form-item>
 			<a-form-item label="负责人：" name="projectHeadUsers">
-				<a-checkbox-group v-model:value="formData.projectHeadUsers" placeholder="请选择负责人" :options="projectHeadUsersOptions" />
+				<!-- <a-checkbox-group v-model:value="formData.projectHeadUsers" placeholder="请选择负责人" :options="projectHeadUsersOptions" /> -->
 			</a-form-item>
 			<a-form-item label="职工：" name="projectUsers">
-				<a-checkbox-group v-model:value="formData.projectUsers" placeholder="请选择职工" :options="projectUsersOptions" />
+				<!-- <a-checkbox-group v-model:value="formData.projectUsers" placeholder="请选择职工" :options="projectUsersOptions" /> -->
+				<a-button type="primary" @click="openUserSelector">选择人员</a-button>
+				<br />
+				<a-tag class="mt-3" v-for="(user, index) in userList" color="cyan" :key="index">{{
+					user.name
+				}}</a-tag>
 			</a-form-item>
 			<a-form-item label="项目沟通：" name="projectCommunication">
 				<a-input v-model:value="formData.projectCommunication" placeholder="请输入项目沟通" allow-clear />
@@ -67,13 +72,21 @@
 			<a-button type="primary" @click="onSubmit" :loading="submitLoading">保存</a-button>
 		</template>
 	</xn-form-container>
+	<user-selector-plus
+		ref="userSelectorPlusRef"
+		:org-tree-api="selectorApiFunction.orgTreeApi"
+		:user-page-api="selectorApiFunction.userPageApi"
+		:checked-user-list-api="selectorApiFunction.checkedUserListApi"
+		@onBack="userBack"
+	/>
 </template>
 
 <script setup name="tProjectForm">
-	import tool from '@/utils/tool'
 	import { cloneDeep } from 'lodash-es'
 	import { required } from '@/utils/formRules'
 	import tProjectApi from '@/api/biz/tProjectApi'
+	import userApi from '@/api/sys/userApi'
+	import userCenterApi from '@/api/sys/userCenterApi'
 	// 抽屉状态
 	const visible = ref(false)
 	const emit = defineEmits({ successful: null })
@@ -81,20 +94,18 @@
 	// 表单数据
 	const formData = ref({})
 	const submitLoading = ref(false)
-	const projectHeadUsersOptions = ref([])
-	const projectUsersOptions = ref([])
+	// 这个没想明白
+	let userList = ref([])
+	const userSelectorPlusRef = ref()
 
 	// 打开抽屉
 	const onOpen = (record) => {
 		visible.value = true
 		if (record) {
 			let recordData = cloneDeep(record)
-			recordData.projectHeadUsers = JSON.parse(recordData.projectHeadUsers)
-			recordData.projectUsers = JSON.parse(recordData.projectUsers)
 			formData.value = Object.assign({}, recordData)
+			userList.value = formData.value.projectUserList
 		}
-		projectHeadUsersOptions.value = tool.dictList('GENDER')
-		projectUsersOptions.value = tool.dictList('GENDER')
 	}
 	// 关闭抽屉
 	const onClose = () => {
@@ -120,9 +131,50 @@
 		projectDelivery: [required('请输入项目收获')],
 		existingProblems: [required('请输入存在问题')],
 	}
+
+	// 打开人员选择器
+	const openUserSelector = () => {
+		userSelectorPlusRef.value.showUserPlusModal(formData.value.projectUsers)
+	}
+	// 人员选择回调
+	const userBack = (value) => {
+		userList.value = value
+	}
+	// 添加接收人
+	const convFormData = () => {
+		let ids = []
+		userList.value.forEach((item) => {
+			ids.push(item.id)
+		})
+		formData.value.projectUsers = ids
+	}
+	// 传递设计器需要的API
+	const selectorApiFunction = {
+		orgTreeApi: (param) => {
+			return userApi.userOrgTreeSelector(param).then((data) => {
+				return Promise.resolve(data)
+			})
+		},
+		userPageApi: (param) => {
+			return userApi.userSelector(param).then((data) => {
+				return Promise.resolve(data)
+			})
+		},
+		checkedUserListApi: (param) => {
+			return userCenterApi.userCenterGetUserListByIdList(param).then((data) => {
+				return Promise.resolve(data)
+			})
+		}
+	}
+
 	// 验证并提交数据
 	const onSubmit = () => {
 		formRef.value.validate().then(() => {
+			if (userList.value.length < 1) {
+				message.warning('未选择接收消息人员')
+				return
+			}
+			convFormData()
 			submitLoading.value = true
 			const formDataParam = cloneDeep(formData.value)
 			formDataParam.projectHeadUsers = JSON.stringify(formDataParam.projectHeadUsers)

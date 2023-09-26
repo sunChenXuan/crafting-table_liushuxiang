@@ -460,7 +460,7 @@ public interface SysUserService extends IService<SysUser> {
      * @author xuyuxiang
      * @date 2023/6/25 11:03
      **/
-    List<SysUser> getUserListByIdList(SysUserIdListParam sysUserIdListParam);
+    List<SysUserMini> getUserListByIdList(SysUserIdListParam sysUserIdListParam);
 
     /**
      * 根据id集合获取职位集合

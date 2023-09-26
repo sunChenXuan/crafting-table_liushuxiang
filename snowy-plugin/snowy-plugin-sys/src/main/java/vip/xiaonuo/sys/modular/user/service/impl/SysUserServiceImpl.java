@@ -1541,12 +1541,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public List<SysUser> getUserListByIdList(SysUserIdListParam sysUserIdListParam) {
+    public List<SysUserMini> getUserListByIdList(SysUserIdListParam sysUserIdListParam) {
         LambdaQueryWrapper<SysUser> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         // 只查询部分字段
         lambdaQueryWrapper.select(SysUser::getId, SysUser::getOrgId, SysUser::getAccount, SysUser::getName, SysUser::getSortCode)
                 .in(SysUser::getId, sysUserIdListParam.getIdList()).orderByAsc(SysUser::getSortCode);
-        return this.list(lambdaQueryWrapper);
+        return BeanUtil.copyToList(this.list(lambdaQueryWrapper), SysUserMini.class);
     }
 
     @Override

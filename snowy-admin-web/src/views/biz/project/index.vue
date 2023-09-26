@@ -73,10 +73,13 @@
 			<template #bodyCell="{ column, record }">
 				<!-- <template v-if="column.dataIndex === 'projectHeadUsers'">
 					<a-tag v-for="textValue in JSON.parse(record.projectHeadUsers)" :key="textValue" color="green">{{ $TOOL.dictTypeData('GENDER', textValue) }}</a-tag>
-				</template>
-				<template v-if="column.dataIndex === 'projectUsers'">
-					<a-tag v-for="textValue in JSON.parse(record.projectUsers)" :key="textValue" color="green">{{ $TOOL.dictTypeData('GENDER', textValue) }}</a-tag>
 				</template> -->
+				<template v-if="column.dataIndex === 'projectUsers'">
+					<!-- <a-tag v-for="textValue in JSON.parse(record.projectUsers)" :key="textValue" color="green">{{ $TOOL.dictTypeData('GENDER', textValue) }}</a-tag> -->
+					<a-tag class="mt-3" v-for="(user, index) in record.projectUserList" color="cyan" :key="index">{{
+						user.name
+					}}</a-tag>
+				</template>
 				<template v-if="column.dataIndex === 'action'">
 					<a-space>
 						<a @click="formRef.onOpen(record)" v-if="hasPerm('tProjectEdit')">编辑</a>

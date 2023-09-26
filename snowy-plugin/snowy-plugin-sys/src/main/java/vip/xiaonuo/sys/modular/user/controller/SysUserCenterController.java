@@ -30,10 +30,7 @@ import vip.xiaonuo.sys.modular.position.entity.SysPosition;
 import vip.xiaonuo.sys.modular.role.entity.SysRole;
 import vip.xiaonuo.sys.modular.user.entity.SysUser;
 import vip.xiaonuo.sys.modular.user.param.*;
-import vip.xiaonuo.sys.modular.user.result.SysUserMessageDetailResult;
-import vip.xiaonuo.sys.modular.user.result.SysUserMessageResult;
-import vip.xiaonuo.sys.modular.user.result.SysUserPicValidCodeResult;
-import vip.xiaonuo.sys.modular.user.result.SysUserPositionResult;
+import vip.xiaonuo.sys.modular.user.result.*;
 import vip.xiaonuo.sys.modular.user.service.SysUserService;
 
 import javax.annotation.Resource;
@@ -321,7 +318,7 @@ public class SysUserCenterController {
     @ApiOperationSupport(order = 19)
     @ApiOperation("根据id集合获取用户集合")
     @PostMapping("/sys/userCenter/getUserListByIdList")
-    public CommonResult<List<SysUser>> getUserListByIdList(@RequestBody @Valid SysUserIdListParam sysUserIdListParam) {
+    public CommonResult<List<SysUserMini>> getUserListByIdList(@RequestBody @Valid SysUserIdListParam sysUserIdListParam) {
         return CommonResult.data(sysUserService.getUserListByIdList(sysUserIdListParam));
     }
 

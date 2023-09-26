@@ -13,11 +13,14 @@
 package vip.xiaonuo.biz.modular.project.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonRawValue;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
-import java.math.BigDecimal;
+import vip.xiaonuo.sys.modular.user.result.SysUserMini;
+
 import java.util.Date;
+import java.util.List;
 
 /**
  * 项目实体
@@ -53,10 +56,12 @@ public class TProject {
 
     /** 负责人 */
     @ApiModelProperty(value = "负责人", position = 6)
+    @JsonRawValue
     private String projectHeadUsers;
 
     /** 职工 */
     @ApiModelProperty(value = "职工", position = 7)
+    @JsonRawValue
     private String projectUsers;
 
     /** 项目沟通 */
@@ -117,4 +122,7 @@ public class TProject {
     /** 修改用户 */
     @ApiModelProperty(value = "修改用户", position = 21)
     private String updatedBy;
+
+    @TableField(exist = false)
+    private List<SysUserMini> projectUserList;
 }

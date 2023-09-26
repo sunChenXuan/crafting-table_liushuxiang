@@ -26,7 +26,7 @@
 				<!-- <a-checkbox-group v-model:value="formData.projectUsers" placeholder="请选择职工" :options="projectUsersOptions" /> -->
 				<a-button type="primary" @click="openUserSelector">选择人员</a-button>
 				<br />
-				<a-tag class="mt-3" v-for="(user, index) in userList" color="cyan" :key="index">{{
+				<a-tag class="mt-3" v-for="(user, index) in formData.projectUserList" color="cyan" :key="index">{{
 					user.name
 				}}</a-tag>
 			</a-form-item>
@@ -95,7 +95,6 @@
 	const formData = ref({})
 	const submitLoading = ref(false)
 	// 这个没想明白
-	let userList = ref([])
 	const userSelectorPlusRef = ref()
 
 	// 打开抽屉
@@ -104,7 +103,6 @@
 		if (record) {
 			let recordData = cloneDeep(record)
 			formData.value = Object.assign({}, recordData)
-			userList.value = formData.value.projectUserList
 		}
 	}
 	// 关闭抽屉
@@ -138,12 +136,12 @@
 	}
 	// 人员选择回调
 	const userBack = (value) => {
-		userList.value = value
+		formData.value.projectUserList = value
 	}
 	// 添加接收人
 	const convFormData = () => {
 		let ids = []
-		userList.value.forEach((item) => {
+		formData.value.projectUserList.forEach((item) => {
 			ids.push(item.id)
 		})
 		formData.value.projectUsers = ids
@@ -170,7 +168,7 @@
 	// 验证并提交数据
 	const onSubmit = () => {
 		formRef.value.validate().then(() => {
-			if (userList.value.length < 1) {
+			if (formData.value.projectUserList.length < 1) {
 				message.warning('未选择接收消息人员')
 				return
 			}

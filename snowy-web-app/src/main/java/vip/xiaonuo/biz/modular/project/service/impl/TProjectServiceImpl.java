@@ -16,6 +16,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollStreamUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -31,7 +32,10 @@ import vip.xiaonuo.biz.modular.project.param.TProjectEditParam;
 import vip.xiaonuo.biz.modular.project.param.TProjectIdParam;
 import vip.xiaonuo.biz.modular.project.param.TProjectPageParam;
 import vip.xiaonuo.biz.modular.project.service.TProjectService;
+import vip.xiaonuo.sys.modular.user.param.SysUserIdListParam;
+import vip.xiaonuo.sys.modular.user.service.SysUserService;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -42,6 +46,8 @@ import java.util.List;
  **/
 @Service
 public class TProjectServiceImpl extends ServiceImpl<TProjectMapper, TProject> implements TProjectService {
+    @Resource
+    private SysUserService sysUserService;
 
     @Override
     public Page<TProject> page(TProjectPageParam tProjectPageParam) {
@@ -74,7 +80,13 @@ public class TProjectServiceImpl extends ServiceImpl<TProjectMapper, TProject> i
         } else {
             queryWrapper.lambda().orderByAsc(TProject::getPkId);
         }
-        return this.page(CommonPageRequest.defaultPage(), queryWrapper);
+        final Page<TProject> page = this.page(CommonPageRequest.defaultPage(), queryWrapper);
+        for (TProject tp : page.getRecords()) {
+            SysUserIdListParam sysUserIdListParam = new SysUserIdListParam();
+            sysUserIdListParam.setIdList(JSONArray.parseArray(tp.getProjectUsers(), String.class));
+            tp.setProjectUserList(sysUserService.getUserListByIdList(sysUserIdListParam));
+        }
+        return page;
     }
 
     @Transactional(rollbackFor = Exception.class)

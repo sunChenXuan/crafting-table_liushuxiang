@@ -60,7 +60,7 @@
 			<a-form-item label="存在问题：" name="existingProblems">
 				<a-input v-model:value="formData.existingProblems" placeholder="请输入存在问题" allow-clear />
 			</a-form-item>
-			<a-form-item label="创建用户：" name="createdBy">
+			<!-- <a-form-item label="创建用户：" name="createdBy">
 				<a-input v-model:value="formData.createdBy" placeholder="请输入创建用户" allow-clear />
 			</a-form-item>
 			<a-form-item label="修改时间：" name="updatedTime">
@@ -68,7 +68,7 @@
 			</a-form-item>
 			<a-form-item label="修改用户：" name="updatedBy">
 				<a-input v-model:value="formData.updatedBy" placeholder="请输入修改用户" allow-clear />
-			</a-form-item>
+			</a-form-item> -->
 		</a-form>
 		<template #footer>
 			<a-button style="margin-right: 8px" @click="onClose">关闭</a-button>

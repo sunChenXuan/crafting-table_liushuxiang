@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import vip.xiaonuo.biz.modular.project.service.TProjectService;
 import vip.xiaonuo.biz.modular.projectfile.entity.TProjectFile;
 import vip.xiaonuo.biz.modular.projectfile.mapper.TProjectFileMapper;
 import vip.xiaonuo.biz.modular.projectfile.param.TProjectFileAddParam;
@@ -47,6 +48,8 @@ public class TProjectFileServiceImpl extends ServiceImpl<TProjectFileMapper, TPr
 
     @Resource
     private DevFileService devFileService;
+    @Resource
+    private TProjectService tProjectService;
 
     @Override
     public Page<TProjectFile> page(TProjectFilePageParam tProjectFilePageParam) {
@@ -70,6 +73,7 @@ public class TProjectFileServiceImpl extends ServiceImpl<TProjectFileMapper, TPr
         final Page<TProjectFile> page = this.page(CommonPageRequest.defaultPage(), queryWrapper);
         for (TProjectFile pf : page.getRecords()) {
             pf.setDevFile(devFileService.queryEntity(pf.getUkFileId()));
+            pf.setProjectName(tProjectService.queryEntity(pf.getIdxProjectId()).getProjectName());
         }
         return page;
     }

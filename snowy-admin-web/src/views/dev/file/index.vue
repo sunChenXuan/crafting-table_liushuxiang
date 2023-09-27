@@ -51,32 +51,32 @@
 						:src="record.thumbnail"
 						class="record-img"
 						v-if="
-							record.suffix === 'png' ||
-							record.suffix === 'jpg' ||
-							record.suffix === 'jpng' ||
-							record.suffix === 'ico' ||
-							record.suffix === 'gif'
+							record.suffix.toLowerCase() === 'png' ||
+							record.suffix.toLowerCase() === 'jpg' ||
+							record.suffix.toLowerCase() === 'jpng' ||
+							record.suffix.toLowerCase() === 'ico' ||
+							record.suffix.toLowerCase() === 'gif'
 						"
 					/>
 					<img
 						src="/src/assets/images/fileImg/docx.png"
 						class="record-img"
-						v-else-if="record.suffix === 'doc' || record.suffix === 'docx'"
+						v-else-if="record.suffix.toLowerCase() === 'doc' || record.suffix.toLowerCase() === 'docx'"
 					/>
 					<img
 						src="/src/assets/images/fileImg/xlsx.png"
 						class="record-img"
-						v-else-if="record.suffix === 'xls' || record.suffix === 'xlsx'"
+						v-else-if="record.suffix.toLowerCase() === 'xls' || record.suffix.toLowerCase() === 'xlsx'"
 					/>
-					<img src="/src/assets/images/fileImg/zip.png" class="record-img" v-else-if="record.suffix === 'zip'" />
-					<img src="/src/assets/images/fileImg/rar.png" class="record-img" v-else-if="record.suffix === 'rar'" />
+					<img src="/src/assets/images/fileImg/zip.png" class="record-img" v-else-if="record.suffix.toLowerCase() === 'zip'" />
+					<img src="/src/assets/images/fileImg/rar.png" class="record-img" v-else-if="record.suffix.toLowerCase() === 'rar'" />
 					<img
 						src="/src/assets/images/fileImg/ppt.png"
 						class="record-img"
-						v-else-if="record.suffix === 'ppt' || record.suffix === 'pptx'"
+						v-else-if="record.suffix.toLowerCase() === 'ppt' || record.suffix.toLowerCase() === 'pptx'"
 					/>
-					<img src="/src/assets/images/fileImg/txt.png" class="record-img" v-else-if="record.suffix === 'txt'" />
-					<img src="/src/assets/images/fileImg/html.png" class="record-img" v-else-if="record.suffix === 'html'" />
+					<img src="/src/assets/images/fileImg/txt.png" class="record-img" v-else-if="record.suffix.toLowerCase() === 'txt'" />
+					<img src="/src/assets/images/fileImg/html.png" class="record-img" v-else-if="record.suffix.toLowerCase() === 'html'" />
 					<img src="/src/assets/images/fileImg/file.png" class="record-img" v-else />
 				</template>
 				<template v-if="column.dataIndex === 'engine'">

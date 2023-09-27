@@ -33,9 +33,10 @@
 			:row-key="(record) => record.pkId" :tool-config="toolConfig" :row-selection="options.rowSelection">
 			<template #operator class="table-operator">
 				<a-space>
-					<a-button type="primary" @click="formRef.onOpen()" v-if="hasPerm('tProjectFileAdd')">
+					<a-button type="primary" @click="formRef.onOpen(route.query.pkId)"
+						v-if="hasPerm('tProjectFileAdd') && route.query.pkId">
 						<template #icon><plus-outlined /></template>
-						新增
+						上传文件
 					</a-button>
 					<xn-batch-delete v-if="hasPerm('tProjectFileBatchDelete')" :selectedRowKeys="selectedRowKeys"
 						@batchDelete="deleteBatchTProjectFile" />
@@ -45,10 +46,44 @@
 				<template v-if="column.dataIndex === 'projectFileType'">
 					{{ $TOOL.dictTypeData('PROJECT_FILE_TYPE', record.projectFileType) }}
 				</template>
+				<template v-if="column.dataIndex === 'devFileName'">
+					{{ record.devFile.name }}
+				</template>
+
+
+				<template v-if="column.dataIndex === 'devFileThumbnail'">
+					<img :src="record.devFile.thumbnail" class="record-img" v-if="record.devFile.suffix.toLowerCase() === 'png' ||
+						record.devFile.suffix.toLowerCase() === 'jpg' ||
+						record.devFile.suffix.toLowerCase() === 'jpng' ||
+						record.devFile.suffix.toLowerCase() === 'ico' ||
+						record.devFile.suffix.toLowerCase() === 'gif'
+						" />
+					<img src="/src/assets/images/fileImg/docx.png" class="record-img"
+						v-else-if="record.devFile.suffix.toLowerCase() === 'doc' || record.devFile.suffix.toLowerCase() === 'docx'" />
+					<img src="/src/assets/images/fileImg/xlsx.png" class="record-img"
+						v-else-if="record.devFile.suffix.toLowerCase() === 'xls' || record.devFile.suffix.toLowerCase() === 'xlsx'" />
+					<img src="/src/assets/images/fileImg/zip.png" class="record-img"
+						v-else-if="record.devFile.suffix.toLowerCase() === 'zip'" />
+					<img src="/src/assets/images/fileImg/rar.png" class="record-img"
+						v-else-if="record.devFile.suffix.toLowerCase() === 'rar'" />
+					<img src="/src/assets/images/fileImg/ppt.png" class="record-img"
+						v-else-if="record.devFile.suffix.toLowerCase() === 'ppt' || record.devFile.suffix.toLowerCase() === 'pptx'" />
+					<img src="/src/assets/images/fileImg/txt.png" class="record-img" v-else-if="record.suffix === 'txt'" />
+					<img src="/src/assets/images/fileImg/html.png" class="record-img"
+						v-else-if="record.devFile.suffix.toLowerCase() === 'html'" />
+					<img src="/src/assets/images/fileImg/file.png" class="record-img" v-else />
+				</template>
+
+				<template v-if="column.dataIndex === 'devFileSizeInfo'">
+					{{ record.devFile.sizeInfo }}
+				</template>
+				<template v-if="column.dataIndex === 'devFileSuffix'">
+					{{ record.devFile.suffix }}
+				</template>
 				<template v-if="column.dataIndex === 'action'">
 					<a-space>
-						<a @click="formRef.onOpen(record)" v-if="hasPerm('tProjectFileEdit')">编辑</a>
-						<a-divider type="vertical" v-if="hasPerm(['tProjectFileEdit', 'tProjectFileDelete'], 'and')" />
+						<a @click="formRef.onOpen(route.query, record)" v-if="hasPerm('tProjectFileEdit')">修改</a>
+						<a :href="record.devFile.downloadPath" target="_blank">下载</a>
 						<a-popconfirm title="确定要删除吗？" @confirm="deleteTProjectFile(record)">
 							<a-button type="link" danger size="small" v-if="hasPerm('tProjectFileDelete')">删除</a-button>
 						</a-popconfirm>
@@ -64,7 +99,7 @@
 import tool from '@/utils/tool'
 import Form from './form.vue'
 import tProjectFileApi from '@/api/biz/tProjectFileApi'
-import { useRoute } from 'vue-router'
+import { useRoute, onBeforeRouteUpdate } from 'vue-router'
 let searchFormState = reactive({})
 const searchFormRef = ref()
 const table = ref()
@@ -72,28 +107,34 @@ const formRef = ref()
 const toolConfig = { refresh: true, height: true, columnSetting: true, striped: false }
 const columns = [
 	{
-		title: '项目id',
-		dataIndex: 'idxProjectId'
-	},
-	{
-		title: '文件id',
-		dataIndex: 'ukFileId'
+		title: '项目名称',
+		dataIndex: 'projectName'
 	},
 	{
 		title: '文档类型',
 		dataIndex: 'projectFileType'
 	},
 	{
-		title: '创建用户',
-		dataIndex: 'createdBy'
+		title: '文件名称',
+		dataIndex: 'devFileName',
+		ellipsis: true,
+		width: '280px'
 	},
 	{
-		title: '修改时间',
-		dataIndex: 'updatedTime'
+		title: '缩略图',
+		dataIndex: 'devFileThumbnail',
+		ellipsis: true,
+		width: '80px'
 	},
 	{
-		title: '修改用户',
-		dataIndex: 'updatedBy'
+		title: '文件大小',
+		dataIndex: 'devFileSizeInfo',
+		ellipsis: true
+	},
+	{
+		title: '文件后缀',
+		dataIndex: 'devFileSuffix',
+		ellipsis: true
 	},
 ]
 // 操作栏通过权限判断是否显示
@@ -155,10 +196,12 @@ const projectFileTypeOptions = tool.dictList('PROJECT_FILE_TYPE')
 
 // 获取路由传参
 const route = useRoute()
-const pkId = route.query.pkId
-const projectName = route.query.projectName
-onMounted(() => {
-	// // 这里可以使用 pkId 和 projectName 变量  
-	// console.log(route.query)
-})
 </script>
+
+
+<style scoped>
+.record-img {
+	width: 40px;
+	height: 40px;
+}
+</style>

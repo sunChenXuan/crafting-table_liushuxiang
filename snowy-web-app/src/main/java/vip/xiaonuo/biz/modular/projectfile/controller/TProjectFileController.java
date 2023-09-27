@@ -13,16 +13,16 @@
 package vip.xiaonuo.biz.modular.projectfile.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.dev33.satoken.stp.StpUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import vip.xiaonuo.biz.modular.projectfile.entity.TProjectFile;
 import vip.xiaonuo.biz.modular.projectfile.param.TProjectFileAddParam;
 import vip.xiaonuo.biz.modular.projectfile.param.TProjectFileEditParam;
@@ -32,10 +32,13 @@ import vip.xiaonuo.biz.modular.projectfile.service.TProjectFileService;
 import vip.xiaonuo.common.annotation.CommonLog;
 import vip.xiaonuo.common.pojo.CommonResult;
 import vip.xiaonuo.common.pojo.CommonValidList;
+import vip.xiaonuo.dev.modular.file.enums.DevFileEngineTypeEnum;
+import vip.xiaonuo.dev.modular.file.service.DevFileService;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import javax.websocket.server.PathParam;
 
 /**
  * 项目文件控制器
@@ -51,6 +54,9 @@ public class TProjectFileController {
 
     @Resource
     private TProjectFileService tProjectFileService;
+
+    @Resource
+    private DevFileService devFileService;
 
     /**
      * 获取项目文件分页
@@ -77,7 +83,13 @@ public class TProjectFileController {
     @CommonLog("添加项目文件")
     @SaCheckPermission("/biz/projectfile/add")
     @PostMapping("/biz/projectfile/add")
-    public CommonResult<String> add(@RequestBody @Valid TProjectFileAddParam tProjectFileAddParam) {
+    public CommonResult<String> add(@RequestPart("file") MultipartFile file, @RequestPart("data") String string) {
+        // 从json获取数据
+        final JSONObject jsonObject = JSONObject.parseObject(string);
+        TProjectFileAddParam tProjectFileAddParam = new TProjectFileAddParam();
+        tProjectFileAddParam.setIdxProjectId(jsonObject.getString("idxProjectId"));
+        tProjectFileAddParam.setProjectFileType(jsonObject.getString("projectFileType"));
+        tProjectFileAddParam.setUkFileId(devFileService.uploadReturnId(DevFileEngineTypeEnum.LOCAL.getValue(), file));
         tProjectFileService.add(tProjectFileAddParam);
         return CommonResult.ok();
     }
@@ -93,7 +105,14 @@ public class TProjectFileController {
     @CommonLog("编辑项目文件")
     @SaCheckPermission("/biz/projectfile/edit")
     @PostMapping("/biz/projectfile/edit")
-    public CommonResult<String> edit(@RequestBody @Valid TProjectFileEditParam tProjectFileEditParam) {
+    public CommonResult<String> edit(@RequestPart("file") MultipartFile file, @RequestPart("data") String string) {
+        // 从json获取数据
+        final JSONObject jsonObject = JSONObject.parseObject(string);
+        TProjectFileEditParam tProjectFileEditParam = new TProjectFileEditParam();
+        tProjectFileEditParam.setPkId(jsonObject.getString("pkId"));
+        tProjectFileEditParam.setIdxProjectId(jsonObject.getString("idxProjectId"));
+        tProjectFileEditParam.setProjectFileType(jsonObject.getString("projectFileType"));
+        tProjectFileEditParam.setUkFileId(devFileService.uploadReturnId(DevFileEngineTypeEnum.LOCAL.getValue(), file));
         tProjectFileService.edit(tProjectFileEditParam);
         return CommonResult.ok();
     }

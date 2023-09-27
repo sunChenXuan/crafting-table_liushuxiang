@@ -16,6 +16,7 @@ import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import vip.xiaonuo.biz.modular.project.entity.TProject;
 import vip.xiaonuo.dev.modular.file.entity.DevFile;
 
 import java.util.Date;
@@ -74,4 +75,6 @@ public class TProjectFile {
     /* ====额外的字段==== */
     @TableField(exist = false)
     private DevFile devFile;
+    @TableField(exist = false)
+    private String projectName;
 }

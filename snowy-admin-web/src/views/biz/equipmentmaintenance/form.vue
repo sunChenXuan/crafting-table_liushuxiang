@@ -1,14 +1,10 @@
 <template>
-	<xn-form-container
-		:title="formData.pkId ? '编辑设备维保' : '增加设备维保'"
-		:width="700"
-		:visible="visible"
-		:destroy-on-close="true"
-		@close="onClose"
-	>
+	<xn-form-container :title="formData.pkId ? '编辑设备维保' : '增加设备维保'" :width="700" :visible="visible" :destroy-on-close="true"
+		@close="onClose">
 		<a-form ref="formRef" :model="formData" :rules="formRules" layout="vertical">
-			<a-form-item label="项目id：" name="idxProjectId">
-				<a-input v-model:value="formData.idxProjectId" placeholder="请输入项目id" allow-clear />
+			<a-form-item label="项目名称：" name="projectName">
+				<a-input v-if="formData.projectName" disabled v-model:value="formData.projectName" placeholder="请在项目管理选择项目" allow-clear />
+				<a-input v-else="projectName" disabled v-model:value="projectName" placeholder="请在项目管理选择项目" allow-clear />
 			</a-form-item>
 			<a-form-item label="设备名称：" name="equipmentName">
 				<a-input v-model:value="formData.equipmentName" placeholder="请输入设备名称" allow-clear />
@@ -17,20 +13,21 @@
 				<a-select v-model:value="formData.equipmentType" placeholder="请选择设备类型" :options="equipmentTypeOptions" />
 			</a-form-item>
 			<a-form-item label="设备厂家：" name="equipmentManufacturer">
-				<a-select v-model:value="formData.equipmentManufacturer" placeholder="请选择设备厂家" :options="equipmentManufacturerOptions" />
+				<a-select v-model:value="formData.equipmentManufacturer" placeholder="请选择设备厂家"
+					:options="equipmentManufacturerOptions" />
 			</a-form-item>
 			<a-form-item label="序列号：" name="serialNumber">
 				<a-input v-model:value="formData.serialNumber" placeholder="请输入序列号" allow-clear />
 			</a-form-item>
 			<a-form-item label="授权开始时间：" name="authorizationStartTime">
-				<a-date-picker v-model:value="formData.authorizationStartTime" value-format="YYYY-MM-DD HH:mm:ss" show-time placeholder="请选择授权开始时间" style="width: 100%" />
+				<a-date-picker v-model:value="formData.authorizationStartTime" value-format="YYYY-MM-DD HH:mm:ss" show-time
+					placeholder="请选择授权开始时间" style="width: 100%" />
 			</a-form-item>
 			<a-form-item label="授权结束时间：" name="authorizationEndTime">
-				<a-date-picker v-model:value="formData.authorizationEndTime" value-format="YYYY-MM-DD HH:mm:ss" show-time placeholder="请选择授权结束时间" style="width: 100%" />
+				<a-date-picker v-model:value="formData.authorizationEndTime" value-format="YYYY-MM-DD HH:mm:ss" show-time
+					placeholder="请选择授权结束时间" style="width: 100%" />
 			</a-form-item>
-			<a-form-item label="系统设备提醒人：" name="equipmentSysUsers">
-				<a-button type="primary" @click="openSysUserSelector">系统提醒人</a-button>
-				<br />
+			<a-form-item label="系统设备提醒人：" name="equipmentSysUsers" v-if="formData.pkId">
 				<a-tag class="mt-3" v-for="(user, index) in formData.equipmentSysUserList" color="cyan" :key="index">{{
 					user.name
 				}}</a-tag>
@@ -42,149 +39,137 @@
 					user.name
 				}}</a-tag>
 			</a-form-item>
-			<a-form-item label="创建用户：" name="createdBy">
-				<a-input v-model:value="formData.createdBy" placeholder="请输入创建用户" allow-clear />
-			</a-form-item>
-			<a-form-item label="修改时间：" name="updatedTime">
-				<a-date-picker v-model:value="formData.updatedTime" value-format="YYYY-MM-DD HH:mm:ss" show-time placeholder="请选择修改时间" style="width: 100%" />
-			</a-form-item>
-			<a-form-item label="修改用户：" name="updatedBy">
-				<a-input v-model:value="formData.updatedBy" placeholder="请输入修改用户" allow-clear />
-			</a-form-item>
 		</a-form>
 		<template #footer>
 			<a-button style="margin-right: 8px" @click="onClose">关闭</a-button>
 			<a-button type="primary" @click="onSubmit" :loading="submitLoading">保存</a-button>
 		</template>
 	</xn-form-container>
-	<user-selector-plus
-		ref="userSelectorPlusRef"
-		:org-tree-api="selectorApiFunction.orgTreeApi"
-		:user-page-api="selectorApiFunction.userPageApi"
-		:checked-user-list-api="selectorApiFunction.checkedUserListApi"
-		@onBack="userBack"
-	/>
+	<user-selector-plus ref="userSelectorPlusRef" :org-tree-api="selectorApiFunction.orgTreeApi"
+		:user-page-api="selectorApiFunction.userPageApi" :checked-user-list-api="selectorApiFunction.checkedUserListApi"
+		@onBack="userBack" />
 </template>
 
 <script setup name="tEquipmentMaintenanceForm">
-	import tool from '@/utils/tool'
-	import { cloneDeep } from 'lodash-es'
-	import tEquipmentMaintenanceApi from '@/api/biz/tEquipmentMaintenanceApi'
-	import userApi from '@/api/sys/userApi'
-	import userCenterApi from '@/api/sys/userCenterApi'
-	// 抽屉状态
-	const visible = ref(false)
-	const emit = defineEmits({ successful: null })
-	const formRef = ref()
-	// 表单数据
-	const formData = ref({})
-	const submitLoading = ref(false)
-	const equipmentTypeOptions = ref([])
-	const equipmentManufacturerOptions = ref([])
-	// 回显需要
-	const userSelectorPlusRef = ref()
-	const ifSys = ref(false)
+import tool from '@/utils/tool'
+import { cloneDeep } from 'lodash-es'
+import tEquipmentMaintenanceApi from '@/api/biz/tEquipmentMaintenanceApi'
+import userApi from '@/api/sys/userApi'
+import userCenterApi from '@/api/sys/userCenterApi'
+// 抽屉状态
+const visible = ref(false)
+const emit = defineEmits({ successful: null })
+const formRef = ref()
+// 表单数据
+const formData = ref({})
+const submitLoading = ref(false)
+const equipmentTypeOptions = ref([])
+const equipmentManufacturerOptions = ref([])
+const projectName = ref([])
+// 回显需要
+const userSelectorPlusRef = ref()
+const ifSys = ref(false)
 
-	// 打开抽屉
-	const onOpen = (record) => {
-		visible.value = true
-		if (record) {
-			let recordData = cloneDeep(record)
-			formData.value = Object.assign({}, recordData)
-		}
-		equipmentTypeOptions.value = tool.dictList('EQUIPMENT_TYPE')
-		equipmentManufacturerOptions.value = tool.dictList('EQUIPMENT_MANUFACTURER')
+// 打开抽屉
+const onOpen = (routePkId, routeProjectName, record) => {
+	// console.log(routePkId, routeProjectName)
+	visible.value = true
+	projectName.value = routeProjectName
+	if (record) {
+		let recordData = cloneDeep(record)
+		formData.value = Object.assign({}, recordData)
 	}
+	formData.value.idxProjectId = routePkId
+	equipmentTypeOptions.value = tool.dictList('EQUIPMENT_TYPE')
+	equipmentManufacturerOptions.value = tool.dictList('EQUIPMENT_MANUFACTURER')
+}
 
 
-	// 打开人员选择器Head
-	const openSysUserSelector = () => {
-		ifSys.value = true
-		userSelectorPlusRef.value.showUserPlusModal(formData.value.equipmentSysUsers)
+// 打开人员选择器Head
+const openSysUserSelector = () => {
+	ifSys.value = true
+	userSelectorPlusRef.value.showUserPlusModal(formData.value.equipmentSysUsers)
+}
+// 打开人员选择器
+const openUserSelector = () => {
+	ifSys.value = false
+	userSelectorPlusRef.value.showUserPlusModal(formData.value.equipmentUsers)
+}
+// 人员选择回调
+const userBack = (value) => {
+	if (ifSys.value) {
+		formData.value.equipmentSysUserList = value
+	} else {
+		formData.value.equipmentUserList = value
 	}
-	// 打开人员选择器
-	const openUserSelector = () => {
-		ifSys.value = false
-		userSelectorPlusRef.value.showUserPlusModal(formData.value.equipmentUsers)
-	}
-	// 人员选择回调
-	const userBack = (value) => {
-		if (ifSys.value) {
-			formData.value.equipmentSysUserList = value
-		} else {
-			formData.value.equipmentUserList = value
-		}
-	}
-	// 添加接收人
-	const convFormData = () => {
-		let headIds = []
-		formData.value.equipmentSysUserList.forEach((item) => {
-			headIds.push(item.id)
-		})
-		formData.value.equipmentSysUsers = headIds
-		let ids = []
-		formData.value.equipmentUserList.forEach((item) => {
-			ids.push(item.id)
-		})
-		formData.value.equipmentUsers = ids
-	}
-	// 传递设计器需要的API
-	const selectorApiFunction = {
-		orgTreeApi: (param) => {
-			return userApi.userOrgTreeSelector(param).then((data) => {
-				return Promise.resolve(data)
-			})
-		},
-		userPageApi: (param) => {
-			return userApi.userSelector(param).then((data) => {
-				return Promise.resolve(data)
-			})
-		},
-		checkedUserListApi: (param) => {
-			return userCenterApi.userCenterGetUserListByIdList(param).then((data) => {
-				return Promise.resolve(data)
-			})
-		}
-	}
-
-	// 关闭抽屉
-	const onClose = () => {
-		formRef.value.resetFields()
-		formData.value = {}
-		visible.value = false
-	}
-	// 默认要校验的
-	const formRules = {
-	}
-	// 验证并提交数据
-	const onSubmit = () => {
-		formRef.value.validate().then(() => {
-			submitLoading.value = true
-			if (formData.value.equipmentUserList.length < 1) {
-				message.warning('未选择负责人')
-				return
-			}
-			if (formData.value.equipmentUserList.length < 1) {
-				message.warning('未选职工')
-				return
-			}
-			convFormData()
-			const formDataParam = cloneDeep(formData.value)
-			formDataParam.equipmentSysUsers = JSON.stringify(formDataParam.equipmentSysUsers)
-			formDataParam.equipmentUsers = JSON.stringify(formDataParam.equipmentUsers)
-			tEquipmentMaintenanceApi
-				.tEquipmentMaintenanceSubmitForm(formDataParam, formDataParam.pkId)
-				.then(() => {
-					onClose()
-					emit('successful')
-				})
-				.finally(() => {
-					submitLoading.value = false
-				})
-		})
-	}
-	// 抛出函数
-	defineExpose({
-		onOpen
+}
+// 添加接收人
+const convFormData = () => {
+	let headIds = []
+	formData.value.equipmentSysUsers = headIds
+	let ids = []
+	formData.value.equipmentUserList.forEach((item) => {
+		ids.push(item.id)
 	})
+	formData.value.equipmentUsers = ids
+}
+// 传递设计器需要的API
+const selectorApiFunction = {
+	orgTreeApi: (param) => {
+		return userApi.userOrgTreeSelector(param).then((data) => {
+			return Promise.resolve(data)
+		})
+	},
+	userPageApi: (param) => {
+		return userApi.userSelector(param).then((data) => {
+			return Promise.resolve(data)
+		})
+	},
+	checkedUserListApi: (param) => {
+		return userCenterApi.userCenterGetUserListByIdList(param).then((data) => {
+			return Promise.resolve(data)
+		})
+	}
+}
+
+// 关闭抽屉
+const onClose = () => {
+	formRef.value.resetFields()
+	formData.value = {}
+	visible.value = false
+}
+// 默认要校验的
+const formRules = {
+}
+// 验证并提交数据
+const onSubmit = () => {
+	formRef.value.validate().then(() => {
+		submitLoading.value = true
+		if (formData.value.equipmentUserList.length < 1) {
+			message.warning('未选择负责人')
+			return
+		}
+		if (formData.value.equipmentUserList.length < 1) {
+			message.warning('未选职工')
+			return
+		}
+		convFormData()
+		const formDataParam = cloneDeep(formData.value)
+		formDataParam.equipmentSysUsers = JSON.stringify(formDataParam.equipmentSysUsers)
+		formDataParam.equipmentUsers = JSON.stringify(formDataParam.equipmentUsers)
+		tEquipmentMaintenanceApi
+			.tEquipmentMaintenanceSubmitForm(formDataParam, formDataParam.pkId)
+			.then(() => {
+				onClose()
+				emit('successful')
+			})
+			.finally(() => {
+				submitLoading.value = false
+			})
+	})
+}
+// 抛出函数
+defineExpose({
+	onOpen
+})
 </script>

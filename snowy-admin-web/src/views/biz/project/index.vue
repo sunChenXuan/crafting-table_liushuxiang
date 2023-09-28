@@ -77,6 +77,7 @@
 							<a-button type="link" danger size="small" v-if="hasPerm('tProjectDelete')">删除</a-button>
 						</a-popconfirm>
 						<a @click="$router.push('projectfile?pkId=' + record.pkId + '&projectName=' + record.projectName)">项目文件</a>
+						<a @click="$router.push('equipmentmaintenance?pkId=' + record.pkId + '&projectName=' + record.projectName)">设备维保</a>
 					</a-space>
 				</template>
 			</template>
@@ -166,7 +167,7 @@ if (hasPerm(['tProjectEdit', 'tProjectDelete'])) {
 		title: '操作',
 		dataIndex: 'action',
 		align: 'center',
-		width: '200px'
+		width: '250px'
 	})
 }
 const selectedRowKeys = ref([])

@@ -164,7 +164,6 @@ const options = {
 }
 const loadData = (parameter) => {
 	searchFormState.idxProjectId = route.query.pkId
-	console.log(route.query.pkId)
 	const searchFormParam = JSON.parse(JSON.stringify(searchFormState))
 	return tProjectFileApi.tProjectFilePage(Object.assign(parameter, searchFormParam)).then((data) => {
 		return data

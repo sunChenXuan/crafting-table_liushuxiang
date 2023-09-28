@@ -30,6 +30,7 @@ import vip.xiaonuo.biz.modular.equipmentmaintenance.param.TEquipmentMaintenanceI
 import vip.xiaonuo.biz.modular.equipmentmaintenance.param.TEquipmentMaintenancePageParam;
 import vip.xiaonuo.biz.modular.equipmentmaintenance.service.TEquipmentMaintenanceService;
 import vip.xiaonuo.biz.modular.project.entity.TProject;
+import vip.xiaonuo.biz.modular.project.service.TProjectService;
 import vip.xiaonuo.common.enums.CommonSortOrderEnum;
 import vip.xiaonuo.common.exception.CommonException;
 import vip.xiaonuo.common.page.CommonPageRequest;
@@ -49,6 +50,8 @@ import java.util.List;
 public class TEquipmentMaintenanceServiceImpl extends ServiceImpl<TEquipmentMaintenanceMapper, TEquipmentMaintenance> implements TEquipmentMaintenanceService {
     @Resource
     private SysUserService sysUserService;
+    @Resource
+    private TProjectService tProjectService;
 
     @Override
     public Page<TEquipmentMaintenance> page(TEquipmentMaintenancePageParam tEquipmentMaintenancePageParam) {
@@ -90,6 +93,9 @@ public class TEquipmentMaintenanceServiceImpl extends ServiceImpl<TEquipmentMain
         final Page<TEquipmentMaintenance> page = this.page(CommonPageRequest.defaultPage(), queryWrapper);
         // 填充补充字段
         for (TEquipmentMaintenance em : page.getRecords()) {
+            final TProject tProject = tProjectService.queryEntity(em.getIdxProjectId());
+            em.setProjectName(tProject.getProjectName());
+            em.setEquipmentSysUsers(tProject.getProjectHeadUsers());
             SysUserIdListParam sysUserIdListParam = new SysUserIdListParam();
             if (em.getEquipmentUsers() != null && !em.getEquipmentUsers().isEmpty()){
                 sysUserIdListParam.setIdList(JSONArray.parseArray(em.getEquipmentUsers(), String.class));

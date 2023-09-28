@@ -102,7 +102,8 @@ public class TEquipmentMaintenance {
     /* ====额外的字段==== */
     @TableField(exist = false)
     private List<SysUserMini> equipmentSysUserList;
-
     @TableField(exist = false)
     private List<SysUserMini> equipmentUserList;
+    @TableField(exist = false)
+    private String projectName;
 }

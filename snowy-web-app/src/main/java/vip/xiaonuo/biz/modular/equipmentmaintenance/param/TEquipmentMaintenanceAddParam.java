@@ -56,10 +56,6 @@ public class TEquipmentMaintenanceAddParam {
     @ApiModelProperty(value = "授权结束时间", position = 8)
     private Date authorizationEndTime;
 
-    /** 系统设备提醒人 */
-    @ApiModelProperty(value = "系统设备提醒人", position = 9)
-    private String equipmentSysUsers;
-
     /** 设备提醒人 */
     @ApiModelProperty(value = "设备提醒人", position = 10)
     private String equipmentUsers;

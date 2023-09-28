@@ -89,7 +89,7 @@ public class TProjectFileController {
         TProjectFileAddParam tProjectFileAddParam = new TProjectFileAddParam();
         tProjectFileAddParam.setIdxProjectId(jsonObject.getString("idxProjectId"));
         tProjectFileAddParam.setProjectFileType(jsonObject.getString("projectFileType"));
-        tProjectFileAddParam.setUkFileId(devFileService.uploadReturnId(DevFileEngineTypeEnum.LOCAL.getValue(), file));
+        tProjectFileAddParam.setUkFileId(devFileService.uploadReturnId(DevFileEngineTypeEnum.MINIO.getValue(), file));
         tProjectFileService.add(tProjectFileAddParam);
         return CommonResult.ok();
     }
@@ -112,7 +112,7 @@ public class TProjectFileController {
         tProjectFileEditParam.setPkId(jsonObject.getString("pkId"));
         tProjectFileEditParam.setIdxProjectId(jsonObject.getString("idxProjectId"));
         tProjectFileEditParam.setProjectFileType(jsonObject.getString("projectFileType"));
-        tProjectFileEditParam.setUkFileId(devFileService.uploadReturnId(DevFileEngineTypeEnum.LOCAL.getValue(), file));
+        tProjectFileEditParam.setUkFileId(devFileService.uploadReturnId(DevFileEngineTypeEnum.MINIO.getValue(), file));
         tProjectFileService.edit(tProjectFileEditParam);
         return CommonResult.ok();
     }

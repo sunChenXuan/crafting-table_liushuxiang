@@ -20,16 +20,7 @@
 				<a-input v-model:value="formData.customerAddress" placeholder="请输入地址" allow-clear />
 			</a-form-item>
 			<a-form-item label="客户画像：" name="customerProfile">
-				<a-input v-model:value="formData.customerProfile" placeholder="请输入客户画像" allow-clear />
-			</a-form-item>
-			<a-form-item label="创建用户：" name="createdBy">
-				<a-input v-model:value="formData.createdBy" placeholder="请输入创建用户" allow-clear />
-			</a-form-item>
-			<a-form-item label="修改时间：" name="updatedTime">
-				<a-date-picker v-model:value="formData.updatedTime" value-format="YYYY-MM-DD HH:mm:ss" show-time placeholder="请选择修改时间" style="width: 100%" />
-			</a-form-item>
-			<a-form-item label="修改用户：" name="updatedBy">
-				<a-input v-model:value="formData.updatedBy" placeholder="请输入修改用户" allow-clear />
+				<a-textarea v-model:value="formData.customerProfile" placeholder="请输入客户画像" allow-clear :auto-size="{ minRows: 5, maxRows: 10 }" />
 			</a-form-item>
 		</a-form>
 		<template #footer>
@@ -61,7 +52,7 @@
 			recordData.customerType = JSON.parse(recordData.customerType)
 			formData.value = Object.assign({}, recordData)
 		}
-		customerTypeOptions.value = tool.dictList('GENDER')
+		customerTypeOptions.value = tool.dictList('CUSTOMER_TYPE')
 	}
 	// 关闭抽屉
 	const onClose = () => {

@@ -62,7 +62,7 @@
 			</template>
 			<template #bodyCell="{ column, record }">
 				<template v-if="column.dataIndex === 'customerType'">
-					<a-tag v-for="textValue in JSON.parse(record.customerType)" :key="textValue" color="green">{{ $TOOL.dictTypeData('GENDER', textValue) }}</a-tag>
+					<a-tag v-for="textValue in JSON.parse(record.customerType)" :key="textValue" color="green">{{ $TOOL.dictTypeData('CUSTOMER_TYPE', textValue) }}</a-tag>
 				</template>
 				<template v-if="column.dataIndex === 'action'">
 					<a-space>
@@ -112,19 +112,8 @@
 		},
 		{
 			title: '客户画像',
+			ellipsis: true,
 			dataIndex: 'customerProfile'
-		},
-		{
-			title: '创建用户',
-			dataIndex: 'createdBy'
-		},
-		{
-			title: '修改时间',
-			dataIndex: 'updatedTime'
-		},
-		{
-			title: '修改用户',
-			dataIndex: 'updatedBy'
 		},
 	]
 	// 操作栏通过权限判断是否显示
@@ -180,5 +169,5 @@
 			table.value.clearRefreshSelected()
 		})
 	}
-	const customerTypeOptions = tool.dictList('GENDER')
+	const customerTypeOptions = tool.dictList('CUSTOMER_TYPE')
 </script>

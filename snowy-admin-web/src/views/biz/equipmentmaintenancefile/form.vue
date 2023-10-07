@@ -1,9 +1,6 @@
 <template>
 	<xn-form-container :title="formData.pkId ? '文件修改' : '文件上传'" :width="700" :visible="visible" :destroy-on-close="true"
-		@close="onClose">、
-		<!-- 不知道为什么去掉下面这段就坏了 -->
-		<a-form ref="formRef" :model="formData" :rules="formRules" layout="vertical">
-		</a-form>
+		@close="onClose">
 		<a-tabs v-model:activeKey="activeKey">
 			<a-tab-pane key="Local">
 				<a-spin :spinning="uploadLoading">
@@ -27,7 +24,6 @@ import tEquipmentMaintenanceFileApi from '@/api/biz/tEquipmentMaintenanceFileApi
 // 抽屉状态
 const visible = ref(false)
 const emit = defineEmits({ successful: null })
-const formRef = ref()
 // 表单数据
 const formData = ref({})
 let idxEquipmentMaintenanceId = {}
@@ -44,7 +40,6 @@ const onOpen = (routeValue, record) => {
 }
 // 关闭抽屉
 const onClose = () => {
-	formRef.value.resetFields()
 	formData.value = {}
 	visible.value = false
 }

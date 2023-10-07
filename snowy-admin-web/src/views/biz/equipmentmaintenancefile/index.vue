@@ -145,6 +145,7 @@ const options = {
 	}
 }
 const loadData = (parameter) => {
+	searchFormState.idxEquipmentMaintenanceId = route.query.pkId
 	const searchFormParam = JSON.parse(JSON.stringify(searchFormState))
 	return tEquipmentMaintenanceFileApi.tEquipmentMaintenanceFilePage(Object.assign(parameter, searchFormParam)).then((data) => {
 		return data

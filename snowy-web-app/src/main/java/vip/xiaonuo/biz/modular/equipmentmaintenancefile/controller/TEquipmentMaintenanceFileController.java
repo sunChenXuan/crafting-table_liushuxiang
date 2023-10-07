@@ -13,16 +13,15 @@
 package vip.xiaonuo.biz.modular.equipmentmaintenancefile.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import vip.xiaonuo.biz.modular.equipmentmaintenancefile.entity.TEquipmentMaintenanceFile;
 import vip.xiaonuo.biz.modular.equipmentmaintenancefile.param.TEquipmentMaintenanceFileAddParam;
 import vip.xiaonuo.biz.modular.equipmentmaintenancefile.param.TEquipmentMaintenanceFileEditParam;
@@ -32,6 +31,8 @@ import vip.xiaonuo.biz.modular.equipmentmaintenancefile.service.TEquipmentMainte
 import vip.xiaonuo.common.annotation.CommonLog;
 import vip.xiaonuo.common.pojo.CommonResult;
 import vip.xiaonuo.common.pojo.CommonValidList;
+import vip.xiaonuo.dev.modular.file.enums.DevFileEngineTypeEnum;
+import vip.xiaonuo.dev.modular.file.service.DevFileService;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -51,6 +52,9 @@ public class TEquipmentMaintenanceFileController {
 
     @Resource
     private TEquipmentMaintenanceFileService tEquipmentMaintenanceFileService;
+
+    @Resource
+    private DevFileService devFileService;
 
     /**
      * 获取设备维保文件分页
@@ -77,7 +81,9 @@ public class TEquipmentMaintenanceFileController {
     @CommonLog("添加设备维保文件")
     @SaCheckPermission("/biz/equipmentmaintenancefile/add")
     @PostMapping("/biz/equipmentmaintenancefile/add")
-    public CommonResult<String> add(@RequestBody @Valid TEquipmentMaintenanceFileAddParam tEquipmentMaintenanceFileAddParam) {
+    public CommonResult<String> add(@RequestPart("file") MultipartFile file, @RequestPart("data") String string) {
+        TEquipmentMaintenanceFileAddParam tEquipmentMaintenanceFileAddParam = JSONObject.parseObject(string, TEquipmentMaintenanceFileAddParam.class);
+        tEquipmentMaintenanceFileAddParam.setUkFileId(devFileService.uploadReturnId(DevFileEngineTypeEnum.MINIO.getValue(), file));
         tEquipmentMaintenanceFileService.add(tEquipmentMaintenanceFileAddParam);
         return CommonResult.ok();
     }
@@ -93,7 +99,9 @@ public class TEquipmentMaintenanceFileController {
     @CommonLog("编辑设备维保文件")
     @SaCheckPermission("/biz/equipmentmaintenancefile/edit")
     @PostMapping("/biz/equipmentmaintenancefile/edit")
-    public CommonResult<String> edit(@RequestBody @Valid TEquipmentMaintenanceFileEditParam tEquipmentMaintenanceFileEditParam) {
+    public CommonResult<String> edit(@RequestPart("file") MultipartFile file, @RequestPart("data") String string) {
+        final TEquipmentMaintenanceFileEditParam tEquipmentMaintenanceFileEditParam = JSONObject.parseObject(string, TEquipmentMaintenanceFileEditParam.class);
+        tEquipmentMaintenanceFileEditParam.setUkFileId(devFileService.uploadReturnId(DevFileEngineTypeEnum.MINIO.getValue(), file));
         tEquipmentMaintenanceFileService.edit(tEquipmentMaintenanceFileEditParam);
         return CommonResult.ok();
     }

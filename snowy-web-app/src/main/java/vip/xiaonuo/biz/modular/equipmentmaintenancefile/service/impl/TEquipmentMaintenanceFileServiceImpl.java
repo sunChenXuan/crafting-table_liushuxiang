@@ -21,6 +21,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import vip.xiaonuo.biz.modular.equipmentmaintenance.entity.TEquipmentMaintenance;
+import vip.xiaonuo.biz.modular.equipmentmaintenance.service.TEquipmentMaintenanceService;
 import vip.xiaonuo.biz.modular.equipmentmaintenancefile.entity.TEquipmentMaintenanceFile;
 import vip.xiaonuo.biz.modular.equipmentmaintenancefile.mapper.TEquipmentMaintenanceFileMapper;
 import vip.xiaonuo.biz.modular.equipmentmaintenancefile.param.TEquipmentMaintenanceFileAddParam;
@@ -28,10 +30,13 @@ import vip.xiaonuo.biz.modular.equipmentmaintenancefile.param.TEquipmentMaintena
 import vip.xiaonuo.biz.modular.equipmentmaintenancefile.param.TEquipmentMaintenanceFileIdParam;
 import vip.xiaonuo.biz.modular.equipmentmaintenancefile.param.TEquipmentMaintenanceFilePageParam;
 import vip.xiaonuo.biz.modular.equipmentmaintenancefile.service.TEquipmentMaintenanceFileService;
+import vip.xiaonuo.biz.modular.projectfile.entity.TProjectFile;
 import vip.xiaonuo.common.enums.CommonSortOrderEnum;
 import vip.xiaonuo.common.exception.CommonException;
 import vip.xiaonuo.common.page.CommonPageRequest;
+import vip.xiaonuo.dev.modular.file.service.DevFileService;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -43,6 +48,10 @@ import java.util.List;
 @Service
 public class TEquipmentMaintenanceFileServiceImpl extends ServiceImpl<TEquipmentMaintenanceFileMapper, TEquipmentMaintenanceFile> implements TEquipmentMaintenanceFileService {
 
+    @Resource
+    private DevFileService devFileService;
+    @Resource
+    private TEquipmentMaintenanceService tEquipmentMaintenanceService;
     @Override
     public Page<TEquipmentMaintenanceFile> page(TEquipmentMaintenanceFilePageParam tEquipmentMaintenanceFilePageParam) {
         QueryWrapper<TEquipmentMaintenanceFile> queryWrapper = new QueryWrapper<>();
@@ -59,7 +68,15 @@ public class TEquipmentMaintenanceFileServiceImpl extends ServiceImpl<TEquipment
         } else {
             queryWrapper.lambda().orderByAsc(TEquipmentMaintenanceFile::getPkId);
         }
-        return this.page(CommonPageRequest.defaultPage(), queryWrapper);
+        final Page<TEquipmentMaintenanceFile> page = this.page(CommonPageRequest.defaultPage(), queryWrapper);
+
+        for (TEquipmentMaintenanceFile emf : page.getRecords()) {
+            emf.setDevFile(devFileService.queryEntity(emf.getUkFileId()));
+            final TEquipmentMaintenance tEquipmentMaintenance = tEquipmentMaintenanceService.queryEntity(emf.getIdxEquipmentMaintenanceId());
+            emf.setEquipmentName(tEquipmentMaintenance.getEquipmentName());
+            emf.setSerialNumber(tEquipmentMaintenance.getSerialNumber());
+        }
+        return page;
     }
 
     @Transactional(rollbackFor = Exception.class)

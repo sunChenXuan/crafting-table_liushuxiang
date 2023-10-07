@@ -65,21 +65,6 @@ public class TProjectEditParam {
     @NotBlank(message = "projectUsers不能为空")
     private String projectUsers;
 
-    /** 项目沟通 */
-    @ApiModelProperty(value = "项目沟通", required = true, position = 8)
-    @NotBlank(message = "projectCommunication不能为空")
-    private String projectCommunication;
-
-    /** 项目风险 */
-    @ApiModelProperty(value = "项目风险", required = true, position = 9)
-    @NotBlank(message = "projectRisk不能为空")
-    private String projectRisk;
-
-    /** 采购管理 */
-    @ApiModelProperty(value = "采购管理", required = true, position = 10)
-    @NotBlank(message = "purchasingManagement不能为空")
-    private String purchasingManagement;
-
     /** 项目开始时间 */
     @ApiModelProperty(value = "项目开始时间", required = true, position = 11)
     @NotNull(message = "projectStartTime不能为空")
@@ -89,26 +74,6 @@ public class TProjectEditParam {
     @ApiModelProperty(value = "项目结束时间", required = true, position = 12)
     @NotNull(message = "projectEndTime不能为空")
     private Date projectEndTime;
-
-    /** 项目成本 */
-    @ApiModelProperty(value = "项目成本", required = true, position = 13)
-    @NotBlank(message = "projectCost不能为空")
-    private String projectCost;
-
-    /** 项目质量 */
-    @ApiModelProperty(value = "项目质量", required = true, position = 14)
-    @NotBlank(message = "projectQuality不能为空")
-    private String projectQuality;
-
-    /** 项目收获 */
-    @ApiModelProperty(value = "项目收获", required = true, position = 15)
-    @NotBlank(message = "projectDelivery不能为空")
-    private String projectDelivery;
-
-    /** 存在问题 */
-    @ApiModelProperty(value = "存在问题", required = true, position = 16)
-    @NotBlank(message = "existingProblems不能为空")
-    private String existingProblems;
 
     /** 创建用户 */
     @ApiModelProperty(value = "创建用户", position = 19)

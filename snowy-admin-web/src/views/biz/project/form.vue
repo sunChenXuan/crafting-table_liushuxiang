@@ -33,42 +33,12 @@
 					user.name
 				}}</a-tag>
 			</a-form-item>
-			<a-form-item label="项目沟通：" name="projectCommunication">
-				<a-input v-model:value="formData.projectCommunication" placeholder="请输入项目沟通" allow-clear />
-			</a-form-item>
-			<a-form-item label="项目风险：" name="projectRisk">
-				<a-input v-model:value="formData.projectRisk" placeholder="请输入项目风险" allow-clear />
-			</a-form-item>
-			<a-form-item label="采购管理：" name="purchasingManagement">
-				<a-input v-model:value="formData.purchasingManagement" placeholder="请输入采购管理" allow-clear />
-			</a-form-item>
 			<a-form-item label="项目开始时间：" name="projectStartTime">
 				<a-date-picker v-model:value="formData.projectStartTime" value-format="YYYY-MM-DD HH:mm:ss" show-time placeholder="请选择项目开始时间" style="width: 100%" />
 			</a-form-item>
 			<a-form-item label="项目结束时间：" name="projectEndTime">
 				<a-date-picker v-model:value="formData.projectEndTime" value-format="YYYY-MM-DD HH:mm:ss" show-time placeholder="请选择项目结束时间" style="width: 100%" />
 			</a-form-item>
-			<a-form-item label="项目成本：" name="projectCost">
-				<a-input v-model:value="formData.projectCost" placeholder="请输入项目成本" allow-clear />
-			</a-form-item>
-			<a-form-item label="项目质量：" name="projectQuality">
-				<a-input v-model:value="formData.projectQuality" placeholder="请输入项目质量" allow-clear />
-			</a-form-item>
-			<a-form-item label="项目收获：" name="projectDelivery">
-				<a-input v-model:value="formData.projectDelivery" placeholder="请输入项目收获" allow-clear />
-			</a-form-item>
-			<a-form-item label="存在问题：" name="existingProblems">
-				<a-input v-model:value="formData.existingProblems" placeholder="请输入存在问题" allow-clear />
-			</a-form-item>
-			<!-- <a-form-item label="创建用户：" name="createdBy">
-				<a-input v-model:value="formData.createdBy" placeholder="请输入创建用户" allow-clear />
-			</a-form-item>
-			<a-form-item label="修改时间：" name="updatedTime">
-				<a-date-picker v-model:value="formData.updatedTime" value-format="YYYY-MM-DD HH:mm:ss" show-time placeholder="请选择修改时间" style="width: 100%" />
-			</a-form-item>
-			<a-form-item label="修改用户：" name="updatedBy">
-				<a-input v-model:value="formData.updatedBy" placeholder="请输入修改用户" allow-clear />
-			</a-form-item> -->
 		</a-form>
 		<template #footer>
 			<a-button style="margin-right: 8px" @click="onClose">关闭</a-button>
@@ -121,15 +91,8 @@
 		projectDescription: [required('请输入项目描述')],
 		projectContacts: [required('请输入联系人')],
 		projectPhone: [required('请输入联系电话')],
-		projectCommunication: [required('请输入项目沟通')],
-		projectRisk: [required('请输入项目风险')],
-		purchasingManagement: [required('请输入采购管理')],
 		projectStartTime: [required('请输入项目开始时间')],
 		projectEndTime: [required('请输入项目结束时间')],
-		projectCost: [required('请输入项目成本')],
-		projectQuality: [required('请输入项目质量')],
-		projectDelivery: [required('请输入项目收获')],
-		existingProblems: [required('请输入存在问题')],
 	}
 
 

@@ -125,40 +125,12 @@ const columns = [
 		dataIndex: 'projectUsers'
 	},
 	{
-		title: '项目沟通',
-		dataIndex: 'projectCommunication'
-	},
-	{
-		title: '项目风险',
-		dataIndex: 'projectRisk'
-	},
-	{
-		title: '采购管理',
-		dataIndex: 'purchasingManagement'
-	},
-	{
 		title: '项目开始时间',
 		dataIndex: 'projectStartTime'
 	},
 	{
 		title: '项目结束时间',
 		dataIndex: 'projectEndTime'
-	},
-	{
-		title: '项目成本',
-		dataIndex: 'projectCost'
-	},
-	{
-		title: '项目质量',
-		dataIndex: 'projectQuality'
-	},
-	{
-		title: '项目收获',
-		dataIndex: 'projectDelivery'
-	},
-	{
-		title: '存在问题',
-		dataIndex: 'existingProblems'
 	},
 ]
 // 操作栏通过权限判断是否显示

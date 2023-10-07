@@ -7,16 +7,6 @@
 						<a-input disabled v-model:value="route.query.projectName" placeholder="请在项目管理选择项目" />
 					</a-form-item>
 				</a-col>
-				<!-- <a-col :span="6">
-					<a-form-item label="项目id" name="idxProjectId">
-						<a-input v-model:value="searchFormState.idxProjectId" placeholder="请输入项目id" />
-					</a-form-item>
-				</a-col> -->
-				<!-- <a-col :span="6">
-					<a-form-item label="文件id" name="ukFileId">
-						<a-input v-model:value="searchFormState.ukFileId" placeholder="请输入文件id" />
-					</a-form-item>
-				</a-col> -->
 				<a-col :span="6">
 					<a-form-item label="文档类型" name="projectFileType">
 						<a-select v-model:value="searchFormState.projectFileType" placeholder="请选择文档类型"
@@ -99,7 +89,7 @@
 import tool from '@/utils/tool'
 import Form from './form.vue'
 import tProjectFileApi from '@/api/biz/tProjectFileApi'
-import { useRoute, onBeforeRouteUpdate } from 'vue-router'
+import { useRoute } from 'vue-router'
 let searchFormState = reactive({})
 const searchFormRef = ref()
 const table = ref()

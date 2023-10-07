@@ -81,11 +81,10 @@
 				<template v-if="column.dataIndex === 'action'">
 					<a-space>
 						<a @click="formRef.onOpen(route.query.pkId, route.query.projectName, record)" v-if="hasPerm('tEquipmentMaintenanceEdit')">编辑</a>
-						<a-divider type="vertical"
-							v-if="hasPerm(['tEquipmentMaintenanceEdit', 'tEquipmentMaintenanceDelete'], 'and')" />
 						<a-popconfirm title="确定要删除吗？" @confirm="deleteTEquipmentMaintenance(record)">
 							<a-button type="link" danger size="small"
 								v-if="hasPerm('tEquipmentMaintenanceDelete')">删除</a-button>
+						<a @click="$router.push('equipmentmaintenancefile?pkId=' + record.pkId + '&serialNumber=' + record.projectName)">维保文件</a>
 						</a-popconfirm>
 					</a-space>
 				</template>
@@ -155,7 +154,7 @@ if (hasPerm(['tEquipmentMaintenanceEdit', 'tEquipmentMaintenanceDelete'])) {
 		title: '操作',
 		dataIndex: 'action',
 		align: 'center',
-		width: '150px'
+		width: '200px'
 	})
 }
 const selectedRowKeys = ref([])

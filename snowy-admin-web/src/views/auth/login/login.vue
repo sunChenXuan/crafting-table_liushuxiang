@@ -87,11 +87,11 @@
 								</a-form-item>
 							</a-form>
 						</a-tab-pane>
-						<a-tab-pane key="userSms" :tab="$t('login.phoneSms')" force-render>
+						<!-- <a-tab-pane key="userSms" :tab="$t('login.phoneSms')" force-render>
 							<phone-login-form />
-						</a-tab-pane>
+						</a-tab-pane> -->
 					</a-tabs>
-					<three-login />
+					<!-- <three-login /> -->
 				</a-card>
 			</div>
 		</div>
@@ -100,8 +100,8 @@
 
 <script>
 	import loginApi from '@/api/auth/loginApi'
-	import phoneLoginForm from './phoneLoginForm.vue'
-	import threeLogin from './threeLogin.vue'
+	// import phoneLoginForm from './phoneLoginForm.vue'
+	// import threeLogin from './threeLogin.vue'
 	import smCrypto from '@/utils/smCrypto'
 	import { required } from '@/utils/formRules'
 	import { afterLogin } from './util'
@@ -113,10 +113,10 @@
 
 	export default {
 		name: 'Login',
-		components: {
-			phoneLoginForm,
-			threeLogin
-		},
+		// components: {
+		// 	phoneLoginForm,
+		// 	threeLogin
+		// },
 		data() {
 			return {
 				activeKey: 'userAccount',

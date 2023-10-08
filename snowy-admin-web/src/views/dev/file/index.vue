@@ -14,7 +14,9 @@
 				</a-col>
 				<a-col :span="8">
 					<a-button type="primary" @click="table.refresh(true)">
-						<template #icon><SearchOutlined /></template>
+						<template #icon>
+							<SearchOutlined />
+						</template>
 						查询
 					</a-button>
 					<a-button class="snowy-buttom-left" @click="reset">
@@ -26,16 +28,8 @@
 		</a-form>
 	</a-card>
 	<a-card :bordered="false">
-		<s-table
-			ref="table"
-			:columns="columns"
-			:data="loadData"
-			:expand-row-by-click="true"
-			:alert="options.alert.show"
-			bordered
-			:row-key="(record) => record.id"
-			:row-selection="options.rowSelection"
-		>
+		<s-table ref="table" :columns="columns" :data="loadData" :expand-row-by-click="true" :alert="options.alert.show"
+			bordered :row-key="(record) => record.id" :row-selection="options.rowSelection">
 			<template #operator class="table-operator">
 				<a-space>
 					<a-button type="primary" @click="() => uploadFormRef.openUpload()">
@@ -47,36 +41,26 @@
 			</template>
 			<template #bodyCell="{ column, record }">
 				<template v-if="column.dataIndex === 'thumbnail'">
-					<img
-						:src="record.thumbnail"
-						class="record-img"
-						v-if="
-							record.suffix.toLowerCase() === 'png' ||
-							record.suffix.toLowerCase() === 'jpg' ||
-							record.suffix.toLowerCase() === 'jpng' ||
-							record.suffix.toLowerCase() === 'ico' ||
-							record.suffix.toLowerCase() === 'gif'
-						"
-					/>
-					<img
-						src="/src/assets/images/fileImg/docx.png"
-						class="record-img"
-						v-else-if="record.suffix.toLowerCase() === 'doc' || record.suffix.toLowerCase() === 'docx'"
-					/>
-					<img
-						src="/src/assets/images/fileImg/xlsx.png"
-						class="record-img"
-						v-else-if="record.suffix.toLowerCase() === 'xls' || record.suffix.toLowerCase() === 'xlsx'"
-					/>
-					<img src="/src/assets/images/fileImg/zip.png" class="record-img" v-else-if="record.suffix.toLowerCase() === 'zip'" />
-					<img src="/src/assets/images/fileImg/rar.png" class="record-img" v-else-if="record.suffix.toLowerCase() === 'rar'" />
-					<img
-						src="/src/assets/images/fileImg/ppt.png"
-						class="record-img"
-						v-else-if="record.suffix.toLowerCase() === 'ppt' || record.suffix.toLowerCase() === 'pptx'"
-					/>
-					<img src="/src/assets/images/fileImg/txt.png" class="record-img" v-else-if="record.suffix.toLowerCase() === 'txt'" />
-					<img src="/src/assets/images/fileImg/html.png" class="record-img" v-else-if="record.suffix.toLowerCase() === 'html'" />
+					<img :src="record.thumbnail" class="record-img" v-if="record.suffix.toLowerCase() === 'png' ||
+						record.suffix.toLowerCase() === 'jpg' ||
+						record.suffix.toLowerCase() === 'jpng' ||
+						record.suffix.toLowerCase() === 'ico' ||
+						record.suffix.toLowerCase() === 'gif'
+						" />
+					<img src="/src/assets/images/fileImg/docx.png" class="record-img"
+						v-else-if="record.suffix.toLowerCase() === 'doc' || record.suffix.toLowerCase() === 'docx'" />
+					<img src="/src/assets/images/fileImg/xlsx.png" class="record-img"
+						v-else-if="record.suffix.toLowerCase() === 'xls' || record.suffix.toLowerCase() === 'xlsx'" />
+					<img src="/src/assets/images/fileImg/zip.png" class="record-img"
+						v-else-if="record.suffix.toLowerCase() === 'zip'" />
+					<img src="/src/assets/images/fileImg/rar.png" class="record-img"
+						v-else-if="record.suffix.toLowerCase() === 'rar'" />
+					<img src="/src/assets/images/fileImg/ppt.png" class="record-img"
+						v-else-if="record.suffix.toLowerCase() === 'ppt' || record.suffix.toLowerCase() === 'pptx'" />
+					<img src="/src/assets/images/fileImg/txt.png" class="record-img"
+						v-else-if="record.suffix.toLowerCase() === 'txt'" />
+					<img src="/src/assets/images/fileImg/html.png" class="record-img"
+						v-else-if="record.suffix.toLowerCase() === 'html'" />
 					<img src="/src/assets/images/fileImg/file.png" class="record-img" v-else />
 				</template>
 				<template v-if="column.dataIndex === 'engine'">
@@ -99,110 +83,112 @@
 </template>
 
 <script setup name="devFile">
-	import fileApi from '@/api/dev/fileApi'
-	import uploadForm from './uploadForm.vue'
-	import detail from './detail.vue'
-	import tool from '@/utils/tool'
+import fileApi from '@/api/dev/fileApi'
+import uploadForm from './uploadForm.vue'
+import detail from './detail.vue'
+import tool from '@/utils/tool'
 
-	// 定义tableDOM
-	const table = ref()
-	const form = ref()
-	const searchFormRef = ref()
-	let searchFormState = reactive({})
-	const uploadFormRef = ref()
-	const detailRef = ref()
+// 定义tableDOM
+const table = ref()
+const form = ref()
+const searchFormRef = ref()
+let searchFormState = reactive({})
+const uploadFormRef = ref()
+const detailRef = ref()
 
-	const columns = [
+const columns = [
+	{
+		title: '文件名称',
+		dataIndex: 'name',
+		ellipsis: true,
+		width: '280px'
+	},
+	{
+		title: '缩略图',
+		dataIndex: 'thumbnail',
+		ellipsis: true,
+		width: '80px'
+	},
+	{
+		title: '文件大小',
+		dataIndex: 'sizeInfo',
+		ellipsis: true
+	},
+	{
+		title: '文件后缀',
+		dataIndex: 'suffix',
+		ellipsis: true
+	},
+	{
+		title: '储存引擎',
+		dataIndex: 'engine',
+		ellipsis: true
+	},
+	{
+		title: '操作',
+		dataIndex: 'action',
+		align: 'center',
+		width: '180px'
+	}
+]
+let selectedRowKeys = ref([])
+// 列表选择配置
+const options = {
+	alert: {
+		show: false,
+		clear: () => {
+			selectedRowKeys = ref([])
+		}
+	},
+	rowSelection: {
+		onChange: (selectedRowKey, selectedRows) => {
+			selectedRowKeys.value = selectedRowKey
+		}
+	}
+}
+// 表格查询 返回 Promise 对象
+const loadData = (parameter) => {
+	return fileApi.filePage(Object.assign(parameter, searchFormState)).then((data) => {
+		return data
+	})
+}
+// 重置
+const reset = () => {
+	searchFormRef.value.resetFields()
+	table.value.refresh(true)
+}
+// 删除
+const deleteFile = (record) => {
+	let params = [
 		{
-			title: '文件名称',
-			dataIndex: 'name',
-			ellipsis: true,
-			width: '280px'
-		},
-		{
-			title: '缩略图',
-			dataIndex: 'thumbnail',
-			ellipsis: true,
-			width: '80px'
-		},
-		{
-			title: '文件大小',
-			dataIndex: 'sizeInfo',
-			ellipsis: true
-		},
-		{
-			title: '文件后缀',
-			dataIndex: 'suffix',
-			ellipsis: true
-		},
-		{
-			title: '储存引擎',
-			dataIndex: 'engine',
-			ellipsis: true
-		},
-		{
-			title: '操作',
-			dataIndex: 'action',
-			align: 'center',
-			width: '180px'
+			id: record.id
 		}
 	]
-	let selectedRowKeys = ref([])
-	// 列表选择配置
-	const options = {
-		alert: {
-			show: false,
-			clear: () => {
-				selectedRowKeys = ref([])
-			}
-		},
-		rowSelection: {
-			onChange: (selectedRowKey, selectedRows) => {
-				selectedRowKeys.value = selectedRowKey
-			}
-		}
-	}
-	// 表格查询 返回 Promise 对象
-	const loadData = (parameter) => {
-		return fileApi.filePage(Object.assign(parameter, searchFormState)).then((data) => {
-			return data
-		})
-	}
-	// 重置
-	const reset = () => {
-		searchFormRef.value.resetFields()
+	fileApi.fileDelete(params).then(() => {
 		table.value.refresh(true)
-	}
-	// 删除
-	const deleteFile = (record) => {
-		let params = [
-			{
-				id: record.id
-			}
-		]
-		fileApi.fileDelete(params).then(() => {
-			table.value.refresh(true)
-		})
-	}
-	// 批量删除
-	const deleteBatchFile = (params) => {
-		fileApi.fileDelete(params).then(() => {
-			table.value.clearRefreshSelected()
-		})
-	}
-	// 存储位置
-	const engineOptions = tool.dictList('FILE_ENGINE')
+	})
+}
+// 批量删除
+const deleteBatchFile = (params) => {
+	fileApi.fileDelete(params).then(() => {
+		table.value.clearRefreshSelected()
+	})
+}
+// 存储位置
+const engineOptions = tool.dictList('FILE_ENGINE')
 </script>
 
 <style scoped>
-	.record-img {
-		width: 40px;
-		height: 40px;
-	}
-	.ant-form-item {
-		margin-bottom: 0 !important;
-	}
-	.snowy-buttom-left {
-		margin-left: 8px;
-	}
+.record-img {
+	width: 40px;
+	height: 40px;
+}
+
+.ant-form-item {
+	margin-bottom: 0 !important;
+}
+
+.snowy-buttom-left {
+	margin-left: 8px;
+}
 </style>

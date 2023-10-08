@@ -13,16 +13,15 @@
 package vip.xiaonuo.biz.modular.fixedassetfile.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import vip.xiaonuo.biz.modular.fixedassetfile.entity.TFixedAssetFile;
 import vip.xiaonuo.biz.modular.fixedassetfile.param.TFixedAssetFileAddParam;
 import vip.xiaonuo.biz.modular.fixedassetfile.param.TFixedAssetFileEditParam;
@@ -32,6 +31,8 @@ import vip.xiaonuo.biz.modular.fixedassetfile.service.TFixedAssetFileService;
 import vip.xiaonuo.common.annotation.CommonLog;
 import vip.xiaonuo.common.pojo.CommonResult;
 import vip.xiaonuo.common.pojo.CommonValidList;
+import vip.xiaonuo.dev.modular.file.enums.DevFileEngineTypeEnum;
+import vip.xiaonuo.dev.modular.file.service.DevFileService;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -51,6 +52,9 @@ public class TFixedAssetFileController {
 
     @Resource
     private TFixedAssetFileService tFixedAssetFileService;
+
+    @Resource
+    private DevFileService devFileService;
 
     /**
      * 获取固定资产文件分页
@@ -77,7 +81,9 @@ public class TFixedAssetFileController {
     @CommonLog("添加固定资产文件")
     @SaCheckPermission("/biz/fixedassetfile/add")
     @PostMapping("/biz/fixedassetfile/add")
-    public CommonResult<String> add(@RequestBody @Valid TFixedAssetFileAddParam tFixedAssetFileAddParam) {
+    public CommonResult<String> add(@RequestPart("file") MultipartFile file, @RequestPart("data") String string) {
+        final TFixedAssetFileAddParam tFixedAssetFileAddParam = JSONObject.parseObject(string, TFixedAssetFileAddParam.class);
+        tFixedAssetFileAddParam.setUkFileId(devFileService.uploadReturnId(DevFileEngineTypeEnum.MINIO.getValue(), file));
         tFixedAssetFileService.add(tFixedAssetFileAddParam);
         return CommonResult.ok();
     }
@@ -93,7 +99,9 @@ public class TFixedAssetFileController {
     @CommonLog("编辑固定资产文件")
     @SaCheckPermission("/biz/fixedassetfile/edit")
     @PostMapping("/biz/fixedassetfile/edit")
-    public CommonResult<String> edit(@RequestBody @Valid TFixedAssetFileEditParam tFixedAssetFileEditParam) {
+    public CommonResult<String> edit(@RequestPart("file") MultipartFile file, @RequestPart("data") String string) {
+        final TFixedAssetFileEditParam tFixedAssetFileEditParam = JSONObject.parseObject(string, TFixedAssetFileEditParam.class);
+        tFixedAssetFileEditParam.setUkFileId(devFileService.uploadReturnId(DevFileEngineTypeEnum.MINIO.getValue(), file));
         tFixedAssetFileService.edit(tFixedAssetFileEditParam);
         return CommonResult.ok();
     }

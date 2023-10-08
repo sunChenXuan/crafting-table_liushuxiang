@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import vip.xiaonuo.biz.modular.fixedasset.entity.TFixedAsset;
 import vip.xiaonuo.biz.modular.fixedassetfile.entity.TFixedAssetFile;
 import vip.xiaonuo.biz.modular.fixedassetfile.mapper.TFixedAssetFileMapper;
 import vip.xiaonuo.biz.modular.fixedassetfile.param.TFixedAssetFileAddParam;
@@ -31,7 +32,9 @@ import vip.xiaonuo.biz.modular.fixedassetfile.service.TFixedAssetFileService;
 import vip.xiaonuo.common.enums.CommonSortOrderEnum;
 import vip.xiaonuo.common.exception.CommonException;
 import vip.xiaonuo.common.page.CommonPageRequest;
+import vip.xiaonuo.dev.modular.file.service.DevFileService;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -43,6 +46,10 @@ import java.util.List;
 @Service
 public class TFixedAssetFileServiceImpl extends ServiceImpl<TFixedAssetFileMapper, TFixedAssetFile> implements TFixedAssetFileService {
 
+    @Resource
+    private DevFileService devFileService;
+    @Resource
+    private vip.xiaonuo.biz.modular.fixedasset.service.TFixedAssetService TFixedAssetService;
     @Override
     public Page<TFixedAssetFile> page(TFixedAssetFilePageParam tFixedAssetFilePageParam) {
         QueryWrapper<TFixedAssetFile> queryWrapper = new QueryWrapper<>();
@@ -59,7 +66,14 @@ public class TFixedAssetFileServiceImpl extends ServiceImpl<TFixedAssetFileMappe
         } else {
             queryWrapper.lambda().orderByAsc(TFixedAssetFile::getPkId);
         }
-        return this.page(CommonPageRequest.defaultPage(), queryWrapper);
+        final Page<TFixedAssetFile> page = page(CommonPageRequest.defaultPage(), queryWrapper);
+
+        for (TFixedAssetFile faf : page.getRecords()) {
+            faf.setDevFile(devFileService.queryEntity(faf.getUkFileId()));
+            final TFixedAsset tFixedAsset = TFixedAssetService.queryEntity(faf.getIdxFixedAssetId());
+            faf.setSerialNumber(tFixedAsset.getSerialNumber());
+        }
+        return page;
     }
 
     @Transactional(rollbackFor = Exception.class)

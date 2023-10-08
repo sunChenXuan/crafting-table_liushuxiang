@@ -78,4 +78,9 @@ public class TFixedAssetEditParam {
     @ApiModelProperty(value = "修改用户", position = 14)
     private String updatedBy;
 
+    /** 修改用户 */
+    @ApiModelProperty(value = "修改备注", position = 14)
+    @NotBlank(message = "修改备注不能为空")
+    private String remark;
+
 }

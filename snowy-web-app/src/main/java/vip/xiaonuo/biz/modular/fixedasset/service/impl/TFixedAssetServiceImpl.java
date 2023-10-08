@@ -16,6 +16,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollStreamUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -28,10 +29,13 @@ import vip.xiaonuo.biz.modular.fixedasset.param.TFixedAssetEditParam;
 import vip.xiaonuo.biz.modular.fixedasset.param.TFixedAssetIdParam;
 import vip.xiaonuo.biz.modular.fixedasset.param.TFixedAssetPageParam;
 import vip.xiaonuo.biz.modular.fixedasset.service.TFixedAssetService;
+import vip.xiaonuo.biz.modular.fixedassethardwareflow.entity.TFixedAssetHardwareFlow;
+import vip.xiaonuo.biz.modular.fixedassethardwareflow.service.TFixedAssetHardwareFlowService;
 import vip.xiaonuo.common.enums.CommonSortOrderEnum;
 import vip.xiaonuo.common.exception.CommonException;
 import vip.xiaonuo.common.page.CommonPageRequest;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -43,6 +47,8 @@ import java.util.List;
 @Service
 public class TFixedAssetServiceImpl extends ServiceImpl<TFixedAssetMapper, TFixedAsset> implements TFixedAssetService {
 
+    @Resource
+    private TFixedAssetHardwareFlowService tFixedAssetHardwareFlowService;
     @Override
     public Page<TFixedAsset> page(TFixedAssetPageParam tFixedAssetPageParam) {
         QueryWrapper<TFixedAsset> queryWrapper = new QueryWrapper<>();
@@ -90,9 +96,21 @@ public class TFixedAssetServiceImpl extends ServiceImpl<TFixedAssetMapper, TFixe
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void edit(TFixedAssetEditParam tFixedAssetEditParam) {
+        // 记录
+        TFixedAssetHardwareFlow tFixedAssetHardwareFlow = new TFixedAssetHardwareFlow();
+
         TFixedAsset tFixedAsset = this.queryEntity(tFixedAssetEditParam.getPkId());
+
+        tFixedAssetHardwareFlow.setOldJson(JSONObject.toJSONString(tFixedAsset));
+
         BeanUtil.copyProperties(tFixedAssetEditParam, tFixedAsset);
         this.updateById(tFixedAsset);
+
+        tFixedAssetHardwareFlow.setNewJson(JSONObject.toJSONString(tFixedAsset));
+        tFixedAssetHardwareFlow.setIdxFixedAssetId(tFixedAssetEditParam.getPkId());
+        tFixedAssetHardwareFlow.setSerialNumber(tFixedAssetEditParam.getSerialNumber());
+        tFixedAssetHardwareFlow.setRemark(tFixedAssetEditParam.getRemark());
+        tFixedAssetHardwareFlowService.save(tFixedAssetHardwareFlow);
     }
 
     @Transactional(rollbackFor = Exception.class)

@@ -27,6 +27,10 @@
 				<a-textarea v-model:value="formData.fixedAssetAccessory" placeholder="请输入配件" allow-clear
 					:auto-size="{ minRows: 5, maxRows: 10 }" />
 			</a-form-item>
+			<a-form-item label="修改备注：" name="remark">
+				<a-textarea v-model:value="formData.remark" placeholder="修改备注" allow-clear
+					:auto-size="{ minRows: 5, maxRows: 10 }" />
+			</a-form-item>
 		</a-form>
 		<template #footer>
 			<a-button style="margin-right: 8px" @click="onClose">关闭</a-button>

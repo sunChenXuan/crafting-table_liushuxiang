@@ -3,11 +3,6 @@
 		<a-form ref="searchFormRef" name="advanced_search" :model="searchFormState" class="ant-advanced-search-form">
 			<a-row :gutter="24">
 				<a-col :span="6">
-					<a-form-item label="固定资产id" name="idxFixedAssetId">
-						<a-input v-model:value="searchFormState.idxFixedAssetId" placeholder="请输入固定资产id" />
-					</a-form-item>
-				</a-col>
-				<a-col :span="6">
 					<a-form-item label="序列号" name="serialNumber">
 						<a-input v-model:value="searchFormState.serialNumber" placeholder="请输入序列号" />
 					</a-form-item>
@@ -77,14 +72,6 @@
 		{
 			title: '备注',
 			dataIndex: 'remark'
-		},
-		{
-			title: '硬件修改前信息',
-			dataIndex: 'oldJson'
-		},
-		{
-			title: '硬件修改后信息',
-			dataIndex: 'newJson'
 		},
 		{
 			title: '创建用户',

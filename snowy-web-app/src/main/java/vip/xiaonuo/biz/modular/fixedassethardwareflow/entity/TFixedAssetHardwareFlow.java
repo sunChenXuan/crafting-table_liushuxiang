@@ -16,6 +16,7 @@ import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import vip.xiaonuo.common.pojo.CommonEntity;
 
 import java.util.Date;
 
@@ -28,7 +29,7 @@ import java.util.Date;
 @Getter
 @Setter
 @TableName("t_fixed_asset_hardware_flow")
-public class TFixedAssetHardwareFlow {
+public class TFixedAssetHardwareFlow extends CommonEntity {
 
     /** id */
     @TableId

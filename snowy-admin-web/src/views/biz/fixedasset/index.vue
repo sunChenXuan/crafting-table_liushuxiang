@@ -87,7 +87,7 @@
 						</a-popconfirm>
 						<a @click="$router.push('fixedassetfile?pkId=' + record.pkId + '&serialNumber=' + record.serialNumber)">文件</a>
 						<a @click="$router.push('fixedassetflow?pkId=' + record.pkId + '&serialNumber=' + record.serialNumber)">借还</a>
-						<a @click="$router.push('fixedassethardwareflow?pkId=' + record.pkId + '&serialNumber=' + record.serialNumber)">日志</a>
+						<!-- <a @click="$router.push('fixedassethardwareflow?pkId=' + record.pkId + '&serialNumber=' + record.serialNumber)">日志</a> -->
 					</a-space>
 				</template>
 			</template>

@@ -59,7 +59,7 @@
 					<img src="/src/assets/images/fileImg/ppt.png" class="record-img"
 						v-else-if="record.devFile.suffix.toLowerCase() === 'ppt' || record.devFile.suffix.toLowerCase() === 'pptx'" />
 					<img src="/src/assets/images/fileImg/txt.png" class="record-img"
-						v-else-if="record.suffix.toLowerCase() === 'txt'" />
+						v-else-if="record.devFile.suffix.toLowerCase() === 'txt'" />
 					<img src="/src/assets/images/fileImg/html.png" class="record-img"
 						v-else-if="record.devFile.suffix.toLowerCase() === 'html'" />
 					<img src="/src/assets/images/fileImg/file.png" class="record-img" v-else />

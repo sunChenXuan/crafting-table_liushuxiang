@@ -16,6 +16,7 @@ import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import vip.xiaonuo.common.pojo.CommonEntity;
 
 import java.util.Date;
 
@@ -28,7 +29,7 @@ import java.util.Date;
 @Getter
 @Setter
 @TableName("t_customer_inspection")
-public class TCustomerInspection {
+public class TCustomerInspection extends CommonEntity {
 
     /** id */
     @TableId
@@ -66,27 +67,4 @@ public class TCustomerInspection {
     /** 巡检内容 */
     @ApiModelProperty(value = "巡检内容", position = 9)
     private String remark;
-
-    /** 删除标志 */
-    @ApiModelProperty(value = "删除标志", position = 10)
-    @TableLogic
-    @TableField(fill = FieldFill.INSERT)
-    private String deleteFlag;
-
-    /** 创建时间 */
-    @ApiModelProperty(value = "创建时间", position = 11)
-    @TableField(fill = FieldFill.INSERT)
-    private Date createTime;
-
-    /** 创建用户 */
-    @ApiModelProperty(value = "创建用户", position = 12)
-    private String createdBy;
-
-    /** 修改时间 */
-    @ApiModelProperty(value = "修改时间", position = 13)
-    private Date updatedTime;
-
-    /** 修改用户 */
-    @ApiModelProperty(value = "修改用户", position = 14)
-    private String updatedBy;
 }

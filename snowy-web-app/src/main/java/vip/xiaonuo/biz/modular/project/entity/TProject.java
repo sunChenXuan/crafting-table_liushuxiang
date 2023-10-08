@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonRawValue;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import vip.xiaonuo.common.pojo.CommonEntity;
 import vip.xiaonuo.sys.modular.user.result.SysUserMini;
 
 import java.util.Date;
@@ -31,7 +32,7 @@ import java.util.List;
 @Getter
 @Setter
 @TableName("t_project")
-public class TProject {
+public class TProject extends CommonEntity {
 
     /** id */
     @TableId
@@ -99,29 +100,6 @@ public class TProject {
     /** 存在问题 */
     @ApiModelProperty(value = "存在问题", position = 16)
     private String existingProblems;
-
-    /** 删除标志 */
-    @ApiModelProperty(value = "删除标志", position = 17)
-    @TableLogic
-    @TableField(fill = FieldFill.INSERT)
-    private String deleteFlag;
-
-    /** 创建时间 */
-    @ApiModelProperty(value = "创建时间", position = 18)
-    @TableField(fill = FieldFill.INSERT)
-    private Date createTime;
-
-    /** 创建用户 */
-    @ApiModelProperty(value = "创建用户", position = 19)
-    private String createdBy;
-
-    /** 修改时间 */
-    @ApiModelProperty(value = "修改时间", position = 20)
-    private Date updatedTime;
-
-    /** 修改用户 */
-    @ApiModelProperty(value = "修改用户", position = 21)
-    private String updatedBy;
 
     /* ====额外的字段==== */
     @TableField(exist = false)

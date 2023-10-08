@@ -16,6 +16,7 @@ import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import vip.xiaonuo.common.pojo.CommonEntity;
 
 import java.util.Date;
 
@@ -28,7 +29,7 @@ import java.util.Date;
 @Getter
 @Setter
 @TableName("t_daily")
-public class TDaily {
+public class TDaily extends CommonEntity {
 
     /** id */
     @TableId
@@ -54,27 +55,4 @@ public class TDaily {
     /** 内容 */
     @ApiModelProperty(value = "内容", position = 6)
     private String remark;
-
-    /** 删除标志 */
-    @ApiModelProperty(value = "删除标志", position = 7)
-    @TableLogic
-    @TableField(fill = FieldFill.INSERT)
-    private String deleteFlag;
-
-    /** 创建时间 */
-    @ApiModelProperty(value = "创建时间", position = 8)
-    @TableField(fill = FieldFill.INSERT)
-    private Date createTime;
-
-    /** 创建用户 */
-    @ApiModelProperty(value = "创建用户", position = 9)
-    private String createdBy;
-
-    /** 修改时间 */
-    @ApiModelProperty(value = "修改时间", position = 10)
-    private Date updatedTime;
-
-    /** 修改用户 */
-    @ApiModelProperty(value = "修改用户", position = 11)
-    private String updatedBy;
 }

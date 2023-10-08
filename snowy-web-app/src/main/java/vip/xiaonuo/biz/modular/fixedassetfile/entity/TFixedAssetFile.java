@@ -16,6 +16,7 @@ import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import vip.xiaonuo.common.pojo.CommonEntity;
 import vip.xiaonuo.dev.modular.file.entity.DevFile;
 
 import java.util.Date;
@@ -29,7 +30,7 @@ import java.util.Date;
 @Getter
 @Setter
 @TableName("t_fixed_asset_file")
-public class TFixedAssetFile {
+public class TFixedAssetFile extends CommonEntity {
 
     /** id */
     @TableId
@@ -43,29 +44,6 @@ public class TFixedAssetFile {
     /** 文件id */
     @ApiModelProperty(value = "文件id", position = 3)
     private String ukFileId;
-
-    /** 删除标志 */
-    @ApiModelProperty(value = "删除标志", position = 4)
-    @TableLogic
-    @TableField(fill = FieldFill.INSERT)
-    private String deleteFlag;
-
-    /** 创建时间 */
-    @ApiModelProperty(value = "创建时间", position = 5)
-    @TableField(fill = FieldFill.INSERT)
-    private Date createTime;
-
-    /** 创建用户 */
-    @ApiModelProperty(value = "创建用户", position = 6)
-    private String createdBy;
-
-    /** 修改时间 */
-    @ApiModelProperty(value = "修改时间", position = 7)
-    private Date updatedTime;
-
-    /** 修改用户 */
-    @ApiModelProperty(value = "修改用户", position = 8)
-    private String updatedBy;
 
     /* ====额外的字段==== */
     @TableField(exist = false)

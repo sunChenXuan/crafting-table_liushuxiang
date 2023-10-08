@@ -55,4 +55,8 @@ public class TFixedAssetHardwareFlow extends CommonEntity {
     /** 硬件修改后信息 */
     @ApiModelProperty(value = "硬件修改后信息", position = 6)
     private String newJson;
+
+    /* ====额外的字段==== */
+    @TableField(exist = false)
+    private String createUserName;
 }

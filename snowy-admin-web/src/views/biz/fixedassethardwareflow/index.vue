@@ -28,7 +28,6 @@
 	let searchFormState = reactive({})
 	const searchFormRef = ref()
 	const table = ref()
-	const formRef = ref()
 	const columns = [
 		{
 			title: '序列号',
@@ -41,7 +40,7 @@
 		},
 		{
 			title: '操作用户',
-			dataIndex: 'createUser'
+			dataIndex: 'createUserName'
 		},
 		{
 			title: '操作时间',

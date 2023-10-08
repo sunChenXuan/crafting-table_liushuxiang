@@ -36,16 +36,5 @@ public class TFixedAssetFileAddParam {
     @ApiModelProperty(value = "文件id", position = 3)
     private String ukFileId;
 
-    /** 创建用户 */
-    @ApiModelProperty(value = "创建用户", position = 6)
-    private String createdBy;
-
-    /** 修改时间 */
-    @ApiModelProperty(value = "修改时间", position = 7)
-    private Date updatedTime;
-
-    /** 修改用户 */
-    @ApiModelProperty(value = "修改用户", position = 8)
-    private String updatedBy;
 
 }

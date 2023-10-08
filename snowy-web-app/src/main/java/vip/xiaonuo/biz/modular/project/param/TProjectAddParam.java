@@ -70,16 +70,5 @@ public class TProjectAddParam {
     @NotNull(message = "projectEndTime不能为空")
     private Date projectEndTime;
 
-    /** 创建用户 */
-    @ApiModelProperty(value = "创建用户", position = 19)
-    private String createdBy;
-
-    /** 修改时间 */
-    @ApiModelProperty(value = "修改时间", position = 20)
-    private Date updatedTime;
-
-    /** 修改用户 */
-    @ApiModelProperty(value = "修改用户", position = 21)
-    private String updatedBy;
 
 }

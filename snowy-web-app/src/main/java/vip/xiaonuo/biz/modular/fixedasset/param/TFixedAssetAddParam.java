@@ -60,16 +60,5 @@ public class TFixedAssetAddParam {
     @ApiModelProperty(value = "配件", position = 9)
     private String fixedAssetAccessory;
 
-    /** 创建用户 */
-    @ApiModelProperty(value = "创建用户", position = 12)
-    private String createdBy;
-
-    /** 修改时间 */
-    @ApiModelProperty(value = "修改时间", position = 13)
-    private Date updatedTime;
-
-    /** 修改用户 */
-    @ApiModelProperty(value = "修改用户", position = 14)
-    private String updatedBy;
 
 }

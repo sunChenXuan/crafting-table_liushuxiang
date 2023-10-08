@@ -62,16 +62,5 @@ public class TComputerInspectionEditParam {
     @ApiModelProperty(value = "作业计划", position = 8)
     private String workPlan;
 
-    /** 创建用户 */
-    @ApiModelProperty(value = "创建用户", position = 11)
-    private String createdBy;
-
-    /** 修改时间 */
-    @ApiModelProperty(value = "修改时间", position = 12)
-    private Date updatedTime;
-
-    /** 修改用户 */
-    @ApiModelProperty(value = "修改用户", position = 13)
-    private String updatedBy;
 
 }

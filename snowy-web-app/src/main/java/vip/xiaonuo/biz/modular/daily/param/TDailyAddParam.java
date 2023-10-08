@@ -48,16 +48,5 @@ public class TDailyAddParam {
     @ApiModelProperty(value = "内容", position = 6)
     private String remark;
 
-    /** 创建用户 */
-    @ApiModelProperty(value = "创建用户", position = 9)
-    private String createdBy;
-
-    /** 修改时间 */
-    @ApiModelProperty(value = "修改时间", position = 10)
-    private Date updatedTime;
-
-    /** 修改用户 */
-    @ApiModelProperty(value = "修改用户", position = 11)
-    private String updatedBy;
 
 }

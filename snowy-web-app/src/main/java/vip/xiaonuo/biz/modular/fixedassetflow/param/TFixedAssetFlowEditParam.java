@@ -61,16 +61,5 @@ public class TFixedAssetFlowEditParam {
     @ApiModelProperty(value = "是否归还", position = 7)
     private Integer isReturn;
 
-    /** 创建用户 */
-    @ApiModelProperty(value = "创建用户", position = 10)
-    private String createdBy;
-
-    /** 修改时间 */
-    @ApiModelProperty(value = "修改时间", position = 11)
-    private Date updatedTime;
-
-    /** 修改用户 */
-    @ApiModelProperty(value = "修改用户", position = 12)
-    private String updatedBy;
 
 }

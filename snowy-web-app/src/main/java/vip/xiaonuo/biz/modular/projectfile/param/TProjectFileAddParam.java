@@ -40,16 +40,5 @@ public class TProjectFileAddParam {
     @ApiModelProperty(value = "文档类型", position = 4)
     private String projectFileType;
 
-    /** 创建用户 */
-    @ApiModelProperty(value = "创建用户", position = 7)
-    private String createdBy;
-
-    /** 修改时间 */
-    @ApiModelProperty(value = "修改时间", position = 8)
-    private Date updatedTime;
-
-    /** 修改用户 */
-    @ApiModelProperty(value = "修改用户", position = 9)
-    private String updatedBy;
 
 }

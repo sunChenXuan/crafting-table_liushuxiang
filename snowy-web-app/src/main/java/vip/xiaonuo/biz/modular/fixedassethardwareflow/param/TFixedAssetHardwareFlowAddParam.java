@@ -54,16 +54,5 @@ public class TFixedAssetHardwareFlowAddParam {
     @NotBlank(message = "newJson不能为空")
     private String newJson;
 
-    /** 创建用户 */
-    @ApiModelProperty(value = "创建用户", position = 9)
-    private String createdBy;
-
-    /** 修改时间 */
-    @ApiModelProperty(value = "修改时间", position = 10)
-    private Date updatedTime;
-
-    /** 修改用户 */
-    @ApiModelProperty(value = "修改用户", position = 11)
-    private String updatedBy;
 
 }

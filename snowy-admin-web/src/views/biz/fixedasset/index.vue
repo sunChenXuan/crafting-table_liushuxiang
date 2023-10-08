@@ -77,7 +77,7 @@
 			</template>
 			<template #bodyCell="{ column, record }">
 				<template v-if="column.dataIndex === 'fixedAssetType'">
-					{{ $TOOL.dictTypeData('PROJECT_FILE_TYPE', record.fixedAssetType) }}
+					{{ $TOOL.dictTypeData('FIXED_ASSET_TYPE', record.fixedAssetType) }}
 				</template>
 				<template v-if="column.dataIndex === 'action'">
 					<a-space>
@@ -140,18 +140,6 @@
 		{
 			title: '配件',
 			dataIndex: 'fixedAssetAccessory'
-		},
-		{
-			title: '创建用户',
-			dataIndex: 'createdBy'
-		},
-		{
-			title: '修改时间',
-			dataIndex: 'updatedTime'
-		},
-		{
-			title: '修改用户',
-			dataIndex: 'updatedBy'
 		},
 	]
 	// 操作栏通过权限判断是否显示

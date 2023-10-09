@@ -81,13 +81,12 @@
 				</template>
 				<template v-if="column.dataIndex === 'action'">
 					<a-space>
-						<a @click="formRef.onOpen(record)" v-if="hasPerm('tFixedAssetEdit')">编辑</a>
+						<a @click="$router.push('fixedassetfile?pkId=' + record.pkId + '&serialNumber=' + record.serialNumber)">文件</a>
+						<a @click="$router.push('fixedassetflow?pkId=' + record.pkId + '&serialNumber=' + record.serialNumber)">借还</a>
+						<a @click="formRef.onOpen(record)" v-if="hasPerm('tFixedAssetEdit')">修改</a>
 						<a-popconfirm title="确定要删除吗？" @confirm="deleteTFixedAsset(record)">
 							<a-button type="link" danger size="small" v-if="hasPerm('tFixedAssetDelete')">删除</a-button>
 						</a-popconfirm>
-						<a @click="$router.push('fixedassetfile?pkId=' + record.pkId + '&serialNumber=' + record.serialNumber)">文件</a>
-						<a @click="$router.push('fixedassetflow?pkId=' + record.pkId + '&serialNumber=' + record.serialNumber)">借还</a>
-						<!-- <a @click="$router.push('fixedassethardwareflow?pkId=' + record.pkId + '&serialNumber=' + record.serialNumber)">日志</a> -->
 					</a-space>
 				</template>
 			</template>

@@ -95,7 +95,7 @@ public class TFixedAssetServiceImpl extends ServiceImpl<TFixedAssetMapper, TFixe
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void edit(TFixedAssetEditParam tFixedAssetEditParam) {
+    public synchronized void edit(TFixedAssetEditParam tFixedAssetEditParam) {
         // 记录
         TFixedAssetHardwareFlow tFixedAssetHardwareFlow = new TFixedAssetHardwareFlow();
 

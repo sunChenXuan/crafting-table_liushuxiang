@@ -43,7 +43,7 @@
 				</a-menu>
 			</template>
 		</a-dropdown>
-		<div v-if="setDeawer === 'false'" class="setting panel-item" @click="openSetting">
+		<div v-if="setDeawer === 'true'" class="setting panel-item" @click="openSetting">
 			<layout-outlined />
 		</div>
 	</div>
@@ -177,7 +177,7 @@
 			},
 			// 设置抽屉
 			openSetting() {
-				this.settingDialog = false
+				this.settingDialog = true
 			},
 			// 全屏
 			fullscreen() {

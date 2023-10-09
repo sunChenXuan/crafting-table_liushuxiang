@@ -83,10 +83,10 @@
 					<a-space>
 						<a
 							@click="$router.push('fixedassetfile?pkId=' + record.pkId + '&serialNumber=' + record.serialNumber)">文件</a>
-						<a @click="formRefFlow.onOpen(record)" v-if="record.isReturn == 1">借出</a>
-						<a-popconfirm title="确认归还" @confirm="isReturn(record)">
-							<a v-if="record.isReturn == 0">归还</a>
+						<a-popconfirm title="确认归还" @confirm="isReturn(record)" v-if="record.isReturn == 0">
+							<a>归还</a>
 						</a-popconfirm>
+						<a @click="formRefFlow.onOpen(record)" v-else>借出</a>
 						<a @click="formRef.onOpen(record)" v-if="hasPerm('tFixedAssetEdit')">修改</a>
 						<a-popconfirm title="确定要删除吗？" @confirm="deleteTFixedAsset(record)">
 							<a-button type="link" danger size="small" v-if="hasPerm('tFixedAssetDelete')">删除</a-button>

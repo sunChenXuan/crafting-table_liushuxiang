@@ -125,7 +125,7 @@ public class TFixedAssetFlowServiceImpl extends ServiceImpl<TFixedAssetFlowMappe
                 .orderByDesc(TFixedAssetFlow::getPkId)
                 .last("limit 1");
         final TFixedAssetFlow one = this.getOne(queryWrapper);
-        if (one.getLoanee() != null && !one.getLoanee().isEmpty()){
+        if (one != null && one.getLoanee() != null && !one.getLoanee().isEmpty()){
             SysUserIdListParam sysUserIdListParam = new SysUserIdListParam();
             sysUserIdListParam.setIdList(JSONArray.parseArray(one.getLoanee(), String.class));
             one.setLoaneeUserList(sysUserService.getUserListByIdList(sysUserIdListParam));

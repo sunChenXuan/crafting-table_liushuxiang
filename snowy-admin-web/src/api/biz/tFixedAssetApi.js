@@ -28,5 +28,9 @@ export default {
 	// 获取固定资产详情
 	tFixedAssetDetail(data) {
 		return request('detail', data, 'get')
-	}
+	},
+	// 归还
+	isReturn(data) {
+		return request('isReturn', data)
+	},
 }

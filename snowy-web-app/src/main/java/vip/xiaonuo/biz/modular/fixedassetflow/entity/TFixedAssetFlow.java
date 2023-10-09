@@ -13,12 +13,15 @@
 package vip.xiaonuo.biz.modular.fixedassetflow.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonRawValue;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import vip.xiaonuo.common.pojo.CommonEntity;
+import vip.xiaonuo.sys.modular.user.result.SysUserMini;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 固定资产借还流水实体
@@ -59,4 +62,13 @@ public class TFixedAssetFlow extends CommonEntity {
     /** 是否归还 */
     @ApiModelProperty(value = "是否归还", position = 7)
     private Integer isReturn;
+
+    /** 被借出人 */
+    @ApiModelProperty(value = "被借出人", position = 8)
+    @JsonRawValue
+    private String loanee;
+
+    /* ====额外的字段==== */
+    @TableField(exist = false)
+    private List<SysUserMini> loaneeUserList;
 }

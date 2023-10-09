@@ -110,8 +110,25 @@ public class TFixedAssetController {
     @SaCheckPermission("/biz/fixedasset/delete")
     @PostMapping("/biz/fixedasset/delete")
     public CommonResult<String> delete(@RequestBody @Valid @NotEmpty(message = "集合不能为空")
-                                                   CommonValidList<TFixedAssetIdParam> tFixedAssetIdParamList) {
+                                       CommonValidList<TFixedAssetIdParam> tFixedAssetIdParamList) {
         tFixedAssetService.delete(tFixedAssetIdParamList);
+        return CommonResult.ok();
+    }
+
+    /**
+     * 删除固定资产
+     *
+     * @author scx
+     * @date  2023/09/20 17:02
+     */
+    @ApiOperationSupport(order = 4)
+    @ApiOperation("删除固定资产")
+    @CommonLog("删除固定资产")
+    @SaCheckPermission("/biz/fixedasset/isReturn")
+    @PostMapping("/biz/fixedasset/isReturn")
+    public CommonResult<String> isReturn(@RequestBody @Valid @NotEmpty(message = "集合不能为空")
+                                       CommonValidList<TFixedAssetIdParam> tFixedAssetIdParamList) {
+        tFixedAssetService.isReturn(tFixedAssetIdParamList);
         return CommonResult.ok();
     }
 

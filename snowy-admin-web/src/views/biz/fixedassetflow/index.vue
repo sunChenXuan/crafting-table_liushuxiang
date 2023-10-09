@@ -3,11 +3,6 @@
 		<a-form ref="searchFormRef" name="advanced_search" :model="searchFormState" class="ant-advanced-search-form">
 			<a-row :gutter="24">
 				<a-col :span="6">
-					<a-form-item label="固定资产id" name="idxFixedAssetId">
-						<a-input v-model:value="searchFormState.idxFixedAssetId" placeholder="请输入固定资产id" />
-					</a-form-item>
-				</a-col>
-				<a-col :span="6">
 					<a-form-item label="序列号" name="serialNumber">
 						<a-input v-model:value="searchFormState.serialNumber" placeholder="请输入序列号" />
 					</a-form-item>
@@ -36,37 +31,18 @@
 			ref="table"
 			:columns="columns"
 			:data="loadData"
-			:alert="options.alert.show"
 			bordered
-			:row-key="(record) => record.pkId"
-			:tool-config="toolConfig"
-			:row-selection="options.rowSelection"
 		>
-			<template #operator class="table-operator">
-				<a-space>
-					<a-button type="primary" @click="formRef.onOpen()" v-if="hasPerm('tFixedAssetFlowAdd')">
-						<template #icon><plus-outlined /></template>
-						新增
-					</a-button>
-					<xn-batch-delete
-						v-if="hasPerm('tFixedAssetFlowBatchDelete')"
-						:selectedRowKeys="selectedRowKeys"
-						@batchDelete="deleteBatchTFixedAssetFlow"
-					/>
-				</a-space>
-			</template>
 			<template #bodyCell="{ column, record }">
-				<template v-if="column.dataIndex === 'isReturn'">
-					{{ $TOOL.dictTypeData('GENDER', record.isReturn) }}
+				<template v-if="column.dataIndex === 'loaneeUserList'">
+					<a-tag v-for="(user, index) in record.loaneeUserList" color="cyan" :key="index">{{
+						user.name
+					}}</a-tag>
 				</template>
-				<template v-if="column.dataIndex === 'action'">
-					<a-space>
-						<a @click="formRef.onOpen(record)" v-if="hasPerm('tFixedAssetFlowEdit')">编辑</a>
-						<a-divider type="vertical" v-if="hasPerm(['tFixedAssetFlowEdit', 'tFixedAssetFlowDelete'], 'and')" />
-						<a-popconfirm title="确定要删除吗？" @confirm="deleteTFixedAssetFlow(record)">
-							<a-button type="link" danger size="small" v-if="hasPerm('tFixedAssetFlowDelete')">删除</a-button>
-						</a-popconfirm>
-					</a-space>
+				<template v-if="column.dataIndex === 'isReturn'">
+					<a-tag color="cyan">{{
+						record.isReturn == 0 ? "未归还" : "已归还"
+					}}</a-tag>
 				</template>
 			</template>
 		</s-table>
@@ -75,7 +51,6 @@
 </template>
 
 <script setup name="fixedassetflow">
-	import tool from '@/utils/tool'
 	import Form from './form.vue'
 	import tFixedAssetFlowApi from '@/api/biz/tFixedAssetFlowApi'
 	let searchFormState = reactive({})
@@ -90,12 +65,16 @@
 	}
 	const columns = [
 		{
-			title: '固定资产id',
-			dataIndex: 'idxFixedAssetId'
-		},
-		{
 			title: '序列号',
 			dataIndex: 'serialNumber'
+		},
+		{
+			title: '是否归还',
+			dataIndex: 'isReturn'
+		},
+		{
+			title: '借出人',
+			dataIndex: 'loaneeUserList'
 		},
 		{
 			title: '备注',
@@ -109,32 +88,7 @@
 			title: '结束时间',
 			dataIndex: 'endTime'
 		},
-		{
-			title: '是否归还',
-			dataIndex: 'isReturn'
-		},
-		{
-			title: '创建用户',
-			dataIndex: 'createdBy'
-		},
-		{
-			title: '修改时间',
-			dataIndex: 'updatedTime'
-		},
-		{
-			title: '修改用户',
-			dataIndex: 'updatedBy'
-		},
 	]
-	// 操作栏通过权限判断是否显示
-	if (hasPerm(['tFixedAssetFlowEdit', 'tFixedAssetFlowDelete'])) {
-		columns.push({
-			title: '操作',
-			dataIndex: 'action',
-			align: 'center',
-			width: '150px'
-		})
-	}
 	const selectedRowKeys = ref([])
 	// 列表选择配置
 	const options = {

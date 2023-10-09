@@ -63,6 +63,14 @@ public interface TFixedAssetService extends IService<TFixedAsset> {
     void delete(List<TFixedAssetIdParam> tFixedAssetIdParamList);
 
     /**
+     * 删除固定资产
+     *
+     * @author scx
+     * @date  2023/09/20 17:02
+     */
+    void isReturn(List<TFixedAssetIdParam> tFixedAssetIdParamList);
+
+    /**
      * 获取固定资产详情
      *
      * @author scx

@@ -78,6 +78,7 @@ public class TFixedAssetFlowController {
     @SaCheckPermission("/biz/fixedassetflow/add")
     @PostMapping("/biz/fixedassetflow/add")
     public CommonResult<String> add(@RequestBody @Valid TFixedAssetFlowAddParam tFixedAssetFlowAddParam) {
+        tFixedAssetFlowAddParam.setIsReturn(0);
         tFixedAssetFlowService.add(tFixedAssetFlowAddParam);
         return CommonResult.ok();
     }

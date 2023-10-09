@@ -56,5 +56,10 @@ public class TFixedAssetFlowAddParam {
     @ApiModelProperty(value = "是否归还", position = 7)
     private Integer isReturn;
 
+    /** 职工 */
+    @ApiModelProperty(value = "被借出人", required = true, position = 8)
+    @NotBlank(message = "被借出人不能为空")
+    private String loanee;
+
 
 }

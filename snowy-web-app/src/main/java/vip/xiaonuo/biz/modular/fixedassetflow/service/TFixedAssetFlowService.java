@@ -77,4 +77,12 @@ public interface TFixedAssetFlowService extends IService<TFixedAssetFlow> {
      * @date  2023/09/20 17:02
      **/
     TFixedAssetFlow queryEntity(String id);
+
+    /**
+     * 获取固定资产借还流水详情
+     *
+     * @author scx
+     * @date  2023/09/20 17:02
+     */
+    TFixedAssetFlow SelectNewIdxFixedAssetId(String idxFixedAssetId);
 }

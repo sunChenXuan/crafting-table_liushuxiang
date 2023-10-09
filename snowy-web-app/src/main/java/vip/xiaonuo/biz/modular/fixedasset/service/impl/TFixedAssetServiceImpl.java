@@ -29,6 +29,8 @@ import vip.xiaonuo.biz.modular.fixedasset.param.TFixedAssetEditParam;
 import vip.xiaonuo.biz.modular.fixedasset.param.TFixedAssetIdParam;
 import vip.xiaonuo.biz.modular.fixedasset.param.TFixedAssetPageParam;
 import vip.xiaonuo.biz.modular.fixedasset.service.TFixedAssetService;
+import vip.xiaonuo.biz.modular.fixedassetflow.entity.TFixedAssetFlow;
+import vip.xiaonuo.biz.modular.fixedassetflow.service.TFixedAssetFlowService;
 import vip.xiaonuo.biz.modular.fixedassethardwareflow.entity.TFixedAssetHardwareFlow;
 import vip.xiaonuo.biz.modular.fixedassethardwareflow.service.TFixedAssetHardwareFlowService;
 import vip.xiaonuo.common.enums.CommonSortOrderEnum;
@@ -49,6 +51,8 @@ public class TFixedAssetServiceImpl extends ServiceImpl<TFixedAssetMapper, TFixe
 
     @Resource
     private TFixedAssetHardwareFlowService tFixedAssetHardwareFlowService;
+    @Resource
+    private TFixedAssetFlowService tFixedAssetFlowService;
     @Override
     public Page<TFixedAsset> page(TFixedAssetPageParam tFixedAssetPageParam) {
         QueryWrapper<TFixedAsset> queryWrapper = new QueryWrapper<>();
@@ -83,7 +87,13 @@ public class TFixedAssetServiceImpl extends ServiceImpl<TFixedAssetMapper, TFixe
         } else {
             queryWrapper.lambda().orderByAsc(TFixedAsset::getPkId);
         }
-        return this.page(CommonPageRequest.defaultPage(), queryWrapper);
+        final Page<TFixedAsset> page = this.page(CommonPageRequest.defaultPage(), queryWrapper);
+        for (TFixedAsset fa:page.getRecords()){
+            final TFixedAssetFlow tFixedAssetFlow = tFixedAssetFlowService.SelectNewIdxFixedAssetId(fa.getPkId());
+            fa.setIsReturn(tFixedAssetFlow.getIsReturn());
+            fa.setLoaneeUserList(tFixedAssetFlow.getLoaneeUserList());
+        }
+        return page;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -118,6 +128,21 @@ public class TFixedAssetServiceImpl extends ServiceImpl<TFixedAssetMapper, TFixe
     public void delete(List<TFixedAssetIdParam> tFixedAssetIdParamList) {
         // 执行删除
         this.removeByIds(CollStreamUtil.toList(tFixedAssetIdParamList, TFixedAssetIdParam::getPkId));
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public synchronized void isReturn(List<TFixedAssetIdParam> tFixedAssetIdParamList) {
+        // 归还
+        if (tFixedAssetIdParamList.size() == 0){
+            return;
+        }
+        TFixedAssetFlow tFixedAssetFlow = tFixedAssetFlowService.SelectNewIdxFixedAssetId(tFixedAssetIdParamList.get(0).getPkId());
+        if (tFixedAssetFlow.getIsReturn().equals(1)){
+            return;
+        }
+        tFixedAssetFlow.setIsReturn(1);
+        tFixedAssetFlowService.updateById(tFixedAssetFlow);
     }
 
     @Override

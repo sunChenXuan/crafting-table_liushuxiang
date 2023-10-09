@@ -104,7 +104,6 @@ public class TProject extends CommonEntity {
     /* ====额外的字段==== */
     @TableField(exist = false)
     private List<SysUserMini> projectHeadUserList;
-
     @TableField(exist = false)
     private List<SysUserMini> projectUserList;
 }

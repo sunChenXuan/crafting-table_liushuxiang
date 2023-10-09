@@ -61,12 +61,12 @@
 			</template>
 			<template #bodyCell="{ column, record }">
 				<template v-if="column.dataIndex === 'projectHeadUsers'">
-					<a-tag class="mt-3" v-for="(user, index) in record.projectHeadUserList" color="cyan" :key="index">{{
+					<a-tag v-for="(user, index) in record.projectHeadUserList" color="cyan" :key="index">{{
 						user.name
 					}}</a-tag>
 				</template>
 				<template v-if="column.dataIndex === 'projectUsers'">
-					<a-tag class="mt-3" v-for="(user, index) in record.projectUserList" color="cyan" :key="index">{{
+					<a-tag v-for="(user, index) in record.projectUserList" color="cyan" :key="index">{{
 						user.name
 					}}</a-tag>
 				</template>

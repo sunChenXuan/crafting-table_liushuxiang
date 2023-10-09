@@ -28,14 +28,14 @@
 					placeholder="请选择授权结束时间" style="width: 100%" />
 			</a-form-item>
 			<a-form-item label="系统设备提醒人：" name="equipmentSysUsers" v-if="formData.pkId">
-				<a-tag class="mt-3" v-for="(user, index) in formData.equipmentSysUserList" color="cyan" :key="index">{{
+				<a-tag v-for="(user, index) in formData.equipmentSysUserList" color="cyan" :key="index">{{
 					user.name
 				}}</a-tag>
 			</a-form-item>
 			<a-form-item label="设备提醒人：" name="equipmentUsers">
 				<a-button type="primary" @click="openUserSelector">设备提醒人</a-button>
 				<br />
-				<a-tag class="mt-3" v-for="(user, index) in formData.equipmentUserList" color="cyan" :key="index">{{
+				<a-tag v-for="(user, index) in formData.equipmentUserList" color="cyan" :key="index">{{
 					user.name
 				}}</a-tag>
 			</a-form-item>
@@ -72,7 +72,6 @@ const ifSys = ref(false)
 
 // 打开抽屉
 const onOpen = (routePkId, routeProjectName, record) => {
-	// console.log(routePkId, routeProjectName)
 	visible.value = true
 	projectName.value = routeProjectName
 	if (record) {

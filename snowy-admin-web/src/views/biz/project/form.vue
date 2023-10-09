@@ -22,14 +22,14 @@
 			<a-form-item label="负责人：" name="projectHeadUsers">
 				<a-button type="primary" @click="openHeadUserSelector">选择人员</a-button>
 				<br />
-				<a-tag class="mt-3" v-for="(user, index) in formData.projectHeadUserList" color="cyan" :key="index">{{
+				<a-tag v-for="(user, index) in formData.projectHeadUserList" color="cyan" :key="index">{{
 					user.name
 				}}</a-tag>
 			</a-form-item>
 			<a-form-item label="职工：" name="projectUsers">
 				<a-button type="primary" @click="openUserSelector">选择职工</a-button>
 				<br />
-				<a-tag class="mt-3" v-for="(user, index) in formData.projectUserList" color="cyan" :key="index">{{
+				<a-tag v-for="(user, index) in formData.projectUserList" color="cyan" :key="index">{{
 					user.name
 				}}</a-tag>
 			</a-form-item>

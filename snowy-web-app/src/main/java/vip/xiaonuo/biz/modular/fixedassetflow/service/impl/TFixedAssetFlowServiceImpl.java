@@ -16,6 +16,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollStreamUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -31,7 +32,10 @@ import vip.xiaonuo.biz.modular.fixedassetflow.service.TFixedAssetFlowService;
 import vip.xiaonuo.common.enums.CommonSortOrderEnum;
 import vip.xiaonuo.common.exception.CommonException;
 import vip.xiaonuo.common.page.CommonPageRequest;
+import vip.xiaonuo.sys.modular.user.param.SysUserIdListParam;
+import vip.xiaonuo.sys.modular.user.service.SysUserService;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -42,6 +46,8 @@ import java.util.List;
  **/
 @Service
 public class TFixedAssetFlowServiceImpl extends ServiceImpl<TFixedAssetFlowMapper, TFixedAssetFlow> implements TFixedAssetFlowService {
+    @Resource
+    private SysUserService sysUserService;
 
     @Override
     public Page<TFixedAssetFlow> page(TFixedAssetFlowPageParam tFixedAssetFlowPageParam) {
@@ -65,7 +71,15 @@ public class TFixedAssetFlowServiceImpl extends ServiceImpl<TFixedAssetFlowMappe
         } else {
             queryWrapper.lambda().orderByAsc(TFixedAssetFlow::getPkId);
         }
-        return this.page(CommonPageRequest.defaultPage(), queryWrapper);
+        final Page<TFixedAssetFlow> page = this.page(CommonPageRequest.defaultPage(), queryWrapper);
+        for (TFixedAssetFlow faf : page.getRecords()){
+            if (faf.getLoanee() != null && !faf.getLoanee().isEmpty()){
+                SysUserIdListParam sysUserIdListParam = new SysUserIdListParam();
+                sysUserIdListParam.setIdList(JSONArray.parseArray(faf.getLoanee(), String.class));
+                faf.setLoaneeUserList(sysUserService.getUserListByIdList(sysUserIdListParam));
+            }
+        }
+        return page;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -102,5 +116,20 @@ public class TFixedAssetFlowServiceImpl extends ServiceImpl<TFixedAssetFlowMappe
             throw new CommonException("固定资产借还流水不存在，id值为：{}", id);
         }
         return tFixedAssetFlow;
+    }
+
+    @Override
+    public TFixedAssetFlow SelectNewIdxFixedAssetId(String idxFixedAssetId) {
+        QueryWrapper<TFixedAssetFlow> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(TFixedAssetFlow::getIdxFixedAssetId, idxFixedAssetId)
+                .orderByDesc(TFixedAssetFlow::getPkId)
+                .last("limit 1");
+        final TFixedAssetFlow one = this.getOne(queryWrapper);
+        if (one.getLoanee() != null && !one.getLoanee().isEmpty()){
+            SysUserIdListParam sysUserIdListParam = new SysUserIdListParam();
+            sysUserIdListParam.setIdList(JSONArray.parseArray(one.getLoanee(), String.class));
+            one.setLoaneeUserList(sysUserService.getUserListByIdList(sysUserIdListParam));
+        }
+        return one;
     }
 }

@@ -69,12 +69,12 @@
 					{{ $TOOL.dictTypeData('EQUIPMENT_MANUFACTURER', record.equipmentManufacturer) }}
 				</template>
 				<template v-if="column.dataIndex === 'equipmentSysUsers'">
-					<a-tag class="mt-3" v-for="(user, index) in record.equipmentSysUserList" color="cyan" :key="index">{{
+					<a-tag v-for="(user, index) in record.equipmentSysUserList" color="cyan" :key="index">{{
 						user.name
 					}}</a-tag>
 				</template>
 				<template v-if="column.dataIndex === 'equipmentUsers'">
-					<a-tag class="mt-3" v-for="(user, index) in record.equipmentUserList" color="cyan" :key="index">{{
+					<a-tag v-for="(user, index) in record.equipmentUserList" color="cyan" :key="index">{{
 						user.name
 					}}</a-tag>
 				</template>

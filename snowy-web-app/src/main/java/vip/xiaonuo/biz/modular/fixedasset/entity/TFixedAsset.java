@@ -17,8 +17,9 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import vip.xiaonuo.common.pojo.CommonEntity;
+import vip.xiaonuo.sys.modular.user.result.SysUserMini;
 
-import java.util.Date;
+import java.util.List;
 
 /**
  * 固定资产实体
@@ -67,4 +68,10 @@ public class TFixedAsset extends CommonEntity {
     /** 配件 */
     @ApiModelProperty(value = "配件", position = 9)
     private String fixedAssetAccessory;
+
+    /* ====额外的字段==== */
+    @TableField(exist = false)
+    private Integer isReturn;
+    @TableField(exist = false)
+    private List<SysUserMini> loaneeUserList;
 }

@@ -164,7 +164,7 @@ public class GlobalConfigure implements WebMvcConfigurer {
             "/sys/module/**",
             "/sys/spa/**",
             "/sys/role/**",
-            "/sys/user/**",
+//            "/sys/user/**",
             "/dev/config/**",
             "/dev/dict/**",
             "/dev/email/page",

@@ -90,8 +90,10 @@ public class TFixedAssetServiceImpl extends ServiceImpl<TFixedAssetMapper, TFixe
         final Page<TFixedAsset> page = this.page(CommonPageRequest.defaultPage(), queryWrapper);
         for (TFixedAsset fa:page.getRecords()){
             final TFixedAssetFlow tFixedAssetFlow = tFixedAssetFlowService.SelectNewIdxFixedAssetId(fa.getPkId());
-            fa.setIsReturn(tFixedAssetFlow.getIsReturn());
-            fa.setLoaneeUserList(tFixedAssetFlow.getLoaneeUserList());
+            if (tFixedAssetFlow != null) {
+                fa.setIsReturn(tFixedAssetFlow.getIsReturn());
+                fa.setLoaneeUserList(tFixedAssetFlow.getLoaneeUserList());
+            }
         }
         return page;
     }
@@ -138,6 +140,9 @@ public class TFixedAssetServiceImpl extends ServiceImpl<TFixedAssetMapper, TFixe
             return;
         }
         TFixedAssetFlow tFixedAssetFlow = tFixedAssetFlowService.SelectNewIdxFixedAssetId(tFixedAssetIdParamList.get(0).getPkId());
+        if (tFixedAssetFlow == null){
+            return;
+        }
         if (tFixedAssetFlow.getIsReturn().equals(1)){
             return;
         }

@@ -3,7 +3,8 @@
 		@close="onClose">
 		<a-form ref="formRef" :model="formData" :rules="formRules" layout="vertical">
 			<a-form-item label="项目名称：" name="projectName">
-				<a-input v-if="formData.projectName" disabled v-model:value="formData.projectName" placeholder="请在项目管理选择项目" allow-clear />
+				<a-input v-if="formData.projectName" disabled v-model:value="formData.projectName" placeholder="请在项目管理选择项目"
+					allow-clear />
 				<a-input v-else="projectName" disabled v-model:value="projectName" placeholder="请在项目管理选择项目" allow-clear />
 			</a-form-item>
 			<a-form-item label="设备名称：" name="equipmentName">
@@ -108,9 +109,11 @@ const convFormData = () => {
 	let headIds = []
 	formData.value.equipmentSysUsers = headIds
 	let ids = []
-	formData.value.equipmentUserList.forEach((item) => {
-		ids.push(item.id)
-	})
+	if (formData.value.equipmentUserList && formData.value.equipmentUserList.length > 0) {
+		formData.value.equipmentUserList.forEach((item) => {
+			ids.push(item.id)
+		})
+	}
 	formData.value.equipmentUsers = ids
 }
 // 传递设计器需要的API

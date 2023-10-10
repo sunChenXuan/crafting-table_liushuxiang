@@ -17,16 +17,6 @@
 						<a-input v-model:value="searchFormState.projectPhone" placeholder="请输入联系电话" />
 					</a-form-item>
 				</a-col>
-				<!-- <a-col :span="6" v-show="advanced">
-					<a-form-item label="负责人" name="projectHeadUsers">
-						<a-select v-model:value="searchFormState.projectHeadUsers" placeholder="请选择负责人" :options="projectHeadUsersOptions" />
-					</a-form-item>
-				</a-col> -->
-				<!-- <a-col :span="6" v-show="advanced">
-					<a-form-item label="职工" name="projectUsers">
-						<a-select v-model:value="searchFormState.projectUsers" placeholder="请选择职工" :options="projectUsersOptions" />
-					</a-form-item>
-				</a-col> -->
 				<a-col :span="6" v-show="advanced">
 					<a-form-item label="项目开始时间" name="projectStartTime">
 						<a-range-picker v-model:value="searchFormState.projectStartTime" show-time />
@@ -73,11 +63,11 @@
 				<template v-if="column.dataIndex === 'action'">
 					<a-space>
 						<a @click="formRef.onOpen(record)" v-if="hasPerm('tProjectEdit')">编辑</a>
+						<a @click="$router.push('projectfile?pkId=' + record.pkId + '&projectName=' + record.projectName)">文件</a>
+						<a @click="$router.push('equipmentmaintenance?pkId=' + record.pkId + '&projectName=' + record.projectName)">维保</a>
 						<a-popconfirm title="确定要删除吗？" @confirm="deleteTProject(record)">
 							<a-button type="link" danger size="small" v-if="hasPerm('tProjectDelete')">删除</a-button>
 						</a-popconfirm>
-						<a @click="$router.push('projectfile?pkId=' + record.pkId + '&projectName=' + record.projectName)">项目文件</a>
-						<a @click="$router.push('equipmentmaintenance?pkId=' + record.pkId + '&projectName=' + record.projectName)">设备维保</a>
 					</a-space>
 				</template>
 			</template>

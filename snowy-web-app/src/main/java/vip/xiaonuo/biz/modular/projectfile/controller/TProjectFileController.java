@@ -13,7 +13,6 @@
 package vip.xiaonuo.biz.modular.projectfile.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import cn.dev33.satoken.stp.StpUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
@@ -38,7 +37,6 @@ import vip.xiaonuo.dev.modular.file.service.DevFileService;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
-import javax.websocket.server.PathParam;
 
 /**
  * 项目文件控制器

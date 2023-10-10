@@ -12,13 +12,12 @@
  */
 package vip.xiaonuo.biz.modular.computerinspection.entity;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import vip.xiaonuo.common.pojo.CommonEntity;
-
-import java.util.Date;
 
 /**
  * 机房巡检实体

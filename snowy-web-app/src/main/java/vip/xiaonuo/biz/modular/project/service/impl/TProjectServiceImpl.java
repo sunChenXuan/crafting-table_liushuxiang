@@ -22,6 +22,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import vip.xiaonuo.biz.modular.equipmentmaintenance.entity.TEquipmentMaintenance;
+import vip.xiaonuo.biz.modular.equipmentmaintenance.param.TEquipmentMaintenanceIdParam;
+import vip.xiaonuo.biz.modular.equipmentmaintenance.service.TEquipmentMaintenanceService;
 import vip.xiaonuo.biz.modular.project.entity.TProject;
 import vip.xiaonuo.biz.modular.project.mapper.TProjectMapper;
 import vip.xiaonuo.biz.modular.project.param.TProjectAddParam;
@@ -29,6 +32,9 @@ import vip.xiaonuo.biz.modular.project.param.TProjectEditParam;
 import vip.xiaonuo.biz.modular.project.param.TProjectIdParam;
 import vip.xiaonuo.biz.modular.project.param.TProjectPageParam;
 import vip.xiaonuo.biz.modular.project.service.TProjectService;
+import vip.xiaonuo.biz.modular.projectfile.entity.TProjectFile;
+import vip.xiaonuo.biz.modular.projectfile.param.TProjectFileIdParam;
+import vip.xiaonuo.biz.modular.projectfile.service.TProjectFileService;
 import vip.xiaonuo.common.enums.CommonSortOrderEnum;
 import vip.xiaonuo.common.exception.CommonException;
 import vip.xiaonuo.common.page.CommonPageRequest;
@@ -37,6 +43,7 @@ import vip.xiaonuo.sys.modular.user.service.SysUserService;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 项目Service接口实现类
@@ -48,6 +55,10 @@ import java.util.List;
 public class TProjectServiceImpl extends ServiceImpl<TProjectMapper, TProject> implements TProjectService {
     @Resource
     private SysUserService sysUserService;
+    @Resource
+    private TProjectFileService tProjectFileService;
+    @Resource
+    private TEquipmentMaintenanceService tEquipmentMaintenanceService;
 
     @Override
     public Page<TProject> page(TProjectPageParam tProjectPageParam) {
@@ -116,6 +127,34 @@ public class TProjectServiceImpl extends ServiceImpl<TProjectMapper, TProject> i
     public void delete(List<TProjectIdParam> tProjectIdParamList) {
         // 执行删除
         this.removeByIds(CollStreamUtil.toList(tProjectIdParamList, TProjectIdParam::getPkId));
+
+        // 删除文件
+        QueryWrapper<TProjectFile> queryWrapperTProjectFile = new QueryWrapper<>();
+        queryWrapperTProjectFile.lambda().in(
+                TProjectFile::getIdxProjectId, tProjectIdParamList.stream().map(TProjectIdParam::getPkId).collect(Collectors.toList())
+        );
+        final List<TProjectFile> tProjectFiles = tProjectFileService.list(queryWrapperTProjectFile);
+        if (tProjectFiles != null && !tProjectFiles.isEmpty()){
+            tProjectFileService.delete(tProjectFiles.stream().map(i -> {
+                TProjectFileIdParam param = new TProjectFileIdParam();
+                param.setPkId(i.getPkId());
+                return param;
+            }).collect(Collectors.toList()));
+        }
+
+        // 删除维保
+        QueryWrapper<TEquipmentMaintenance> queryWrapperTEquipmentMaintenance = new QueryWrapper<>();
+        queryWrapperTEquipmentMaintenance.lambda().in(
+                TEquipmentMaintenance::getIdxProjectId, tProjectIdParamList.stream().map(TProjectIdParam::getPkId).collect(Collectors.toList())
+        );
+        final List<TEquipmentMaintenance> tEquipmentMaintenances = tEquipmentMaintenanceService.list(queryWrapperTEquipmentMaintenance);
+        if (tEquipmentMaintenances != null && !tEquipmentMaintenances.isEmpty()){
+            tEquipmentMaintenanceService.delete(tEquipmentMaintenances.stream().map(i -> {
+                TEquipmentMaintenanceIdParam param = new TEquipmentMaintenanceIdParam();
+                param.setPkId(i.getPkId());
+                return param;
+            }).collect(Collectors.toList()));
+        }
     }
 
     @Override

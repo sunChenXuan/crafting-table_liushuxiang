@@ -29,9 +29,14 @@ import vip.xiaonuo.biz.modular.fixedasset.param.TFixedAssetEditParam;
 import vip.xiaonuo.biz.modular.fixedasset.param.TFixedAssetIdParam;
 import vip.xiaonuo.biz.modular.fixedasset.param.TFixedAssetPageParam;
 import vip.xiaonuo.biz.modular.fixedasset.service.TFixedAssetService;
+import vip.xiaonuo.biz.modular.fixedassetfile.entity.TFixedAssetFile;
+import vip.xiaonuo.biz.modular.fixedassetfile.param.TFixedAssetFileIdParam;
+import vip.xiaonuo.biz.modular.fixedassetfile.service.TFixedAssetFileService;
 import vip.xiaonuo.biz.modular.fixedassetflow.entity.TFixedAssetFlow;
+import vip.xiaonuo.biz.modular.fixedassetflow.param.TFixedAssetFlowIdParam;
 import vip.xiaonuo.biz.modular.fixedassetflow.service.TFixedAssetFlowService;
 import vip.xiaonuo.biz.modular.fixedassethardwareflow.entity.TFixedAssetHardwareFlow;
+import vip.xiaonuo.biz.modular.fixedassethardwareflow.param.TFixedAssetHardwareFlowIdParam;
 import vip.xiaonuo.biz.modular.fixedassethardwareflow.service.TFixedAssetHardwareFlowService;
 import vip.xiaonuo.common.enums.CommonSortOrderEnum;
 import vip.xiaonuo.common.exception.CommonException;
@@ -39,6 +44,7 @@ import vip.xiaonuo.common.page.CommonPageRequest;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 固定资产Service接口实现类
@@ -53,6 +59,8 @@ public class TFixedAssetServiceImpl extends ServiceImpl<TFixedAssetMapper, TFixe
     private TFixedAssetHardwareFlowService tFixedAssetHardwareFlowService;
     @Resource
     private TFixedAssetFlowService tFixedAssetFlowService;
+    @Resource
+    private TFixedAssetFileService tFixedAssetFileService;
     @Override
     public Page<TFixedAsset> page(TFixedAssetPageParam tFixedAssetPageParam) {
         QueryWrapper<TFixedAsset> queryWrapper = new QueryWrapper<>();
@@ -130,6 +138,54 @@ public class TFixedAssetServiceImpl extends ServiceImpl<TFixedAssetMapper, TFixe
     public void delete(List<TFixedAssetIdParam> tFixedAssetIdParamList) {
         // 执行删除
         this.removeByIds(CollStreamUtil.toList(tFixedAssetIdParamList, TFixedAssetIdParam::getPkId));
+
+        {
+            // 删除文件
+            QueryWrapper<TFixedAssetFile> queryWrapper = new QueryWrapper<>();
+            queryWrapper.lambda().in(
+                    TFixedAssetFile::getIdxFixedAssetId, tFixedAssetIdParamList.stream().map(TFixedAssetIdParam::getPkId).collect(Collectors.toList())
+            );
+            final List<TFixedAssetFile> list = tFixedAssetFileService.list(queryWrapper);
+            if (list != null && !list.isEmpty()){
+                tFixedAssetFileService.delete(list.stream().map(i -> {
+                    TFixedAssetFileIdParam param = new TFixedAssetFileIdParam();
+                    param.setPkId(i.getPkId());
+                    return param;
+                }).collect(Collectors.toList()));
+            }
+        }
+
+        {
+            // 删除借还流水
+            QueryWrapper<TFixedAssetFlow> queryWrapper = new QueryWrapper<>();
+            queryWrapper.lambda().in(
+                    TFixedAssetFlow::getIdxFixedAssetId, tFixedAssetIdParamList.stream().map(TFixedAssetIdParam::getPkId).collect(Collectors.toList())
+            );
+            final List<TFixedAssetFlow> list = tFixedAssetFlowService.list(queryWrapper);
+            if (list != null && !list.isEmpty()){
+                tFixedAssetFlowService.delete(list.stream().map(i -> {
+                    TFixedAssetFlowIdParam param = new TFixedAssetFlowIdParam();
+                    param.setPkId(i.getPkId());
+                    return param;
+                }).collect(Collectors.toList()));
+            }
+        }
+
+        {
+            // 删除硬件流水
+            QueryWrapper<TFixedAssetHardwareFlow> queryWrapper = new QueryWrapper<>();
+            queryWrapper.lambda().in(
+                    TFixedAssetHardwareFlow::getIdxFixedAssetId, tFixedAssetIdParamList.stream().map(TFixedAssetIdParam::getPkId).collect(Collectors.toList())
+            );
+            final List<TFixedAssetHardwareFlow> list = tFixedAssetHardwareFlowService.list(queryWrapper);
+            if (list != null && !list.isEmpty()){
+                tFixedAssetHardwareFlowService.delete(list.stream().map(i -> {
+                    TFixedAssetHardwareFlowIdParam param = new TFixedAssetHardwareFlowIdParam();
+                    param.setPkId(i.getPkId());
+                    return param;
+                }).collect(Collectors.toList()));
+            }
+        }
     }
 
     @Transactional(rollbackFor = Exception.class)

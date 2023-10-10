@@ -12,14 +12,14 @@
  */
 package vip.xiaonuo.biz.modular.equipmentmaintenancefile.entity;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import vip.xiaonuo.common.pojo.CommonEntity;
 import vip.xiaonuo.dev.modular.file.entity.DevFile;
-
-import java.util.Date;
 
 /**
  * 设备维保文件实体

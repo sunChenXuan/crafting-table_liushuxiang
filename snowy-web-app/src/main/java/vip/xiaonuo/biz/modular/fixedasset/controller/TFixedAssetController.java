@@ -122,8 +122,8 @@ public class TFixedAssetController {
      * @date  2023/09/20 17:02
      */
     @ApiOperationSupport(order = 4)
-    @ApiOperation("删除固定资产")
-    @CommonLog("删除固定资产")
+    @ApiOperation("归还固定资产")
+    @CommonLog("归还固定资产")
     @SaCheckPermission("/biz/fixedasset/isReturn")
     @PostMapping("/biz/fixedasset/isReturn")
     public CommonResult<String> isReturn(@RequestBody @Valid @NotEmpty(message = "集合不能为空")

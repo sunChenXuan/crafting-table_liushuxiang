@@ -17,7 +17,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
-import java.util.Date;
 
 /**
  * 项目文件编辑参数

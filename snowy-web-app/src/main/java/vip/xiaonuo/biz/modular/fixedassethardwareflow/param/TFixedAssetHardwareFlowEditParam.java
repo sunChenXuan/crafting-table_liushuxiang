@@ -17,7 +17,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
-import java.util.Date;
 
 /**
  * 固定资产硬件流水编辑参数

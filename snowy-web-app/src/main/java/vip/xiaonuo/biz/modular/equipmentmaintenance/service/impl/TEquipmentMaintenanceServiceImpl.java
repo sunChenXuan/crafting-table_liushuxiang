@@ -29,6 +29,9 @@ import vip.xiaonuo.biz.modular.equipmentmaintenance.param.TEquipmentMaintenanceE
 import vip.xiaonuo.biz.modular.equipmentmaintenance.param.TEquipmentMaintenanceIdParam;
 import vip.xiaonuo.biz.modular.equipmentmaintenance.param.TEquipmentMaintenancePageParam;
 import vip.xiaonuo.biz.modular.equipmentmaintenance.service.TEquipmentMaintenanceService;
+import vip.xiaonuo.biz.modular.equipmentmaintenancefile.entity.TEquipmentMaintenanceFile;
+import vip.xiaonuo.biz.modular.equipmentmaintenancefile.param.TEquipmentMaintenanceFileIdParam;
+import vip.xiaonuo.biz.modular.equipmentmaintenancefile.service.TEquipmentMaintenanceFileService;
 import vip.xiaonuo.biz.modular.project.entity.TProject;
 import vip.xiaonuo.biz.modular.project.service.TProjectService;
 import vip.xiaonuo.common.enums.CommonSortOrderEnum;
@@ -39,6 +42,7 @@ import vip.xiaonuo.sys.modular.user.service.SysUserService;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 设备维保Service接口实现类
@@ -52,6 +56,8 @@ public class TEquipmentMaintenanceServiceImpl extends ServiceImpl<TEquipmentMain
     private SysUserService sysUserService;
     @Resource
     private TProjectService tProjectService;
+    @Resource
+    private TEquipmentMaintenanceFileService tEquipmentMaintenanceFileService;
 
     @Override
     public Page<TEquipmentMaintenance> page(TEquipmentMaintenancePageParam tEquipmentMaintenancePageParam) {
@@ -129,6 +135,22 @@ public class TEquipmentMaintenanceServiceImpl extends ServiceImpl<TEquipmentMain
     public void delete(List<TEquipmentMaintenanceIdParam> tEquipmentMaintenanceIdParamList) {
         // 执行删除
         this.removeByIds(CollStreamUtil.toList(tEquipmentMaintenanceIdParamList, TEquipmentMaintenanceIdParam::getPkId));
+
+        {
+            // 删除文件
+            QueryWrapper<TEquipmentMaintenanceFile> queryWrapper = new QueryWrapper<>();
+            queryWrapper.lambda().in(
+                    TEquipmentMaintenanceFile::getIdxEquipmentMaintenanceId, tEquipmentMaintenanceIdParamList.stream().map(TEquipmentMaintenanceIdParam::getPkId).collect(Collectors.toList())
+            );
+            final List<TEquipmentMaintenanceFile> list = tEquipmentMaintenanceFileService.list(queryWrapper);
+            if (list != null && !list.isEmpty()){
+                tEquipmentMaintenanceFileService.delete(list.stream().map(i -> {
+                    TEquipmentMaintenanceFileIdParam param = new TEquipmentMaintenanceFileIdParam();
+                    param.setPkId(i.getPkId());
+                    return param;
+                }).collect(Collectors.toList()));
+            }
+        }
     }
 
     @Override

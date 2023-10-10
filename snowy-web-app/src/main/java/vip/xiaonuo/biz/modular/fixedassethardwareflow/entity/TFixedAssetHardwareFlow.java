@@ -12,13 +12,13 @@
  */
 package vip.xiaonuo.biz.modular.fixedassethardwareflow.entity;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import vip.xiaonuo.common.pojo.CommonEntity;
-
-import java.util.Date;
 
 /**
  * 固定资产硬件流水实体

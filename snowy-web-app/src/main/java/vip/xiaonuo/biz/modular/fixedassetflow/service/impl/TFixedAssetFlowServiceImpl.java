@@ -36,6 +36,7 @@ import vip.xiaonuo.sys.modular.user.param.SysUserIdListParam;
 import vip.xiaonuo.sys.modular.user.service.SysUserService;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -86,6 +87,7 @@ public class TFixedAssetFlowServiceImpl extends ServiceImpl<TFixedAssetFlowMappe
     @Override
     public void add(TFixedAssetFlowAddParam tFixedAssetFlowAddParam) {
         TFixedAssetFlow tFixedAssetFlow = BeanUtil.toBean(tFixedAssetFlowAddParam, TFixedAssetFlow.class);
+        tFixedAssetFlow.setStartTime(new Date());
         this.save(tFixedAssetFlow);
     }
 

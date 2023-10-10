@@ -55,11 +55,11 @@
 						user.name
 					}}</a-tag>
 				</template>
-				<template v-if="column.dataIndex === 'projectUsers'">
+				<!-- <template v-if="column.dataIndex === 'projectUsers'">
 					<a-tag v-for="(user, index) in record.projectUserList" color="cyan" :key="index">{{
 						user.name
 					}}</a-tag>
-				</template>
+				</template> -->
 				<template v-if="column.dataIndex === 'action'">
 					<a-space>
 						<a @click="formRef.onOpen(record)" v-if="hasPerm('tProjectEdit')">编辑</a>
@@ -110,10 +110,10 @@ const columns = [
 		title: '负责人',
 		dataIndex: 'projectHeadUsers'
 	},
-	{
-		title: '职工',
-		dataIndex: 'projectUsers'
-	},
+	// {
+	// 	title: '职工',
+	// 	dataIndex: 'projectUsers'
+	// },
 	{
 		title: '项目开始时间',
 		dataIndex: 'projectStartTime'
@@ -129,7 +129,7 @@ if (hasPerm(['tProjectEdit', 'tProjectDelete'])) {
 		title: '操作',
 		dataIndex: 'action',
 		align: 'center',
-		width: '250px'
+		width: '200px'
 	})
 }
 const selectedRowKeys = ref([])

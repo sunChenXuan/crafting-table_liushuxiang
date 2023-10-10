@@ -86,4 +86,8 @@ public class TEquipmentMaintenance extends CommonEntity {
     private List<SysUserMini> equipmentUserList;
     @TableField(exist = false)
     private String projectName;
+    @TableField(exist = false)
+    private String projectContacts;
+    @TableField(exist = false)
+    private String projectPhone;
 }

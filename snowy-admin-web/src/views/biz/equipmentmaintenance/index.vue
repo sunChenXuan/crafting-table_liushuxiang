@@ -116,6 +116,14 @@ const columns = [
 		dataIndex: 'projectName'
 	},
 	{
+		title: '联系人',
+		dataIndex: 'projectContacts'
+	},
+	{
+		title: '联系电话',
+		dataIndex: 'projectPhone'
+	},
+	{
 		title: '设备名称',
 		dataIndex: 'equipmentName'
 	},
@@ -139,10 +147,10 @@ const columns = [
 		title: '授权结束时间',
 		dataIndex: 'authorizationEndTime'
 	},
-	{
-		title: '系统设备提醒人',
-		dataIndex: 'equipmentSysUsers'
-	},
+	// {
+	// 	title: '系统设备提醒人',
+	// 	dataIndex: 'equipmentSysUsers'
+	// },
 	{
 		title: '设备提醒人',
 		dataIndex: 'equipmentUsers'

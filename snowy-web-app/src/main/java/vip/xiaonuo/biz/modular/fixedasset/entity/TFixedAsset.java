@@ -12,6 +12,7 @@
  */
 package vip.xiaonuo.biz.modular.fixedasset.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -21,6 +22,7 @@ import lombok.Setter;
 import vip.xiaonuo.common.pojo.CommonEntity;
 import vip.xiaonuo.sys.modular.user.result.SysUserMini;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -47,28 +49,32 @@ public class TFixedAsset extends CommonEntity {
     @ApiModelProperty(value = "设备类型", position = 3)
     private String fixedAssetType;
 
+    /** 采购时间 */
+    @ApiModelProperty(value = "采购时间", position = 4)
+    private Date purchaseTime;
+
     /** cpu */
-    @ApiModelProperty(value = "cpu", position = 4)
+    @ApiModelProperty(value = "cpu", position = 5)
     private String fixedAssetCpu;
 
     /** 内存 */
-    @ApiModelProperty(value = "内存", position = 5)
+    @ApiModelProperty(value = "内存", position = 6)
     private String fixedAssetMemory;
 
     /** 固态硬盘 */
-    @ApiModelProperty(value = "固态硬盘", position = 6)
+    @ApiModelProperty(value = "固态硬盘", position = 7)
     private String fixedAssetSsd;
 
     /** 机械硬盘 */
-    @ApiModelProperty(value = "机械硬盘", position = 7)
+    @ApiModelProperty(value = "机械硬盘", position = 8)
     private String fixedAssetDisk;
 
     /** 显卡 */
-    @ApiModelProperty(value = "显卡", position = 8)
+    @ApiModelProperty(value = "显卡", position = 9)
     private String fixedAssetGpu;
 
     /** 配件 */
-    @ApiModelProperty(value = "配件", position = 9)
+    @ApiModelProperty(value = "配件", position = 10)
     private String fixedAssetAccessory;
 
     /* ====额外的字段==== */

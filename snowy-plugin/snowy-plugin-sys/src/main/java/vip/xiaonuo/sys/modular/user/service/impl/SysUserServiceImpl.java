@@ -1542,6 +1542,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public List<SysUserMini> getUserListByIdList(SysUserIdListParam sysUserIdListParam) {
+        if (sysUserIdListParam.getIdList().isEmpty()){
+            return new ArrayList<>();
+        }
         LambdaQueryWrapper<SysUser> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         // 只查询部分字段
         lambdaQueryWrapper.select(SysUser::getId, SysUser::getOrgId, SysUser::getAccount, SysUser::getName, SysUser::getSortCode)

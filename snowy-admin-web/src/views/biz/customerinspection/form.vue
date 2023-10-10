@@ -1,11 +1,6 @@
 <template>
-	<xn-form-container
-		:title="formData.pkId ? '编辑客户巡检' : '增加客户巡检'"
-		:width="700"
-		:visible="visible"
-		:destroy-on-close="true"
-		@close="onClose"
-	>
+	<xn-form-container :title="formData.pkId ? '编辑客户巡检' : '增加客户巡检'" :width="700" :visible="visible" :destroy-on-close="true"
+		@close="onClose">
 		<a-form ref="formRef" :model="formData" :rules="formRules" layout="vertical">
 			<a-form-item label="项目名称：" name="inspectionName">
 				<a-input v-model:value="formData.inspectionName" placeholder="请输入项目名称" allow-clear />
@@ -20,7 +15,8 @@
 				<a-input v-model:value="formData.phone" placeholder="请输入联系电话" allow-clear />
 			</a-form-item>
 			<a-form-item label="开始时间：" name="startTime">
-				<a-date-picker v-model:value="formData.startTime" value-format="YYYY-MM-DD HH:mm:ss" show-time placeholder="请选择开始时间" style="width: 100%" />
+				<a-date-picker v-model:value="formData.startTime" value-format="YYYY-MM-DD HH:mm:ss" show-time
+					placeholder="请选择开始时间" style="width: 100%" />
 			</a-form-item>
 			<a-form-item label="经度：" name="longitude">
 				<a-input v-model:value="formData.longitude" placeholder="请输入经度" allow-clear />
@@ -35,7 +31,8 @@
 				<a-input v-model:value="formData.createdBy" placeholder="请输入创建用户" allow-clear />
 			</a-form-item>
 			<a-form-item label="修改时间：" name="updatedTime">
-				<a-date-picker v-model:value="formData.updatedTime" value-format="YYYY-MM-DD HH:mm:ss" show-time placeholder="请选择修改时间" style="width: 100%" />
+				<a-date-picker v-model:value="formData.updatedTime" value-format="YYYY-MM-DD HH:mm:ss" show-time
+					placeholder="请选择修改时间" style="width: 100%" />
 			</a-form-item>
 			<a-form-item label="修改用户：" name="updatedBy">
 				<a-input v-model:value="formData.updatedBy" placeholder="请输入修改用户" allow-clear />
@@ -49,55 +46,58 @@
 </template>
 
 <script setup name="tCustomerInspectionForm">
-	import tool from '@/utils/tool'
-	import { cloneDeep } from 'lodash-es'
-	import { required } from '@/utils/formRules'
-	import tCustomerInspectionApi from '@/api/biz/tCustomerInspectionApi'
-	// 抽屉状态
-	const visible = ref(false)
-	const emit = defineEmits({ successful: null })
-	const formRef = ref()
-	// 表单数据
-	const formData = ref({})
-	const submitLoading = ref(false)
-	const inspectionTypeOptions = ref([])
+import tool from '@/utils/tool'
+import { cloneDeep } from 'lodash-es'
+import { required, rules } from '@/utils/formRules'
+import tCustomerInspectionApi from '@/api/biz/tCustomerInspectionApi'
+// 抽屉状态
+const visible = ref(false)
+const emit = defineEmits({ successful: null })
+const formRef = ref()
+// 表单数据
+const formData = ref({})
+const submitLoading = ref(false)
+const inspectionTypeOptions = ref([])
 
-	// 打开抽屉
-	const onOpen = (record) => {
-		visible.value = true
-		if (record) {
-			let recordData = cloneDeep(record)
-			formData.value = Object.assign({}, recordData)
-		}
-		inspectionTypeOptions.value = tool.dictList('GENDER')
+// 打开抽屉
+const onOpen = (record) => {
+	visible.value = true
+	if (record) {
+		let recordData = cloneDeep(record)
+		formData.value = Object.assign({}, recordData)
 	}
-	// 关闭抽屉
-	const onClose = () => {
-		formRef.value.resetFields()
-		formData.value = {}
-		visible.value = false
-	}
-	// 默认要校验的
-	const formRules = {
-	}
-	// 验证并提交数据
-	const onSubmit = () => {
-		formRef.value.validate().then(() => {
-			submitLoading.value = true
-			const formDataParam = cloneDeep(formData.value)
-			tCustomerInspectionApi
-				.tCustomerInspectionSubmitForm(formDataParam, formDataParam.pkId)
-				.then(() => {
-					onClose()
-					emit('successful')
-				})
-				.finally(() => {
-					submitLoading.value = false
-				})
-		})
-	}
-	// 抛出函数
-	defineExpose({
-		onOpen
+	inspectionTypeOptions.value = tool.dictList('GENDER')
+}
+// 关闭抽屉
+const onClose = () => {
+	formRef.value.resetFields()
+	formData.value = {}
+	visible.value = false
+}
+// 默认要校验的
+const formRules = {
+	phone: [
+		required('请输入联系电话'), rules.phone
+	],
+}
+// 验证并提交数据
+const onSubmit = () => {
+	formRef.value.validate().then(() => {
+		submitLoading.value = true
+		const formDataParam = cloneDeep(formData.value)
+		tCustomerInspectionApi
+			.tCustomerInspectionSubmitForm(formDataParam, formDataParam.pkId)
+			.then(() => {
+				onClose()
+				emit('successful')
+			})
+			.finally(() => {
+				submitLoading.value = false
+			})
 	})
+}
+// 抛出函数
+defineExpose({
+	onOpen
+})
 </script>

@@ -7,14 +7,6 @@
 			<a-form-item label="备注：" name="remark">
 				<a-input v-model:value="formData.remark" placeholder="请输入备注" allow-clear />
 			</a-form-item>
-			<a-form-item label="开始时间：" name="startTime">
-				<a-date-picker v-model:value="formData.startTime" value-format="YYYY-MM-DD HH:mm:ss" show-time
-					placeholder="请选择开始时间" style="width: 100%" />
-			</a-form-item>
-			<a-form-item label="结束时间：" name="endTime">
-				<a-date-picker v-model:value="formData.endTime" value-format="YYYY-MM-DD HH:mm:ss" show-time
-					placeholder="请选择结束时间" style="width: 100%" />
-			</a-form-item>
 			<a-form-item label="选择借出人" name="createdBy">
 				<a-button type="primary" @click="openUserSelector">选择借出人</a-button>
 				<br />
@@ -38,6 +30,7 @@ import { required } from '@/utils/formRules'
 import tFixedAssetFlowApi from '@/api/biz/tFixedAssetFlowApi'
 import userApi from '@/api/sys/userApi'
 import userCenterApi from '@/api/sys/userCenterApi'
+import { message } from 'ant-design-vue'
 // 抽屉状态
 const visible = ref(false)
 const emit = defineEmits({ successful: null })
@@ -63,15 +56,15 @@ const onClose = () => {
 // 默认要校验的
 const formRules = {
 	idxFixedAssetId: [required('请输入固定资产id')],
-	serialNumber: [required('请输入序列号')],
 	remark: [required('请输入备注')],
 }
 // 验证并提交数据
 const onSubmit = () => {
 	formRef.value.validate().then(() => {
 		submitLoading.value = true
-		if (formData.value.loanee.length < 1) {
+		if (!formData.value.loanee || formData.value.loanee.length < 1) {
 			message.warning('未选择借出人')
+			submitLoading.value = false
 			return
 		}
 		convFormData()

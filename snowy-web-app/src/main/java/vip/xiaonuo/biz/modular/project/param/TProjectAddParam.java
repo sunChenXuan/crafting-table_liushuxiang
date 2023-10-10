@@ -56,18 +56,15 @@ public class TProjectAddParam {
     private String projectHeadUsers;
 
     /** 职工 */
-    @ApiModelProperty(value = "职工", required = true, position = 7)
-    @NotBlank(message = "projectUsers不能为空")
+    @ApiModelProperty(value = "职工", position = 7)
     private String projectUsers;
 
     /** 项目开始时间 */
-    @ApiModelProperty(value = "项目开始时间", required = true, position = 11)
-    @NotNull(message = "projectStartTime不能为空")
+    @ApiModelProperty(value = "项目开始时间", position = 11)
     private Date projectStartTime;
 
     /** 项目结束时间 */
-    @ApiModelProperty(value = "项目结束时间", required = true, position = 12)
-    @NotNull(message = "projectEndTime不能为空")
+    @ApiModelProperty(value = "项目结束时间", position = 12)
     private Date projectEndTime;
 
 

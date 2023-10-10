@@ -16,6 +16,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
+
 /**
  * 固定资产添加参数
  *
@@ -57,6 +59,10 @@ public class TFixedAssetAddParam {
     /** 配件 */
     @ApiModelProperty(value = "配件", position = 9)
     private String fixedAssetAccessory;
+
+    /** 采购时间 */
+    @ApiModelProperty(value = "采购时间", position = 4)
+    private Date purchaseTime;
 
 
 }

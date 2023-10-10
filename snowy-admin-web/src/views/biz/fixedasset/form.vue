@@ -8,6 +8,10 @@
 			<a-form-item label="设备类型：" name="fixedAssetType">
 				<a-select v-model:value="formData.fixedAssetType" placeholder="请选择设备类型" :options="fixedAssetTypeOptions" />
 			</a-form-item>
+			<a-form-item label="采购时间" name="purchaseTime">
+				<a-date-picker v-model:value="formData.purchaseTime" value-format="YYYY-MM-DD HH:mm:ss" show-time
+					placeholder="请选择采购时间" style="width: 100%" />
+			</a-form-item>
 			<a-form-item label="cpu：" name="fixedAssetCpu">
 				<a-input v-model:value="formData.fixedAssetCpu" placeholder="请输入cpu" allow-clear />
 			</a-form-item>
@@ -43,6 +47,7 @@
 import tool from '@/utils/tool'
 import { cloneDeep } from 'lodash-es'
 import tFixedAssetApi from '@/api/biz/tFixedAssetApi'
+import { required } from '@/utils/formRules'
 // 抽屉状态
 const visible = ref(false)
 const emit = defineEmits({ successful: null })
@@ -69,6 +74,9 @@ const onClose = () => {
 }
 // 默认要校验的
 const formRules = {
+	serialNumber: [required('请输入序列号')],
+	fixedAssetType: [required('请选择设备类型')],
+	purchaseTime: [required('请选择采购时间')],
 }
 // 验证并提交数据
 const onSubmit = () => {

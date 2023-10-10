@@ -43,6 +43,7 @@ import vip.xiaonuo.common.exception.CommonException;
 import vip.xiaonuo.common.page.CommonPageRequest;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -202,6 +203,7 @@ public class TFixedAssetServiceImpl extends ServiceImpl<TFixedAssetMapper, TFixe
         if (tFixedAssetFlow.getIsReturn().equals(1)){
             return;
         }
+        tFixedAssetFlow.setEndTime(new Date());
         tFixedAssetFlow.setIsReturn(1);
         tFixedAssetFlowService.updateById(tFixedAssetFlow);
     }

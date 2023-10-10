@@ -67,16 +67,20 @@
 			</template>
 			<template #bodyCell="{ column, record }">
 				<template v-if="column.dataIndex === 'loaneeUserList'">
-					<a-tag v-for="(user, index) in record.loaneeUserList" color="cyan" :key="index">{{
-						user.name
-					}}</a-tag>
+					<a-tag v-if="record.loaneeUserList" v-for="(user, index) in record.loaneeUserList" color="cyan"
+						:key="index">{{
+							user.name
+						}}</a-tag>
+					<a-tag v-else color="cyan">
+						无
+					</a-tag>
 				</template>
 				<template v-if="column.dataIndex === 'fixedAssetType'">
 					{{ $TOOL.dictTypeData('FIXED_ASSET_TYPE', record.fixedAssetType) }}
 				</template>
 				<template v-if="column.dataIndex === 'isReturn'">
 					<a-tag color="cyan">{{
-						record.isReturn == 0 ? "未归还" : "已归还"
+						record.isReturn == 0 ? "已借出" : "未借出"
 					}}</a-tag>
 				</template>
 				<template v-if="column.dataIndex === 'action'">
@@ -87,7 +91,7 @@
 							<a>归还</a>
 						</a-popconfirm>
 						<a @click="formRefFlow.onOpen(record)" v-else>借出</a>
-						<a @click="formRef.onOpen(record)" v-if="hasPerm('tFixedAssetEdit')">修改</a>
+						<a @click="formRef.onOpen(record)" v-if="hasPerm('tFixedAssetEdit')">配置调整</a>
 						<a-popconfirm title="确定要删除吗？" @confirm="deleteTFixedAsset(record)">
 							<a-button type="link" danger size="small" v-if="hasPerm('tFixedAssetDelete')">删除</a-button>
 						</a-popconfirm>
@@ -119,6 +123,7 @@ const toggleAdvanced = () => {
 const columns = [
 	{
 		title: '序列号',
+		ellipsis: true,
 		dataIndex: 'serialNumber'
 	},
 	{
@@ -126,36 +131,47 @@ const columns = [
 		dataIndex: 'fixedAssetType'
 	},
 	{
-		title: '是否归还',
+		title: '是否借出',
 		dataIndex: 'isReturn'
 	},
 	{
-		title: '最近借出',
+		title: '最近领用',
 		dataIndex: 'loaneeUserList'
 	},
 	{
 		title: 'cpu',
+		ellipsis: true,
 		dataIndex: 'fixedAssetCpu'
 	},
 	{
 		title: '内存',
+		ellipsis: true,
 		dataIndex: 'fixedAssetMemory'
 	},
 	{
 		title: '固态硬盘',
+		ellipsis: true,
 		dataIndex: 'fixedAssetSsd'
 	},
 	{
 		title: '机械硬盘',
+		ellipsis: true,
 		dataIndex: 'fixedAssetDisk'
 	},
 	{
 		title: '显卡',
+		ellipsis: true,
 		dataIndex: 'fixedAssetGpu'
 	},
 	{
 		title: '配件',
+		ellipsis: true,
 		dataIndex: 'fixedAssetAccessory'
+	},
+	{
+		title: '采购时间',
+		ellipsis: true,
+		dataIndex: 'purchaseTime'
 	},
 ]
 // 操作栏通过权限判断是否显示

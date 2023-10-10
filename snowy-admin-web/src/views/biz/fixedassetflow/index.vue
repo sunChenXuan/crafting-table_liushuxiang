@@ -78,6 +78,7 @@
 		},
 		{
 			title: '备注',
+			ellipsis: true,
 			dataIndex: 'remark'
 		},
 		{

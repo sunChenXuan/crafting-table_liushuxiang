@@ -17,6 +17,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import java.util.Date;
 
 /**
  * 固定资产编辑参数
@@ -67,8 +68,12 @@ public class TFixedAssetEditParam {
 
 
     /** 修改用户 */
-    @ApiModelProperty(value = "修改备注", position = 14)
+    @ApiModelProperty(value = "修改备注", required = true, position = 14)
     @NotBlank(message = "修改备注不能为空")
     private String remark;
+
+    /** 采购时间 */
+    @ApiModelProperty(value = "采购时间", position = 4)
+    private Date purchaseTime;
 
 }

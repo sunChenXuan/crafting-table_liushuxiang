@@ -101,6 +101,8 @@ public class TEquipmentMaintenanceServiceImpl extends ServiceImpl<TEquipmentMain
         for (TEquipmentMaintenance em : page.getRecords()) {
             final TProject tProject = tProjectService.queryEntity(em.getIdxProjectId());
             em.setProjectName(tProject.getProjectName());
+            em.setProjectContacts(tProject.getProjectContacts());
+            em.setProjectPhone(tProject.getProjectPhone());
             em.setEquipmentSysUsers(tProject.getProjectHeadUsers());
             SysUserIdListParam sysUserIdListParam = new SysUserIdListParam();
             if (em.getEquipmentUsers() != null && !em.getEquipmentUsers().isEmpty()){

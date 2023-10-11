@@ -13,27 +13,17 @@
 				</a-col>
 			</a-row>
 		</a-form>
-		<s-table
-			ref="table"
-			:columns="columns"
-			:data="loadData"
-			:alert="options.alert.show"
-			bordered
-			:row-key="(record) => record.pkId"
-			:tool-config="toolConfig"
-			:row-selection="options.rowSelection"
-		>
+		<s-table ref="table" :columns="columns" :data="loadData" :alert="options.alert.show" bordered
+			:row-key="(record) => record.pkId" :tool-config="toolConfig" :row-selection="options.rowSelection">
 			<template #operator class="table-operator">
 				<a-space>
-					<a-button type="primary" @click="formRef.onOpen(route.query.pkId)" v-if="hasPerm('tFixedAssetFileAdd') && route.query.pkId">
+					<a-button type="primary" @click="formRef.onOpen(route.query.pkId)"
+						v-if="hasPerm('tFixedAssetFileAdd') && route.query.pkId">
 						<template #icon><plus-outlined /></template>
 						上传文件
 					</a-button>
-					<xn-batch-delete
-						v-if="hasPerm('tFixedAssetFileBatchDelete')"
-						:selectedRowKeys="selectedRowKeys"
-						@batchDelete="deleteBatchTFixedAssetFile"
-					/>
+					<xn-batch-delete v-if="hasPerm('tFixedAssetFileBatchDelete')" :selectedRowKeys="selectedRowKeys"
+						@batchDelete="deleteBatchTFixedAssetFile" />
 				</a-space>
 			</template>
 			<template #bodyCell="{ column, record }">
@@ -74,7 +64,7 @@
 				<template v-if="column.dataIndex === 'action'">
 					<a-space>
 						<a @click="formRef.onOpen(route.query, record)" v-if="hasPerm('tFixedAssetFileEdit')">编辑</a>
-						<a-divider type="vertical" v-if="hasPerm(['tFixedAssetFileEdit', 'tFixedAssetFileDelete'], 'and')" />
+						<a :href="record.devFile.downloadPath" target="_blank">下载</a>
 						<a-popconfirm title="确定要删除吗？" @confirm="deleteTFixedAssetFile(record)">
 							<a-button type="link" danger size="small" v-if="hasPerm('tFixedAssetFileDelete')">删除</a-button>
 						</a-popconfirm>

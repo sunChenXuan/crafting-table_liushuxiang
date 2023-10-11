@@ -64,9 +64,8 @@
 				<template v-if="column.dataIndex === 'action'">
 					<a-space>
 						<a @click="formRef.onOpen(route.query, record)"
-							v-if="hasPerm('tEquipmentMaintenanceFileEdit')">编辑</a>
-						<a-divider type="vertical"
-							v-if="hasPerm(['tEquipmentMaintenanceFileEdit', 'tEquipmentMaintenanceFileDelete'], 'and')" />
+							v-if="hasPerm('tEquipmentMaintenanceFileEdit')">修改</a>
+						<a :href="record.devFile.downloadPath" target="_blank">下载</a>
 						<a-popconfirm title="确定要删除吗？" @confirm="deleteTEquipmentMaintenanceFile(record)">
 							<a-button type="link" danger size="small"
 								v-if="hasPerm('tEquipmentMaintenanceFileDelete')">删除</a-button>

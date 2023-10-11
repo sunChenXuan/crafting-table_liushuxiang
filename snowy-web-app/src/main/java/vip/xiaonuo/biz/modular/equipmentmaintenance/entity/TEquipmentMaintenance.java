@@ -22,7 +22,6 @@ import lombok.Setter;
 import vip.xiaonuo.common.pojo.CommonEntity;
 import vip.xiaonuo.sys.modular.user.result.SysUserMini;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 

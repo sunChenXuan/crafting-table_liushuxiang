@@ -53,7 +53,8 @@
 			:row-key="(record) => record.pkId" :tool-config="toolConfig" :row-selection="options.rowSelection">
 			<template #operator class="table-operator">
 				<a-space>
-					<a-button type="primary" @click="formRef.onOpen(route.query.pkId, route.query.projectName)" v-if="hasPerm('tEquipmentMaintenanceAdd') && route.query.pkId">
+					<a-button type="primary" @click="formRef.onOpen(route.query.pkId, route.query.projectName)"
+						v-if="hasPerm('tEquipmentMaintenanceAdd') && route.query.pkId">
 						<template #icon><plus-outlined /></template>
 						新增
 					</a-button>
@@ -62,29 +63,38 @@
 				</a-space>
 			</template>
 			<template #bodyCell="{ column, record }">
-				<template v-if="column.dataIndex === 'equipmentType'">
+				<template v-if="column.dataIndex === 'authorizationEndTime'">
+					<a-tooltip :title="'黄色：即将过期　红色：已经过期'" class="s-tool-item">
+						<div :style="'color: ' + record.color">{{ record.authorizationEndTime }}</div>
+					</a-tooltip>
+				</template>
+				<template v-if=" column.dataIndex === 'equipmentType' ">
 					{{ $TOOL.dictTypeData('EQUIPMENT_TYPE', record.equipmentType) }}
 				</template>
-				<template v-if="column.dataIndex === 'equipmentManufacturer'">
+				<template v-if=" column.dataIndex === 'equipmentManufacturer' ">
 					{{ $TOOL.dictTypeData('EQUIPMENT_MANUFACTURER', record.equipmentManufacturer) }}
 				</template>
-				<template v-if="column.dataIndex === 'equipmentSysUsers'">
-					<a-tag v-for="(user, index) in record.equipmentSysUserList" color="cyan" :key="index">{{
+				<template v-if=" column.dataIndex === 'equipmentSysUsers' ">
+					<a-tag v-for="(  user, index  ) in   record.equipmentSysUserList  " color="cyan" :key=" index ">{{
 						user.name
-					}}</a-tag>
+						}}</a-tag>
 				</template>
-				<template v-if="column.dataIndex === 'equipmentUsers'">
-					<a-tag v-for="(user, index) in record.equipmentUserList" color="cyan" :key="index">{{
+				<template v-if=" column.dataIndex === 'equipmentUsers' ">
+					<a-tag v-for="(  user, index  ) in   record.equipmentUserList  " color="cyan" :key=" index ">{{
 						user.name
-					}}</a-tag>
+						}}</a-tag>
 				</template>
-				<template v-if="column.dataIndex === 'action'">
+				<template v-if=" column.dataIndex === 'action' ">
 					<a-space>
-						<a @click="formRef.onOpen(route.query.pkId, route.query.projectName, record)" v-if="hasPerm('tEquipmentMaintenanceEdit')">编辑</a>
+						<a @click="formRef.onOpen(route.query.pkId, route.query.projectName, record)"
+							v-if=" hasPerm('tEquipmentMaintenanceEdit') ">编辑</a>
+						<a @click="formRef.onOpenTime(route.query.pkId, route.query.projectName, record)"
+							v-if=" hasPerm('tEquipmentMaintenanceEdit') ">续费</a>
 						<a-popconfirm title="确定要删除吗？" @confirm="deleteTEquipmentMaintenance(record)">
 							<a-button type="link" danger size="small"
-								v-if="hasPerm('tEquipmentMaintenanceDelete')">删除</a-button>
-						<a @click="$router.push('equipmentmaintenancefile?pkId=' + record.pkId + '&serialNumber=' + record.projectName)">维保文件</a>
+								v-if=" hasPerm('tEquipmentMaintenanceDelete') ">删除</a-button>
+							<a
+								@click="$router.push('equipmentmaintenancefile?pkId=' + record.pkId + '&serialNumber=' + record.projectName)">维保文件</a>
 						</a-popconfirm>
 					</a-space>
 				</template>
@@ -147,10 +157,6 @@ const columns = [
 		title: '授权结束时间',
 		dataIndex: 'authorizationEndTime'
 	},
-	// {
-	// 	title: '系统设备提醒人',
-	// 	dataIndex: 'equipmentSysUsers'
-	// },
 	{
 		title: '设备提醒人',
 		dataIndex: 'equipmentUsers'

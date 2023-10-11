@@ -22,6 +22,7 @@ import lombok.Setter;
 import vip.xiaonuo.common.pojo.CommonEntity;
 import vip.xiaonuo.sys.modular.user.result.SysUserMini;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -90,4 +91,15 @@ public class TEquipmentMaintenance extends CommonEntity {
     private String projectContacts;
     @TableField(exist = false)
     private String projectPhone;
+
+    public String getColor() {
+        final long l = authorizationEndTime.getTime() - new Date().getTime();
+        if (l > 7 * 24 * 60 * 60 * 1000) {
+            return "#000000";
+        }
+        if (l > 0) {
+            return "#FF9900";
+        }
+        return "#FF0000";
+    }
 }

@@ -8,37 +8,38 @@
 				<a-input v-else="projectName" disabled v-model:value="projectName" placeholder="请在项目管理选择项目" allow-clear />
 			</a-form-item>
 			<a-form-item label="设备名称：" name="equipmentName">
-				<a-input v-model:value="formData.equipmentName" placeholder="请输入设备名称" allow-clear />
+				<a-input :disabled="onOpenTimeBool" v-model:value="formData.equipmentName" placeholder="请输入设备名称"
+					allow-clear />
 			</a-form-item>
 			<a-form-item label="设备类型：" name="equipmentType">
-				<a-select v-model:value="formData.equipmentType" placeholder="请选择设备类型" :options="equipmentTypeOptions" />
+				<a-select :disabled="onOpenTimeBool" v-model:value="formData.equipmentType" placeholder="请选择设备类型"
+					:options="equipmentTypeOptions" />
 			</a-form-item>
 			<a-form-item label="设备厂家：" name="equipmentManufacturer">
-				<a-select v-model:value="formData.equipmentManufacturer" placeholder="请选择设备厂家"
+				<a-select :disabled="onOpenTimeBool" v-model:value="formData.equipmentManufacturer" placeholder="请选择设备厂家"
 					:options="equipmentManufacturerOptions" />
 			</a-form-item>
 			<a-form-item label="序列号：" name="serialNumber">
-				<a-input v-model:value="formData.serialNumber" placeholder="请输入序列号" allow-clear />
+				<a-input :disabled="onOpenTimeBool" v-model:value="formData.serialNumber" placeholder="请输入序列号"
+					allow-clear />
 			</a-form-item>
 			<a-form-item label="授权开始时间：" name="authorizationStartTime">
-				<a-date-picker v-model:value="formData.authorizationStartTime" value-format="YYYY-MM-DD HH:mm:ss" show-time
-					placeholder="请选择授权开始时间" style="width: 100%" />
+				<a-date-picker :disabled="formData.pkId" v-model:value="formData.authorizationStartTime"
+					value-format="YYYY-MM-DD HH:mm:ss" show-time placeholder="请选择授权开始时间" style="width: 100%" />
 			</a-form-item>
 			<a-form-item label="授权结束时间：" name="authorizationEndTime">
-				<a-date-picker v-model:value="formData.authorizationEndTime" value-format="YYYY-MM-DD HH:mm:ss" show-time
-					placeholder="请选择授权结束时间" style="width: 100%" />
+				<a-date-picker :disabled="!onOpenTimeBool && formData.pkId" v-model:value="formData.authorizationEndTime"
+					value-format="YYYY-MM-DD HH:mm:ss" show-time placeholder="请选择授权结束时间" style="width: 100%" />
 			</a-form-item>
-			<!-- <a-form-item label="系统设备提醒人：" name="equipmentSysUsers" v-if="formData.pkId">
-				<a-tag v-for="(user, index) in formData.equipmentSysUserList" color="cyan" :key="index">{{
-					user.name
-				}}</a-tag>
-			</a-form-item> -->
-			<a-form-item label="设备提醒人：" name="equipmentUsers">
+			<a-form-item v-if="!onOpenTimeBool" label="设备提醒人：" name="equipmentUsers">
 				<a-button type="primary" @click="openUserSelector">设备提醒人</a-button>
 				<br />
 				<a-tag v-for="(user, index) in formData.equipmentUserList" color="cyan" :key="index">{{
 					user.name
 				}}</a-tag>
+			</a-form-item>
+			<a-form-item v-if="!formData.pkId" label="上传图片" name="authorizationEndTime">
+				{{图}}
 			</a-form-item>
 		</a-form>
 		<template #footer>
@@ -68,11 +69,16 @@ const submitLoading = ref(false)
 const equipmentTypeOptions = ref([])
 const equipmentManufacturerOptions = ref([])
 const projectName = ref([])
+const onOpenTimeBool = ref(false)
 // 回显需要
 const userSelectorPlusRef = ref()
 const ifSys = ref(false)
 
 // 打开抽屉
+const onOpenTime = (routePkId, routeProjectName, record) => {
+	onOpenTimeBool.value = true
+	onOpen(routePkId, routeProjectName, record)
+}
 const onOpen = (routePkId, routeProjectName, record) => {
 	visible.value = true
 	projectName.value = routeProjectName
@@ -140,6 +146,7 @@ const onClose = () => {
 	formRef.value.resetFields()
 	formData.value = {}
 	visible.value = false
+	onOpenTimeBool.value = false
 }
 // 默认要校验的
 const formRules = {
@@ -173,6 +180,7 @@ const onSubmit = () => {
 }
 // 抛出函数
 defineExpose({
-	onOpen
+	onOpen,
+	onOpenTime
 })
 </script>

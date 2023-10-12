@@ -14,6 +14,7 @@ package vip.xiaonuo.biz.modular.equipmentmaintenance.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.web.multipart.MultipartFile;
 import vip.xiaonuo.biz.modular.equipmentmaintenance.entity.TEquipmentMaintenance;
 import vip.xiaonuo.biz.modular.equipmentmaintenance.param.TEquipmentMaintenanceAddParam;
 import vip.xiaonuo.biz.modular.equipmentmaintenance.param.TEquipmentMaintenanceEditParam;
@@ -45,6 +46,14 @@ public interface TEquipmentMaintenanceService extends IService<TEquipmentMainten
      * @date  2023/09/20 17:02
      */
     void add(TEquipmentMaintenanceAddParam tEquipmentMaintenanceAddParam);
+
+    /**
+     * 添加设备维保
+     *
+     * @author scx
+     * @date  2023/09/20 17:02
+     */
+    void add(TEquipmentMaintenanceAddParam tEquipmentMaintenanceAddParam, MultipartFile file);
 
     /**
      * 编辑设备维保

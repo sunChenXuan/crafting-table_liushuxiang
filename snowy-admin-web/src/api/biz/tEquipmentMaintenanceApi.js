@@ -21,6 +21,10 @@ export default {
 	tEquipmentMaintenanceSubmitForm(data, edit = false) {
 		return request(edit ? 'edit' : 'add', data)
 	},
+	// 带文件提交
+	addOrFile(data) {
+		return request('addOrFile', data)
+	},
 	// 删除设备维保
 	tEquipmentMaintenanceDelete(data) {
 		return request('delete', data)

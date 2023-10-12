@@ -13,16 +13,15 @@
 package vip.xiaonuo.biz.modular.equipmentmaintenance.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import vip.xiaonuo.biz.modular.equipmentmaintenance.entity.TEquipmentMaintenance;
 import vip.xiaonuo.biz.modular.equipmentmaintenance.param.TEquipmentMaintenanceAddParam;
 import vip.xiaonuo.biz.modular.equipmentmaintenance.param.TEquipmentMaintenanceEditParam;
@@ -79,6 +78,24 @@ public class TEquipmentMaintenanceController {
     @PostMapping("/biz/equipmentmaintenance/add")
     public CommonResult<String> add(@RequestBody @Valid TEquipmentMaintenanceAddParam tEquipmentMaintenanceAddParam) {
         tEquipmentMaintenanceService.add(tEquipmentMaintenanceAddParam);
+        return CommonResult.ok();
+    }
+
+    /**
+     * 添加设备维保
+     *
+     * @author scx
+     * @date  2023/09/20 17:02
+     */
+    @ApiOperationSupport(order = 2)
+    @ApiOperation("添加设备维保")
+    @CommonLog("添加设备维保-文件")
+    @SaCheckPermission("/biz/equipmentmaintenance/addOrFile")
+    @PostMapping("/biz/equipmentmaintenance/addOrFile")
+    public CommonResult<String> addOrFile(@RequestPart("file") MultipartFile file, @RequestPart("data") String string) {
+        // 从json获取数据
+        TEquipmentMaintenanceAddParam tEquipmentMaintenanceAddParam = JSONObject.parseObject(string, TEquipmentMaintenanceAddParam.class);
+        tEquipmentMaintenanceService.add(tEquipmentMaintenanceAddParam, file);
         return CommonResult.ok();
     }
 

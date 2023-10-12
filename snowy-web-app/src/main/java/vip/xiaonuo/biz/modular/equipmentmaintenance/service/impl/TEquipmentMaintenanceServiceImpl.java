@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import vip.xiaonuo.biz.modular.equipmentmaintenance.entity.TEquipmentMaintenance;
 import vip.xiaonuo.biz.modular.equipmentmaintenance.mapper.TEquipmentMaintenanceMapper;
 import vip.xiaonuo.biz.modular.equipmentmaintenance.param.TEquipmentMaintenanceAddParam;
@@ -37,6 +38,8 @@ import vip.xiaonuo.biz.modular.project.service.TProjectService;
 import vip.xiaonuo.common.enums.CommonSortOrderEnum;
 import vip.xiaonuo.common.exception.CommonException;
 import vip.xiaonuo.common.page.CommonPageRequest;
+import vip.xiaonuo.dev.modular.file.enums.DevFileEngineTypeEnum;
+import vip.xiaonuo.dev.modular.file.service.DevFileService;
 import vip.xiaonuo.sys.modular.user.param.SysUserIdListParam;
 import vip.xiaonuo.sys.modular.user.service.SysUserService;
 
@@ -58,6 +61,9 @@ public class TEquipmentMaintenanceServiceImpl extends ServiceImpl<TEquipmentMain
     private TProjectService tProjectService;
     @Resource
     private TEquipmentMaintenanceFileService tEquipmentMaintenanceFileService;
+
+    @Resource
+    private DevFileService devFileService;
 
     @Override
     public Page<TEquipmentMaintenance> page(TEquipmentMaintenancePageParam tEquipmentMaintenancePageParam) {
@@ -122,6 +128,18 @@ public class TEquipmentMaintenanceServiceImpl extends ServiceImpl<TEquipmentMain
     public void add(TEquipmentMaintenanceAddParam tEquipmentMaintenanceAddParam) {
         TEquipmentMaintenance tEquipmentMaintenance = BeanUtil.toBean(tEquipmentMaintenanceAddParam, TEquipmentMaintenance.class);
         this.save(tEquipmentMaintenance);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void add(TEquipmentMaintenanceAddParam tEquipmentMaintenanceAddParam, MultipartFile file) {
+        TEquipmentMaintenance tEquipmentMaintenance = BeanUtil.toBean(tEquipmentMaintenanceAddParam, TEquipmentMaintenance.class);
+        this.save(tEquipmentMaintenance);
+
+        final TEquipmentMaintenanceFile tEquipmentMaintenanceFile = new TEquipmentMaintenanceFile();
+        tEquipmentMaintenanceFile.setIdxEquipmentMaintenanceId(tEquipmentMaintenance.getPkId());
+        tEquipmentMaintenanceFile.setUkFileId(devFileService.uploadReturnId(DevFileEngineTypeEnum.MINIO.getValue(), file));
+        tEquipmentMaintenanceFileService.save(tEquipmentMaintenanceFile);
     }
 
     @Transactional(rollbackFor = Exception.class)

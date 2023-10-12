@@ -38,8 +38,12 @@
 					user.name
 				}}</a-tag>
 			</a-form-item>
-			<a-form-item v-if="!formData.pkId" label="上传图片" name="authorizationEndTime">
-				{{图}}
+			<a-form-item v-if="!formData.pkId" label="上传文件：" name="fileList">
+				<div>
+					<a-upload :file-list="fileList" :before-upload="beforeUpload">
+						<a-button type="primary"> {{ fileList.length === 0 ? '选择文件' : '重新选择' }} </a-button>
+					</a-upload>
+				</div>
 			</a-form-item>
 		</a-form>
 		<template #footer>
@@ -58,7 +62,7 @@ import { cloneDeep } from 'lodash-es'
 import tEquipmentMaintenanceApi from '@/api/biz/tEquipmentMaintenanceApi'
 import userApi from '@/api/sys/userApi'
 import userCenterApi from '@/api/sys/userCenterApi'
-import { message } from 'ant-design-vue'
+import { required } from '@/utils/formRules'
 // 抽屉状态
 const visible = ref(false)
 const emit = defineEmits({ successful: null })
@@ -80,6 +84,7 @@ const onOpenTime = (routePkId, routeProjectName, record) => {
 	onOpen(routePkId, routeProjectName, record)
 }
 const onOpen = (routePkId, routeProjectName, record) => {
+	fileList.value = []
 	visible.value = true
 	projectName.value = routeProjectName
 	if (record) {
@@ -147,28 +152,29 @@ const onClose = () => {
 	formData.value = {}
 	visible.value = false
 	onOpenTimeBool.value = false
+	fileList.value = []
 }
 // 默认要校验的
 const formRules = {
+	equipmentName: [required('请输入设备名称')],
+	equipmentType: [required('请选择设备类型')],
+	equipmentManufacturer: [required('请选择设备厂家')],
+	serialNumber: [required('请输入序列号')],
+	authorizationStartTime: [required('请选择授权开始时间')],
+	authorizationEndTime: [required('请选择授权结束时间')],
 }
 // 验证并提交数据
 const onSubmit = () => {
-	formRef.value.validate().then(() => {
-		submitLoading.value = true
-		// if (formData.value.equipmentUserList.length < 1) {
-		// 	message.warning('未选择负责人')
-		// 	return
-		// }
-		if (!formData.value.equipmentUserList || formData.value.equipmentUserList.length < 1) {
-			// message.warning('未选职工')
-			// return
-		}
+	if (fileList.value.length != 0) {
+		// 这里是新增
 		convFormData()
-		const formDataParam = cloneDeep(formData.value)
-		// formDataParam.equipmentSysUsers = JSON.stringify(formDataParam.equipmentSysUsers)
-		formDataParam.equipmentUsers = JSON.stringify(formDataParam.equipmentUsers)
+		const fileData = new FormData()
+		fileData.append('file', fileList.value[0])
+		formData.value.equipmentUsers = JSON.stringify(formData.value.equipmentUsers)
+
+		fileData.append('data', JSON.stringify(formData.value))
 		tEquipmentMaintenanceApi
-			.tEquipmentMaintenanceSubmitForm(formDataParam, formDataParam.pkId)
+			.addOrFile(fileData)
 			.then(() => {
 				onClose()
 				emit('successful')
@@ -176,7 +182,32 @@ const onSubmit = () => {
 			.finally(() => {
 				submitLoading.value = false
 			})
-	})
+	} else {
+		formRef.value.validate().then(() => {
+			submitLoading.value = true
+			convFormData()
+			const formDataParam = cloneDeep(formData.value)
+			formDataParam.equipmentUsers = JSON.stringify(formDataParam.equipmentUsers)
+			tEquipmentMaintenanceApi
+				.tEquipmentMaintenanceSubmitForm(formDataParam, formDataParam.pkId)
+				.then(() => {
+					onClose()
+					emit('successful')
+				})
+				.finally(() => {
+					submitLoading.value = false
+				})
+		})
+	}
+}
+const fileList = ref([])
+const handleRemove = () => {
+	fileList.value = []
+}
+const beforeUpload = (file) => {
+	handleRemove()
+	fileList.value.push(file)
+	return false
 }
 // 抛出函数
 defineExpose({

@@ -35,6 +35,8 @@ import vip.xiaonuo.biz.modular.equipmentmaintenancefile.param.TEquipmentMaintena
 import vip.xiaonuo.biz.modular.equipmentmaintenancefile.service.TEquipmentMaintenanceFileService;
 import vip.xiaonuo.biz.modular.project.entity.TProject;
 import vip.xiaonuo.biz.modular.project.service.TProjectService;
+import vip.xiaonuo.biz.modular.refundflow.param.TRefundFlowAddParam;
+import vip.xiaonuo.biz.modular.refundflow.service.TRefundFlowService;
 import vip.xiaonuo.common.enums.CommonSortOrderEnum;
 import vip.xiaonuo.common.exception.CommonException;
 import vip.xiaonuo.common.page.CommonPageRequest;
@@ -64,6 +66,9 @@ public class TEquipmentMaintenanceServiceImpl extends ServiceImpl<TEquipmentMain
 
     @Resource
     private DevFileService devFileService;
+
+    @Resource
+    private TRefundFlowService tRefundFlowService;
 
     @Override
     public Page<TEquipmentMaintenance> page(TEquipmentMaintenancePageParam tEquipmentMaintenancePageParam) {
@@ -146,6 +151,20 @@ public class TEquipmentMaintenanceServiceImpl extends ServiceImpl<TEquipmentMain
     @Override
     public void edit(TEquipmentMaintenanceEditParam tEquipmentMaintenanceEditParam) {
         TEquipmentMaintenance tEquipmentMaintenance = this.queryEntity(tEquipmentMaintenanceEditParam.getPkId());
+        // 先判断是不是为空, 不为空才做比较, 生成流水
+        if (tEquipmentMaintenanceEditParam.getAuthorizationEndTime() != null){
+            if (tEquipmentMaintenanceEditParam.getAuthorizationEndTime().compareTo(tEquipmentMaintenance.getAuthorizationEndTime()) != 0){
+                final TRefundFlowAddParam tRefundFlowAddParam = new TRefundFlowAddParam();
+                tRefundFlowAddParam.setIdxEquipmentMaintenanceId(tEquipmentMaintenanceEditParam.getPkId());
+                tRefundFlowAddParam.setSerialNumber(tEquipmentMaintenance.getSerialNumber());
+                tRefundFlowAddParam.setAuthorizationStartTime(tEquipmentMaintenance.getAuthorizationEndTime());
+                tRefundFlowAddParam.setAuthorizationEndTime(tEquipmentMaintenanceEditParam.getAuthorizationEndTime());
+                if (tRefundFlowAddParam.getAuthorizationStartTime() != null && tRefundFlowAddParam.getAuthorizationStartTime().compareTo(tRefundFlowAddParam.getAuthorizationEndTime()) > 0){
+                    throw new CommonException("续费需要增加时间");
+                }
+                tRefundFlowService.add(tRefundFlowAddParam);
+            }
+        }
         BeanUtil.copyProperties(tEquipmentMaintenanceEditParam, tEquipmentMaintenance);
         this.updateById(tEquipmentMaintenance);
     }

@@ -31,7 +31,9 @@ import vip.xiaonuo.biz.modular.refundflow.service.TRefundFlowService;
 import vip.xiaonuo.common.enums.CommonSortOrderEnum;
 import vip.xiaonuo.common.exception.CommonException;
 import vip.xiaonuo.common.page.CommonPageRequest;
+import vip.xiaonuo.sys.modular.user.service.SysUserService;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -42,6 +44,8 @@ import java.util.List;
  **/
 @Service
 public class TRefundFlowServiceImpl extends ServiceImpl<TRefundFlowMapper, TRefundFlow> implements TRefundFlowService {
+    @Resource
+    private SysUserService sysUserService;
 
     @Override
     public Page<TRefundFlow> page(TRefundFlowPageParam tRefundFlowPageParam) {
@@ -65,7 +69,13 @@ public class TRefundFlowServiceImpl extends ServiceImpl<TRefundFlowMapper, TRefu
         } else {
             queryWrapper.lambda().orderByAsc(TRefundFlow::getPkId);
         }
-        return this.page(CommonPageRequest.defaultPage(), queryWrapper);
+        final Page<TRefundFlow> page = this.page(CommonPageRequest.defaultPage(), queryWrapper);
+        for (TRefundFlow rf: page.getRecords()) {
+            if (rf.getCreateUser() != null && !rf.getCreateUser().isEmpty()){
+                rf.setCreateUserName(sysUserService.queryEntity(rf.getCreateUser()).getName());
+            }
+        }
+        return page;
     }
 
     @Transactional(rollbackFor = Exception.class)

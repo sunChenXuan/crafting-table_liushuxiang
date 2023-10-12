@@ -12,6 +12,7 @@
  */
 package vip.xiaonuo.biz.modular.refundflow.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
@@ -52,4 +53,8 @@ public class TRefundFlow extends CommonEntity {
     /** 授权结束时间 */
     @ApiModelProperty(value = "授权结束时间", position = 5)
     private Date authorizationEndTime;
+
+    /* ====额外的字段==== */
+    @TableField(exist = false)
+    private String createUserName;
 }

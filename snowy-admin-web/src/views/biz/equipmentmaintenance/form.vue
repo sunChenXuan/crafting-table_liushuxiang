@@ -47,7 +47,7 @@
 					</a-upload>
 				</div>
 			</a-form-item>
-			<a-form-item v-if="!formData.pkId" label="备注" name="remark">
+			<a-form-item label="备注" name="remark">
 				<a-textarea v-model:value="formData.remark" placeholder="请输备注" allow-clear
 					:auto-size="{ minRows: 5, maxRows: 10 }" showCount :maxlength=255 />
 			</a-form-item>

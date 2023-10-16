@@ -13,6 +13,7 @@
 package vip.xiaonuo.biz.modular.project.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
@@ -95,6 +96,12 @@ public class TProjectController {
     @PostMapping("/biz/project/edit")
     public CommonResult<String> edit(@RequestBody @Valid TProjectEditParam tProjectEditParam) {
         tProjectService.edit(tProjectEditParam);
+        if(tProjectEditParam.getProjectEndTime() == null){
+            LambdaUpdateWrapper<TProject> wrapper = new LambdaUpdateWrapper<>();
+            wrapper.eq(TProject::getPkId,tProjectEditParam.getPkId());
+            wrapper.set(TProject::getProjectEndTime, null);
+            tProjectService.update(wrapper);
+        }
         return CommonResult.ok();
     }
 

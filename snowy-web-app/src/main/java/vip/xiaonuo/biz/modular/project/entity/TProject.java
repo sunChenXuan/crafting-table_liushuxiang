@@ -12,6 +12,7 @@
  */
 package vip.xiaonuo.biz.modular.project.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -85,6 +86,7 @@ public class TProject extends CommonEntity {
 
     /** 项目结束时间 */
     @ApiModelProperty(value = "项目结束时间", position = 12)
+    @TableField(updateStrategy = FieldStrategy.IGNORED)
     private Date projectEndTime;
 
     /** 项目成本 */

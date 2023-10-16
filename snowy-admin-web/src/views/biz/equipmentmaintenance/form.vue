@@ -2,10 +2,12 @@
 	<xn-form-container :title="formData.pkId ? '编辑设备维保' : '增加设备维保'" :width="700" :visible="visible" :destroy-on-close="true"
 		@close="onClose">
 		<a-form ref="formRef" :model="formData" :rules="formRules" layout="vertical">
-			<a-form-item label="项目名称：" name="projectName">
+			<a-form-item label="项目名称：" name="idxProjectId">
 				<a-input v-if="formData.projectName" disabled v-model:value="formData.projectName" placeholder="请在项目管理选择项目"
 					allow-clear />
-				<a-input v-else="projectName" disabled v-model:value="projectName" placeholder="请在项目管理选择项目" allow-clear />
+				<a-input v-else-if="projectName" disabled v-model:value="projectName" placeholder="请在项目管理选择项目" allow-clear />
+				<a-select v-else showSearch v-model:value="formData.idxProjectId" placeholder="请选择项目" optionFilterProp="label"
+					:options="projectList" />
 			</a-form-item>
 			<a-form-item label="设备名称：" name="equipmentName">
 				<a-input :disabled="onOpenTimeBool" v-model:value="formData.equipmentName" placeholder="请输入设备名称"
@@ -45,6 +47,10 @@
 					</a-upload>
 				</div>
 			</a-form-item>
+			<a-form-item v-if="!formData.pkId" label="备注" name="remark">
+				<a-textarea v-model:value="formData.remark" placeholder="请输备注" allow-clear
+					:auto-size="{ minRows: 5, maxRows: 10 }" showCount :maxlength=255 />
+			</a-form-item>
 		</a-form>
 		<template #footer>
 			<a-button style="margin-right: 8px" @click="onClose">关闭</a-button>
@@ -74,6 +80,7 @@ const equipmentTypeOptions = ref([])
 const equipmentManufacturerOptions = ref([])
 const projectName = ref([])
 const onOpenTimeBool = ref(false)
+const projectList = ref([])
 // 回显需要
 const userSelectorPlusRef = ref()
 const ifSys = ref(false)
@@ -82,6 +89,10 @@ const ifSys = ref(false)
 const onOpenTime = (routePkId, routeProjectName, record) => {
 	onOpenTimeBool.value = true
 	onOpen(routePkId, routeProjectName, record)
+}
+const onOpenNoProject = () => {
+	onOpen()
+	selectProjectList()
 }
 const onOpen = (routePkId, routeProjectName, record) => {
 	fileList.value = []
@@ -156,6 +167,7 @@ const onClose = () => {
 }
 // 默认要校验的
 const formRules = {
+	idxProjectId: [required('请选择项目')],
 	equipmentName: [required('请输入设备名称')],
 	equipmentType: [required('请选择设备类型')],
 	equipmentManufacturer: [required('请选择设备厂家')],
@@ -209,9 +221,22 @@ const beforeUpload = (file) => {
 	fileList.value.push(file)
 	return false
 }
+const selectProjectList = () => {
+	projectList.value = [];
+	tEquipmentMaintenanceApi.projectList().then(res => {
+		res.forEach(i => {
+			const newI = {
+				value: i.pkId,
+				label: i.projectName,
+			};
+			projectList.value.push(newI)
+		})
+	})
+}
 // 抛出函数
 defineExpose({
 	onOpen,
+	onOpenNoProject,
 	onOpenTime
 })
 </script>

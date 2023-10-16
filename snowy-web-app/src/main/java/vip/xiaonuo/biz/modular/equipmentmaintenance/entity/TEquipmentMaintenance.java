@@ -79,6 +79,10 @@ public class TEquipmentMaintenance extends CommonEntity {
     @JsonRawValue
     private String equipmentUsers;
 
+    /** 备注 */
+    @ApiModelProperty(value = "备注", position = 11)
+    private String remark;
+
     /* ====额外的字段==== */
     @TableField(exist = false)
     private List<SysUserMini> equipmentSysUserList;

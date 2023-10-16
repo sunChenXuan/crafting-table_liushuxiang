@@ -32,5 +32,9 @@ export default {
 	// 获取设备维保详情
 	tEquipmentMaintenanceDetail(data) {
 		return request('detail', data, 'get')
+	},
+	// 获取设备维保详情
+	projectList() {
+		return request('projectList', null, 'get')
 	}
 }

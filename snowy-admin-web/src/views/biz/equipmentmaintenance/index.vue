@@ -58,6 +58,11 @@
 						<template #icon><plus-outlined /></template>
 						新增
 					</a-button>
+					<a-button type="primary" @click="formRef.onOpenNoProject()"
+						v-else-if="hasPerm('tEquipmentMaintenanceAdd')">
+						<template #icon><plus-outlined /></template>
+						新增
+					</a-button>
 					<xn-batch-delete v-if="hasPerm('tEquipmentMaintenanceBatchDelete')" :selectedRowKeys="selectedRowKeys"
 						@batchDelete="deleteBatchTEquipmentMaintenance" />
 				</a-space>
@@ -68,31 +73,31 @@
 						<div :style="'color: ' + record.color">{{ record.authorizationEndTime }}</div>
 					</a-tooltip>
 				</template>
-				<template v-if=" column.dataIndex === 'equipmentType' ">
+				<template v-if="column.dataIndex === 'equipmentType'">
 					{{ $TOOL.dictTypeData('EQUIPMENT_TYPE', record.equipmentType) }}
 				</template>
-				<template v-if=" column.dataIndex === 'equipmentManufacturer' ">
+				<template v-if="column.dataIndex === 'equipmentManufacturer'">
 					{{ $TOOL.dictTypeData('EQUIPMENT_MANUFACTURER', record.equipmentManufacturer) }}
 				</template>
-				<template v-if=" column.dataIndex === 'equipmentSysUsers' ">
-					<a-tag v-for="(  user, index  ) in   record.equipmentSysUserList  " color="cyan" :key=" index ">{{
+				<template v-if="column.dataIndex === 'equipmentSysUsers'">
+					<a-tag v-for="(  user, index  ) in   record.equipmentSysUserList  " color="cyan" :key="index">{{
 						user.name
-						}}</a-tag>
+					}}</a-tag>
 				</template>
-				<template v-if=" column.dataIndex === 'equipmentUsers' ">
-					<a-tag v-for="(  user, index  ) in   record.equipmentUserList  " color="cyan" :key=" index ">{{
+				<template v-if="column.dataIndex === 'equipmentUsers'">
+					<a-tag v-for="(  user, index  ) in   record.equipmentUserList  " color="cyan" :key="index">{{
 						user.name
-						}}</a-tag>
+					}}</a-tag>
 				</template>
-				<template v-if=" column.dataIndex === 'action' ">
+				<template v-if="column.dataIndex === 'action'">
 					<a-space>
 						<a @click="formRef.onOpen(route.query.pkId, route.query.projectName, record)"
-							v-if=" hasPerm('tEquipmentMaintenanceEdit') ">编辑</a>
+							v-if="hasPerm('tEquipmentMaintenanceEdit')">编辑</a>
 						<a @click="formRef.onOpenTime(route.query.pkId, route.query.projectName, record)"
-							v-if=" hasPerm('tEquipmentMaintenanceEdit') ">续费</a>
+							v-if="hasPerm('tEquipmentMaintenanceEdit')">续费</a>
 						<a-popconfirm title="确定要删除吗？" @confirm="deleteTEquipmentMaintenance(record)">
 							<a-button type="link" danger size="small"
-								v-if=" hasPerm('tEquipmentMaintenanceDelete') ">删除</a-button>
+								v-if="hasPerm('tEquipmentMaintenanceDelete')">删除</a-button>
 							<a
 								@click="$router.push('equipmentmaintenancefile?pkId=' + record.pkId + '&serialNumber=' + record.projectName)">维保文件</a>
 						</a-popconfirm>
@@ -160,6 +165,11 @@ const columns = [
 	{
 		title: '设备提醒人',
 		dataIndex: 'equipmentUsers'
+	},
+	{
+		title: '备注',
+		ellipsis: true,
+		dataIndex: 'remark'
 	}
 ]
 // 操作栏通过权限判断是否显示

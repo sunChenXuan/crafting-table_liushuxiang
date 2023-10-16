@@ -17,7 +17,7 @@
 			</a-form-item>
 			<a-form-item label="客户画像：" name="customerProfile">
 				<a-textarea v-model:value="formData.customerProfile" placeholder="请输入客户画像" allow-clear
-					:auto-size="{ minRows: 5, maxRows: 10 }" showCount maxlength="255"/>
+					:auto-size="{ minRows: 5, maxRows: 10 }" showCount :maxlength=255 />
 			</a-form-item>
 		</a-form>
 		<template #footer>

@@ -24,7 +24,6 @@
 </template>
 
 <script setup name="refundflow">
-	import Form from './form.vue'
 	import tRefundFlowApi from '@/api/biz/tRefundFlowApi'
 	let searchFormState = reactive({})
 	const searchFormRef = ref()
@@ -47,7 +46,7 @@
 			dataIndex: 'createUserName'
 		},
 		{
-			title: '操作后时间',
+			title: '操作时间',
 			dataIndex: 'createTime'
 		},
 	]

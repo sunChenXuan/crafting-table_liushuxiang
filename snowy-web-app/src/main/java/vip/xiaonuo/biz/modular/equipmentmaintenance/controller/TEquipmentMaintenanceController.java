@@ -28,6 +28,8 @@ import vip.xiaonuo.biz.modular.equipmentmaintenance.param.TEquipmentMaintenanceE
 import vip.xiaonuo.biz.modular.equipmentmaintenance.param.TEquipmentMaintenanceIdParam;
 import vip.xiaonuo.biz.modular.equipmentmaintenance.param.TEquipmentMaintenancePageParam;
 import vip.xiaonuo.biz.modular.equipmentmaintenance.service.TEquipmentMaintenanceService;
+import vip.xiaonuo.biz.modular.project.entity.TProject;
+import vip.xiaonuo.biz.modular.project.service.TProjectService;
 import vip.xiaonuo.common.annotation.CommonLog;
 import vip.xiaonuo.common.pojo.CommonResult;
 import vip.xiaonuo.common.pojo.CommonValidList;
@@ -35,6 +37,7 @@ import vip.xiaonuo.common.pojo.CommonValidList;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 /**
  * 设备维保控制器
@@ -50,6 +53,10 @@ public class TEquipmentMaintenanceController {
 
     @Resource
     private TEquipmentMaintenanceService tEquipmentMaintenanceService;
+
+    @Resource
+    private TProjectService tProjectService;
+
 
     /**
      * 获取设备维保分页
@@ -144,5 +151,19 @@ public class TEquipmentMaintenanceController {
     @GetMapping("/biz/equipmentmaintenance/detail")
     public CommonResult<TEquipmentMaintenance> detail(@Valid TEquipmentMaintenanceIdParam tEquipmentMaintenanceIdParam) {
         return CommonResult.data(tEquipmentMaintenanceService.detail(tEquipmentMaintenanceIdParam));
+    }
+
+    /**
+     * 获取设备维保分页
+     *
+     * @author scx
+     * @date  2023/09/20 17:02
+     */
+    @ApiOperationSupport(order = 1)
+    @ApiOperation("获取项目列表")
+    @SaCheckPermission("/biz/equipmentmaintenance/projectList")
+    @GetMapping("/biz/equipmentmaintenance/projectList")
+    public CommonResult<List<TProject>> projectList(TEquipmentMaintenancePageParam tEquipmentMaintenancePageParam) {
+        return CommonResult.data(tProjectService.list());
     }
 }

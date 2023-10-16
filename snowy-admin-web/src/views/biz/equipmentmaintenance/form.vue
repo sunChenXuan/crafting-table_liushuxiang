@@ -164,6 +164,7 @@ const onClose = () => {
 	visible.value = false
 	onOpenTimeBool.value = false
 	fileList.value = []
+	projectList.value = []
 }
 // 默认要校验的
 const formRules = {

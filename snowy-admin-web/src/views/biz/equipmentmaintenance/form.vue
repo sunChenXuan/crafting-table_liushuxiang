@@ -1,12 +1,14 @@
 <template>
-	<xn-form-container :title="formData.pkId ? '编辑设备维保' : '增加设备维保'" :width="700" :visible="visible" :destroy-on-close="true"
-		@close="onClose">
+	<xn-form-container :title="onOpenTimeBool ? '续费' : (formData.pkId ? '编辑设备维保' : '增加设备维保')" :width="700"
+		:visible="visible" :destroy-on-close="true" @close="onClose">
 		<a-form ref="formRef" :model="formData" :rules="formRules" layout="vertical">
-			<a-form-item label="项目名称：" name="idxProjectId">
+			<a-form-item label="项目名称：" name="projectName" v-if="formData.projectName || projectName">
 				<a-input v-if="formData.projectName" disabled v-model:value="formData.projectName" placeholder="请在项目管理选择项目"
 					allow-clear />
-				<a-input v-else-if="projectName" disabled v-model:value="projectName" placeholder="请在项目管理选择项目" allow-clear />
-				<a-select v-else showSearch v-model:value="formData.idxProjectId" placeholder="请选择项目" optionFilterProp="label"
+				<a-input v-else disabled v-model:value="projectName" placeholder="请在项目管理选择项目" allow-clear />
+			</a-form-item>
+			<a-form-item v-else label="项目名称：" name="idxProjectId">
+				<a-select showSearch v-model:value="formData.idxProjectId" placeholder="请选择项目" optionFilterProp="label"
 					:options="projectList" />
 			</a-form-item>
 			<a-form-item label="设备名称：" name="equipmentName">
@@ -42,12 +44,12 @@
 			</a-form-item>
 			<a-form-item v-if="!formData.pkId" label="上传文件：" name="fileList">
 				<div>
-					<a-upload :file-list="fileList" :before-upload="beforeUpload">
+					<a-upload :file-list="fileList" :before-upload="beforeUpload" :remove="handleRemove">
 						<a-button type="primary"> {{ fileList.length === 0 ? '选择文件' : '重新选择' }} </a-button>
 					</a-upload>
 				</div>
 			</a-form-item>
-			<a-form-item label="备注" name="remark">
+			<a-form-item label="备注" v-if="!onOpenTimeBool" name="remark">
 				<a-textarea v-model:value="formData.remark" placeholder="请输备注" allow-clear
 					:auto-size="{ minRows: 5, maxRows: 10 }" showCount :maxlength=255 />
 			</a-form-item>

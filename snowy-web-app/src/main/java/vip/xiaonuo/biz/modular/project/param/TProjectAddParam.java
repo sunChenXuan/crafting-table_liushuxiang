@@ -50,6 +50,11 @@ public class TProjectAddParam {
     @NotBlank(message = "projectPhone不能为空")
     private String projectPhone;
 
+    /** 所属公司 */
+    @ApiModelProperty(value = "所属公司", required = true, position = 13)
+    @NotBlank(message = "projectCompany不能为空")
+    private String projectCompany;
+
     /** 负责人 */
     @ApiModelProperty(value = "负责人", required = true, position = 6)
     @NotBlank(message = "projectHeadUsers不能为空")

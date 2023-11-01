@@ -60,6 +60,9 @@
 						user.name
 					}}</a-tag>
 				</template>
+				<template v-if="column.dataIndex === 'projectCompany'">
+					{{ $TOOL.dictTypeData('PROJECT_COMPANY', record.projectCompany) }}
+				</template>
 				<!-- <template v-if="column.dataIndex === 'projectUsers'">
 					<a-tag v-for="(user, index) in record.projectUserList" color="cyan" :key="index">{{
 						user.name
@@ -84,6 +87,7 @@
 <script setup name="project">
 import Form from './form.vue'
 import tProjectApi from '@/api/biz/tProjectApi'
+import tool from "@/utils/tool";
 let searchFormState = reactive({})
 const searchFormRef = ref()
 const table = ref()
@@ -180,6 +184,8 @@ const reset = () => {
 	searchFormRef.value.resetFields()
 	table.value.refresh(true)
 }
+const projectCompanyTypeOptions = tool.dictList('PROJECT_COMPANY')
+
 // 删除
 const deleteTProject = (record) => {
 	let params = [

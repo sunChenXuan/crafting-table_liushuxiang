@@ -2,9 +2,9 @@
 	<xn-form-container :title="formData.pkId ? '编辑项目' : '增加项目'" :width="700" :visible="visible" :destroy-on-close="true"
 		@close="onClose">
 			<a-form ref="formRef" :model="formData" :rules="formRules" layout="vertical">
+
 			<a-form-item label="所属公司：" name="projectCompany">
-				<a-checkbox-group v-model:value="formData.projectCompany" placeholder="请选择所属公司"
-					:options="projectCompanyTypeOptions" />
+				<a-select v-model:value="formData.projectCompany" placeholder="请选择所属公司" :options="projectCompanyTypeOptions" />
 			</a-form-item>
 			<a-form-item label="项目名称：" name="projectName">
 				<a-input v-model:value="formData.projectName" placeholder="请输入项目名称" allow-clear />
@@ -78,12 +78,7 @@ const onOpen = (record) => {
 		let recordData = cloneDeep(record)
 		formData.value = Object.assign({}, recordData)
 	}
-	if (record) {
-		let recordData = cloneDeep(record)
-		recordData.customerType = JSON.parse(recordData.customerType)
-		formData.value = Object.assign({}, recordData)
-	}
-	projectCompanyTypeOptions.value = tool.dictList('CUSTOMER_TYPE')
+	projectCompanyTypeOptions.value = tool.dictList('PROJECT_COMPANY')
 }
 // 关闭抽屉
 const onClose = () => {

@@ -46,6 +46,10 @@ public class TProjectPageParam {
     @ApiModelProperty(value = "关键词")
     private String searchKey;
 
+    /** 所属公司 */
+    @ApiModelProperty(value = "所属公司")
+    private String projectCompany;
+
     /** 项目名称 */
     @ApiModelProperty(value = "项目名称")
     private String projectName;

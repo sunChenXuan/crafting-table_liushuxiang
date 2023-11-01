@@ -57,6 +57,10 @@ public class TProject extends CommonEntity {
     @ApiModelProperty(value = "联系电话", position = 5)
     private String projectPhone;
 
+    /** 所属公司 */
+    @ApiModelProperty(value = "所属公司", position = 13)
+    private String projectCompany;
+
     /** 负责人 */
     @ApiModelProperty(value = "负责人", position = 6)
     @JsonRawValue

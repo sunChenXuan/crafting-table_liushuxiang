@@ -17,6 +17,11 @@
 						<a-input v-model:value="searchFormState.projectPhone" placeholder="请输入联系电话" />
 					</a-form-item>
 				</a-col>
+				<a-col :span="6">
+					<a-form-item label="所属公司" name="projectCompany">
+						<a-input v-model:value="searchFormState.projectCompany" placeholder="请输入所属公司" />
+					</a-form-item>
+				</a-col>
 				<a-col :span="6" v-show="advanced">
 					<a-form-item label="项目开始时间" name="projectStartTime">
 						<a-range-picker v-model:value="searchFormState.projectStartTime" show-time />
@@ -90,6 +95,10 @@ const toggleAdvanced = () => {
 	advanced.value = !advanced.value
 }
 const columns = [
+	{
+		title: '所属公司',
+		dataIndex: 'projectCompany'
+	},
 	{
 		title: '项目名称',
 		dataIndex: 'projectName'

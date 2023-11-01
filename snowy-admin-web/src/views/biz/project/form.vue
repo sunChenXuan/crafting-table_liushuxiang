@@ -1,7 +1,12 @@
 <template>
 	<xn-form-container :title="formData.pkId ? '编辑项目' : '增加项目'" :width="700" :visible="visible" :destroy-on-close="true"
 		@close="onClose">
-		<a-form ref="formRef" :model="formData" :rules="formRules" layout="vertical">
+			<a-col :span="6">
+			<a-form-item label="所属公司" name="projectCompany">
+				<a-select v-model:value="searchFormState.projectCompany" placeholder="请选择所属公司" :options="customerTypeOptions" />
+			</a-form-item>
+			</a-col>
+			<a-form ref="formRef" :model="formData" :rules="formRules" layout="vertical">
 			<a-form-item label="项目名称：" name="projectName">
 				<a-input v-model:value="formData.projectName" placeholder="请输入项目名称" allow-clear />
 			</a-form-item>

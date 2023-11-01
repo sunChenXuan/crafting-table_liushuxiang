@@ -8,7 +8,7 @@
 	>
 		<a-form ref="formRef" :model="formData" :rules="formRules" layout="vertical">
 			<a-form-item label="巡检类型名称：" name="inspectionTypeName">
-				<a-select v-model:value="formData.inspectionTypeName" placeholder="请选择巡检类型名称" :options="inspectionTypeNameOptions" />
+				<a-input v-model:value="formData.inspectionTypeName" placeholder="请输入巡检类型名称" allow-clear />
 			</a-form-item>
 			<a-form-item label="检查细节：" name="inspectionDetail">
 				<a-input v-model:value="formData.inspectionDetail" placeholder="请输入检查细节" allow-clear />
@@ -22,7 +22,6 @@
 </template>
 
 <script setup name="tComputerInspectionTypeForm">
-	import tool from '@/utils/tool'
 	import { cloneDeep } from 'lodash-es'
 	import { required } from '@/utils/formRules'
 	import tComputerInspectionTypeApi from '@/api/biz/tComputerInspectionTypeApi'
@@ -33,7 +32,6 @@
 	// 表单数据
 	const formData = ref({})
 	const submitLoading = ref(false)
-	const inspectionTypeNameOptions = ref([])
 
 	// 打开抽屉
 	const onOpen = (record) => {
@@ -42,7 +40,6 @@
 			let recordData = cloneDeep(record)
 			formData.value = Object.assign({}, recordData)
 		}
-		inspectionTypeNameOptions.value = tool.dictList('GENDER')
 	}
 	// 关闭抽屉
 	const onClose = () => {

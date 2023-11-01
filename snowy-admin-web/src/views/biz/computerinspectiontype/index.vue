@@ -4,7 +4,7 @@
 			<a-row :gutter="24">
 				<a-col :span="6">
 					<a-form-item label="巡检类型名称" name="inspectionTypeName">
-						<a-select v-model:value="searchFormState.inspectionTypeName" placeholder="请选择巡检类型名称" :options="inspectionTypeNameOptions" />
+						<a-input v-model:value="searchFormState.inspectionTypeName" placeholder="请输入巡检类型名称" />
 					</a-form-item>
 				</a-col>
 				<a-col :span="6">
@@ -42,9 +42,6 @@
 				</a-space>
 			</template>
 			<template #bodyCell="{ column, record }">
-				<template v-if="column.dataIndex === 'inspectionTypeName'">
-					{{ $TOOL.dictTypeData('GENDER', record.inspectionTypeName) }}
-				</template>
 				<template v-if="column.dataIndex === 'action'">
 					<a-space>
 						<a @click="formRef.onOpen(record)" v-if="hasPerm('tComputerInspectionTypeEdit')">编辑</a>
@@ -61,7 +58,6 @@
 </template>
 
 <script setup name="computerinspectiontype">
-	import tool from '@/utils/tool'
 	import Form from './form.vue'
 	import tComputerInspectionTypeApi from '@/api/biz/tComputerInspectionTypeApi'
 	let searchFormState = reactive({})
@@ -132,5 +128,4 @@
 			table.value.clearRefreshSelected()
 		})
 	}
-	const inspectionTypeNameOptions = tool.dictList('GENDER')
 </script>

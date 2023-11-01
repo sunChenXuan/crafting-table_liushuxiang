@@ -60,7 +60,7 @@ public class TEquipmentMaintenanceAddParam {
     @ApiModelProperty(value = "设备提醒人", position = 10)
     private String equipmentUsers;
 
-    /** 硬件修改后信息 */
+    /** 备注 */
     @ApiModelProperty(value = "备注", position = 11)
     private String remark;
 

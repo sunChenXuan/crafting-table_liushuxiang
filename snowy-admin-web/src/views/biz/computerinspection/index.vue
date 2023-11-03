@@ -78,14 +78,14 @@
 			title: '巡检人员',
 			dataIndex: 'inspectionUsers'
 		},
-		{
-			title: '经度',
-			dataIndex: 'longitude'
-		},
-		{
-			title: '纬度',
-			dataIndex: 'latitude'
-		},
+		// {
+		// 	title: '经度',
+		// 	dataIndex: 'longitude'
+		// },
+		// {
+		// 	title: '纬度',
+		// 	dataIndex: 'latitude'
+		// },
 		{
 			title: '巡检项目',
 			dataIndex: 'inspectionType'
@@ -94,22 +94,22 @@
 			title: '巡检报告',
 			dataIndex: 'remarkReport'
 		},
-		{
-			title: '作业计划',
-			dataIndex: 'workPlan'
-		},
-		{
-			title: '创建用户',
-			dataIndex: 'createdBy'
-		},
-		{
-			title: '修改时间',
-			dataIndex: 'updatedTime'
-		},
-		{
-			title: '修改用户',
-			dataIndex: 'updatedBy'
-		},
+		// {
+		// 	title: '作业计划',
+		// 	dataIndex: 'workPlan'
+		// },
+		// {
+		// 	title: '创建用户',
+		// 	dataIndex: 'createdBy'
+		// },
+		// {
+		// 	title: '修改时间',
+		// 	dataIndex: 'updatedTime'
+		// },
+		// {
+		// 	title: '修改用户',
+		// 	dataIndex: 'updatedBy'
+		// },
 	]
 	// 操作栏通过权限判断是否显示
 	if (hasPerm(['tComputerInspectionEdit', 'tComputerInspectionDelete'])) {

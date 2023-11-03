@@ -3,10 +3,10 @@
 		:destroy-on-close="true" @close="onClose">
 		<a-form ref="formRef" :model="formData" :rules="formRules" layout="vertical">
 			<a-form-item label="巡检类型名称：" name="inspectionTypeName">
-				<a-input  v-model:value="formData.inspectionTypeName" placeholder="请输入巡检类型名称" allow-clear />
+				<a-input v-model:value="formData.inspectionTypeName" placeholder="请输入巡检类型名称" allow-clear />
 			</a-form-item>
 			<a-form-item label="" name="inspectionDetail">
-				{{"检查细节"}}
+				{{ "检查细节" }}
 				<a-button size="small" shape="circle" type="primary" style="margin-right: 8px" @click="add">+</a-button>
 				<a-button size="small" shape="circle" v-if="inspectionDetailArray.length > 1" @click="del()">-</a-button>
 				<a-form :inline="true" v-for="(_, index) in inspectionDetailArray" :key="index">
@@ -26,6 +26,7 @@
 import { cloneDeep } from 'lodash-es'
 import { required } from '@/utils/formRules'
 import tComputerInspectionTypeApi from '@/api/biz/tComputerInspectionTypeApi'
+import { message } from 'ant-design-vue'
 // 抽屉状态
 const visible = ref(false)
 const emit = defineEmits({ successful: null })
@@ -63,7 +64,18 @@ const formRules = {
 const onSubmit = () => {
 	formRef.value.validate().then(() => {
 		submitLoading.value = true
-		formData.value.inspectionDetail = JSON.stringify(inspectionDetailArray.value)
+		let array = []
+		for (let i = 0; i < inspectionDetailArray.value.length; i++) {
+			if (inspectionDetailArray.value[i] && inspectionDetailArray.value[i] != "") {
+				array.push(inspectionDetailArray.value[i])
+			}
+		}
+		if (array.length == 0) {
+			message.warning('请完善检查细节')
+			submitLoading.value = false
+			return
+		}
+		formData.value.inspectionDetail = JSON.stringify(array)
 		const formDataParam = cloneDeep(formData.value)
 		tComputerInspectionTypeApi
 			.tComputerInspectionTypeSubmitForm(formDataParam, formDataParam.pkId)

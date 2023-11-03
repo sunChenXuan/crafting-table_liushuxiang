@@ -13,6 +13,7 @@
 package vip.xiaonuo.biz.modular.computerinspectiontype.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonRawValue;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -41,6 +42,7 @@ public class TComputerInspectionType {
 
     /** 检查细节 */
     @ApiModelProperty(value = "检查细节", position = 3)
+    @JsonRawValue
     private String inspectionDetail;
 
     /** 作业计划 */

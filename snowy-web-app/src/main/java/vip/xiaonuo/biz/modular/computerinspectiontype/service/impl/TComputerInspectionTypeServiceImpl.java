@@ -47,7 +47,7 @@ public class TComputerInspectionTypeServiceImpl extends ServiceImpl<TComputerIns
     public Page<TComputerInspectionType> page(TComputerInspectionTypePageParam tComputerInspectionTypePageParam) {
         QueryWrapper<TComputerInspectionType> queryWrapper = new QueryWrapper<>();
         if(ObjectUtil.isNotEmpty(tComputerInspectionTypePageParam.getInspectionTypeName())) {
-            queryWrapper.lambda().eq(TComputerInspectionType::getInspectionTypeName, tComputerInspectionTypePageParam.getInspectionTypeName());
+            queryWrapper.lambda().like(TComputerInspectionType::getInspectionTypeName, tComputerInspectionTypePageParam.getInspectionTypeName());
         }
         if(ObjectUtil.isNotEmpty(tComputerInspectionTypePageParam.getInspectionDetail())) {
             queryWrapper.lambda().like(TComputerInspectionType::getInspectionDetail, tComputerInspectionTypePageParam.getInspectionDetail());

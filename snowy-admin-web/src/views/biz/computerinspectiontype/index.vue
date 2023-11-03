@@ -42,6 +42,9 @@
 				</a-space>
 			</template>
 			<template #bodyCell="{ column, record }">
+				<template v-if="column.dataIndex === 'inspectionDetail'">
+					<a-tag v-for="textValue in record.inspectionDetail" :key="textValue" color="green">{{ textValue }}</a-tag>
+				</template>
 				<template v-if="column.dataIndex === 'action'">
 					<a-space>
 						<a @click="formRef.onOpen(record)" v-if="hasPerm('tComputerInspectionTypeEdit')">编辑</a>

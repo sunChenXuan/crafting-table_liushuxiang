@@ -3,7 +3,7 @@
 		<a-form ref="searchFormRef" name="advanced_search" :model="searchFormState" class="ant-advanced-search-form">
 			<a-row :gutter="24">
 				<a-col :span="6">
-					<a-form-item label="项目名称：" name="idxProjectId">
+					<a-form-item label="项目名称：" name="inspectionName">
 						<a-select showSearch v-model:value="searchFormState.inspectionName" placeholder="请选择项目"
 							optionFilterProp="label" :options="projectList" />
 					</a-form-item>

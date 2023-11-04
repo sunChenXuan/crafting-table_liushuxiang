@@ -58,7 +58,7 @@ const onClose = () => {
 }
 // 默认要校验的
 const formRules = {
-	inspectionTypeName: [required('请输入巡检类型名称')],
+	inspectionTypeName: [required('请选择项目名称')],
 }
 // 验证并提交数据
 const onSubmit = () => {

@@ -3,9 +3,6 @@
 		@close="onClose">
 		<a-form ref="formRef" :model="formData" :rules="formRules" layout="vertical">
 			<a-form-item label="项目名称：" name="inspectionName">
-				<a-input v-model:value="formData.inspectionName" placeholder="请输入项目名称" allow-clear />
-			</a-form-item>
-			<a-form-item label="项目名称：" name="idxProjectId">
 				<a-select showSearch v-model:value="formData.inspectionName" placeholder="请选择项目" optionFilterProp="label"
 					:options="projectList" />
 			</a-form-item>
@@ -51,6 +48,7 @@ import tool from '@/utils/tool'
 import { cloneDeep } from 'lodash-es'
 import tComputerInspectionApi from '@/api/biz/tComputerInspectionApi'
 import tProjectApi from '@/api/biz/tProjectApi'
+import { required } from '@/utils/formRules'
 // 抽屉状态
 const visible = ref(false)
 const emit = defineEmits({ successful: null })
@@ -68,9 +66,8 @@ const onOpen = (record) => {
 		let recordData = cloneDeep(record)
 		recordData.inspectionUsers = JSON.parse(recordData.inspectionUsers)
 		formData.value = Object.assign({}, recordData)
-	} else {
-		selectProjectList()
 	}
+	selectProjectList()
 	inspectionUsersOptions.value = tool.dictList('GENDER')
 }
 // 关闭抽屉
@@ -81,6 +78,7 @@ const onClose = () => {
 }
 // 默认要校验的
 const formRules = {
+	inspectionName: [required('请选择项目名称')],
 }
 // 验证并提交数据
 const onSubmit = () => {

@@ -33,9 +33,10 @@
 				</a-space>
 			</template>
 			<template #bodyCell="{ column, record }">
-				<template v-if="column.dataIndex === 'inspectionUsers'">
-					<a-tag v-for="textValue in JSON.parse(record.inspectionUsers)" :key="textValue" color="green">{{
-						$TOOL.dictTypeData('GENDER', textValue) }}</a-tag>
+				<template v-if="column.dataIndex === 'userList'">
+					<a-tag class="mt-3" v-for="(user, index) in record.userList" color="cyan" :key="index">{{
+						user.name
+					}}</a-tag>
 				</template>
 				<template v-if="column.dataIndex === 'action'">
 					<a-space>
@@ -71,7 +72,7 @@ const columns = [
 	},
 	{
 		title: '巡检人员',
-		dataIndex: 'inspectionUsers'
+		dataIndex: 'userList'
 	},
 	// {
 	// 	title: '经度',

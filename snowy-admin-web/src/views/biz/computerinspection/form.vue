@@ -7,8 +7,11 @@
 					:options="projectList" />
 			</a-form-item>
 			<a-form-item label="巡检人员：" name="inspectionUsers">
-				<a-checkbox-group v-model:value="formData.inspectionUsers" placeholder="请选择巡检人员"
-					:options="inspectionUsersOptions" />
+				<a-button type="primary" @click="openUserSelector">设备提醒人</a-button>
+				<br />
+				<a-tag class="mt-3" v-for="(user, index) in formData.userList" color="cyan" :key="index">{{
+					user.name
+				}}</a-tag>
 			</a-form-item>
 			<!-- <a-form-item label="经度：" name="longitude">
 				<a-input v-model:value="formData.longitude" placeholder="请输入经度" allow-clear />
@@ -41,14 +44,19 @@
 			<a-button type="primary" @click="onSubmit" :loading="submitLoading">保存</a-button>
 		</template>
 	</xn-form-container>
+	<user-selector-plus ref="userSelectorPlusRef" :org-tree-api="selectorApiFunction.orgTreeApi"
+		:user-page-api="selectorApiFunction.userPageApi" :checked-user-list-api="selectorApiFunction.checkedUserListApi"
+		@onBack="userBack" />
 </template>
 
 <script setup name="tComputerInspectionForm">
-import tool from '@/utils/tool'
 import { cloneDeep } from 'lodash-es'
 import tComputerInspectionApi from '@/api/biz/tComputerInspectionApi'
 import tProjectApi from '@/api/biz/tProjectApi'
 import { required } from '@/utils/formRules'
+import userApi from '@/api/sys/userApi'
+import userCenterApi from '@/api/sys/userCenterApi'
+import { message } from 'ant-design-vue'
 // 抽屉状态
 const visible = ref(false)
 const emit = defineEmits({ successful: null })
@@ -56,19 +64,17 @@ const formRef = ref()
 // 表单数据
 const formData = ref({})
 const submitLoading = ref(false)
-const inspectionUsersOptions = ref([])
 const projectList = ref([])
+const userSelectorPlusRef = ref()
 
 // 打开抽屉
 const onOpen = (record) => {
 	visible.value = true
 	if (record) {
 		let recordData = cloneDeep(record)
-		recordData.inspectionUsers = JSON.parse(recordData.inspectionUsers)
 		formData.value = Object.assign({}, recordData)
 	}
 	selectProjectList()
-	inspectionUsersOptions.value = tool.dictList('GENDER')
 }
 // 关闭抽屉
 const onClose = () => {
@@ -84,6 +90,11 @@ const formRules = {
 const onSubmit = () => {
 	formRef.value.validate().then(() => {
 		submitLoading.value = true
+		if (formData.value.userList.length < 1) {
+			message.warning('未选择巡检人员')
+			return
+		}
+		convFormData()
 		const formDataParam = cloneDeep(formData.value)
 		formDataParam.inspectionUsers = JSON.stringify(formDataParam.inspectionUsers)
 		tComputerInspectionApi
@@ -108,6 +119,41 @@ const selectProjectList = () => {
 			projectList.value.push(newI)
 		})
 	})
+}
+
+// 打开人员选择器
+const openUserSelector = () => {
+	userSelectorPlusRef.value.showUserPlusModal(formData.value.inspectionUsers)
+}
+// 人员选择回调
+const userBack = (value) => {
+	formData.value.userList = value
+}
+// 添加接收人
+const convFormData = () => {
+	let ids = []
+	formData.value.userList.forEach((item) => {
+		ids.push(item.id)
+	})
+	formData.value.inspectionUsers = ids
+}
+// 传递设计器需要的API
+const selectorApiFunction = {
+	orgTreeApi: (param) => {
+		return userApi.userOrgTreeSelector(param).then((data) => {
+			return Promise.resolve(data)
+		})
+	},
+	userPageApi: (param) => {
+		return userApi.userSelector(param).then((data) => {
+			return Promise.resolve(data)
+		})
+	},
+	checkedUserListApi: (param) => {
+		return userCenterApi.userCenterGetUserListByIdList(param).then((data) => {
+			return Promise.resolve(data)
+		})
+	}
 }
 // 抛出函数
 defineExpose({

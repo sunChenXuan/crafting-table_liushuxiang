@@ -15,6 +15,7 @@ package vip.xiaonuo.biz.modular.computerinspection.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonRawValue;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -45,6 +46,7 @@ public class TComputerInspection extends CommonEntity {
 
     /** 巡检人员 */
     @ApiModelProperty(value = "巡检人员", position = 3)
+    @JsonRawValue
     private String inspectionUsers;
 
     /** 经度 */

@@ -6,8 +6,8 @@
 				<a-select showSearch v-model:value="formData.inspectionName" placeholder="请选择项目" optionFilterProp="label"
 					:options="projectList" />
 			</a-form-item>
-			<a-form-item label="巡检人员：" name="inspectionUsers">
-				<a-button type="primary" @click="openUserSelector">设备提醒人</a-button>
+			<a-form-item name="inspectionUsers">
+				<a-button type="primary" @click="openUserSelector">巡检人员</a-button>
 				<br />
 				<a-tag v-for="(user, index) in formData.userList" color="cyan" :key="index">{{
 					user.name

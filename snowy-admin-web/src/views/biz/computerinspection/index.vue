@@ -34,7 +34,7 @@
 			</template>
 			<template #bodyCell="{ column, record }">
 				<template v-if="column.dataIndex === 'userList'">
-					<a-tag class="mt-3" v-for="(user, index) in record.userList" color="cyan" :key="index">{{
+					<a-tag v-for="(user, index) in record.userList" color="cyan" :key="index">{{
 						user.name
 					}}</a-tag>
 				</template>

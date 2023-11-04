@@ -9,7 +9,7 @@
 			<a-form-item label="巡检人员：" name="inspectionUsers">
 				<a-button type="primary" @click="openUserSelector">设备提醒人</a-button>
 				<br />
-				<a-tag class="mt-3" v-for="(user, index) in formData.userList" color="cyan" :key="index">{{
+				<a-tag v-for="(user, index) in formData.userList" color="cyan" :key="index">{{
 					user.name
 				}}</a-tag>
 			</a-form-item>

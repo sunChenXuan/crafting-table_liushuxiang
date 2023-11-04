@@ -71,6 +71,7 @@ import tEquipmentMaintenanceApi from '@/api/biz/tEquipmentMaintenanceApi'
 import userApi from '@/api/sys/userApi'
 import userCenterApi from '@/api/sys/userCenterApi'
 import { required } from '@/utils/formRules'
+import tProjectApi from '@/api/biz/tProjectApi'
 // 抽屉状态
 const visible = ref(false)
 const emit = defineEmits({ successful: null })
@@ -226,7 +227,7 @@ const beforeUpload = (file) => {
 }
 const selectProjectList = () => {
 	projectList.value = [];
-	tEquipmentMaintenanceApi.projectList().then(res => {
+	tProjectApi.projectList().then(res => {
 		res.forEach(i => {
 			const newI = {
 				value: i.pkId,

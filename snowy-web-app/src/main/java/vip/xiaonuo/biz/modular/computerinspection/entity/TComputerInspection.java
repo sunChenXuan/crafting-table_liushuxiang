@@ -12,12 +12,16 @@
  */
 package vip.xiaonuo.biz.modular.computerinspection.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import vip.xiaonuo.common.pojo.CommonEntity;
+import vip.xiaonuo.sys.modular.user.result.SysUserMini;
+
+import java.util.List;
 
 /**
  * 机房巡检实体
@@ -35,7 +39,7 @@ public class TComputerInspection extends CommonEntity {
     @ApiModelProperty(value = "id", position = 1)
     private String pkId;
 
-    /** 项目名称 */
+    /** 项目名称 存储项目列表的id*/
     @ApiModelProperty(value = "项目名称", position = 2)
     private String inspectionName;
 
@@ -62,4 +66,10 @@ public class TComputerInspection extends CommonEntity {
     /** 作业计划 */
     @ApiModelProperty(value = "作业计划", position = 8)
     private String workPlan;
+
+    /* ====额外的字段==== */
+    @TableField(exist = false)
+    private List<SysUserMini> userList;
+    @TableField(exist = false)
+    private String projectName;
 }

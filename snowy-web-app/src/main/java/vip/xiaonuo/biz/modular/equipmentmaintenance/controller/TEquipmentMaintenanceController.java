@@ -152,18 +152,4 @@ public class TEquipmentMaintenanceController {
     public CommonResult<TEquipmentMaintenance> detail(@Valid TEquipmentMaintenanceIdParam tEquipmentMaintenanceIdParam) {
         return CommonResult.data(tEquipmentMaintenanceService.detail(tEquipmentMaintenanceIdParam));
     }
-
-    /**
-     * 获取设备维保分页
-     *
-     * @author scx
-     * @date  2023/09/20 17:02
-     */
-    @ApiOperationSupport(order = 1)
-    @ApiOperation("获取项目列表")
-    @SaCheckPermission("/biz/equipmentmaintenance/projectList")
-    @GetMapping("/biz/equipmentmaintenance/projectList")
-    public CommonResult<List<TProject>> projectList(TEquipmentMaintenancePageParam tEquipmentMaintenancePageParam) {
-        return CommonResult.data(tProjectService.list());
-    }
 }

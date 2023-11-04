@@ -16,6 +16,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollStreamUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -28,10 +29,14 @@ import vip.xiaonuo.biz.modular.computerinspection.param.TComputerInspectionEditP
 import vip.xiaonuo.biz.modular.computerinspection.param.TComputerInspectionIdParam;
 import vip.xiaonuo.biz.modular.computerinspection.param.TComputerInspectionPageParam;
 import vip.xiaonuo.biz.modular.computerinspection.service.TComputerInspectionService;
+import vip.xiaonuo.biz.modular.project.service.TProjectService;
 import vip.xiaonuo.common.enums.CommonSortOrderEnum;
 import vip.xiaonuo.common.exception.CommonException;
 import vip.xiaonuo.common.page.CommonPageRequest;
+import vip.xiaonuo.sys.modular.user.param.SysUserIdListParam;
+import vip.xiaonuo.sys.modular.user.service.SysUserService;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -42,12 +47,16 @@ import java.util.List;
  **/
 @Service
 public class TComputerInspectionServiceImpl extends ServiceImpl<TComputerInspectionMapper, TComputerInspection> implements TComputerInspectionService {
+    @Resource
+    private SysUserService sysUserService;
+    @Resource
+    private TProjectService projectService;
 
     @Override
     public Page<TComputerInspection> page(TComputerInspectionPageParam tComputerInspectionPageParam) {
         QueryWrapper<TComputerInspection> queryWrapper = new QueryWrapper<>();
         if(ObjectUtil.isNotEmpty(tComputerInspectionPageParam.getInspectionName())) {
-            queryWrapper.lambda().like(TComputerInspection::getInspectionName, tComputerInspectionPageParam.getInspectionName());
+            queryWrapper.lambda().eq(TComputerInspection::getInspectionName, tComputerInspectionPageParam.getInspectionName());
         }
         if(ObjectUtil.isNotEmpty(tComputerInspectionPageParam.getInspectionUsers())) {
             queryWrapper.lambda().like(TComputerInspection::getInspectionUsers, tComputerInspectionPageParam.getInspectionUsers());
@@ -59,7 +68,18 @@ public class TComputerInspectionServiceImpl extends ServiceImpl<TComputerInspect
         } else {
             queryWrapper.lambda().orderByAsc(TComputerInspection::getPkId);
         }
-        return this.page(CommonPageRequest.defaultPage(), queryWrapper);
+        final Page<TComputerInspection> page = this.page(CommonPageRequest.defaultPage(), queryWrapper);
+        for (TComputerInspection ci : page.getRecords()) {
+            if (ci.getInspectionName() != null && !ci.getInspectionName().isEmpty()){
+                ci.setProjectName(projectService.getById(ci.getInspectionName()).getProjectName());
+            }
+            SysUserIdListParam sysUserIdListParam = new SysUserIdListParam();
+            if (ci.getInspectionUsers() != null && !ci.getInspectionUsers().isEmpty()){
+                sysUserIdListParam.setIdList(JSONArray.parseArray(ci.getInspectionUsers(), String.class));
+                ci.setUserList(sysUserService.getUserListByIdList(sysUserIdListParam));
+            }
+        }
+        return page;
     }
 
     @Transactional(rollbackFor = Exception.class)

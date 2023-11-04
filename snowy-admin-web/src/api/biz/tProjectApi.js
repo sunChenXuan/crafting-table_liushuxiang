@@ -28,5 +28,9 @@ export default {
 	// 获取项目详情
 	tProjectDetail(data) {
 		return request('detail', data, 'get')
+	},
+	// 获取项目列表
+	projectList() {
+		return request('projectList', null, 'get')
 	}
 }

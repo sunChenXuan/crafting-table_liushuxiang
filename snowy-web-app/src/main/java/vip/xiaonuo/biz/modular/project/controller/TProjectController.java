@@ -37,6 +37,7 @@ import vip.xiaonuo.common.pojo.CommonValidList;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 /**
  * 项目控制器
@@ -134,5 +135,19 @@ public class TProjectController {
     @GetMapping("/biz/project/detail")
     public CommonResult<TProject> detail(@Valid TProjectIdParam tProjectIdParam) {
         return CommonResult.data(tProjectService.detail(tProjectIdParam));
+    }
+
+    /**
+     * 获取设备维保分页
+     *
+     * @author scx
+     * @date  2023/09/20 17:02
+     */
+    @ApiOperationSupport(order = 1)
+    @ApiOperation("获取项目列表")
+    @SaCheckPermission("/biz/project/projectList")
+    @GetMapping("/biz/project/projectList")
+    public CommonResult<List<TProject>> projectList() {
+        return CommonResult.data(tProjectService.list());
     }
 }

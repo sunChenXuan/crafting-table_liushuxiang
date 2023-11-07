@@ -38,6 +38,11 @@
 						user.name
 					}}</a-tag>
 				</template>
+				<template v-if="column.dataIndex === 'remarkReport'">
+					<a-tag v-for="(value, index) in record.remarkReport" color="cyan" :key="index">{{
+						value.k + "：" + value.v
+					}}</a-tag>
+				</template>
 				<template v-if="column.dataIndex === 'action'">
 					<a-space>
 						<a @click="formRef.onOpen(record)" v-if="hasPerm('tComputerInspectionEdit')">编辑</a>

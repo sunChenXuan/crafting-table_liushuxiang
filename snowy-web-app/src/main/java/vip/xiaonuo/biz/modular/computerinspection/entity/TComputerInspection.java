@@ -63,6 +63,7 @@ public class TComputerInspection extends CommonEntity {
 
     /** 巡检报告 */
     @ApiModelProperty(value = "巡检报告", position = 7)
+    @JsonRawValue
     private String remarkReport;
 
     /** 作业计划 */

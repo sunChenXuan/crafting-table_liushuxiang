@@ -19,28 +19,19 @@
 			<a-form-item label="纬度：" name="latitude">
 				<a-input v-model:value="formData.latitude" placeholder="请输入纬度" allow-clear />
 			</a-form-item> -->
-			<!-- <a-form-item label="巡检项目：" name="inspectionType">
-				<a-input v-model:value="formData.inspectionType" placeholder="请输入巡检项目" allow-clear />
-			</a-form-item> -->
 			<a-form-item label="巡检项目：" name="inspectionType">
-				<a-select showSearch v-model:value="formData.inspectionType" placeholder="请选择项目" optionFilterProp="label"
-					:options="typeList" />
+				<a-select @change="selectTypeListOn" showSearch v-model:value="formData.inspectionType" placeholder="请选择项目"
+					optionFilterProp="label" :options="typeList" />
 			</a-form-item>
-			<a-form-item label="巡检报告：" name="remarkReport">
-				<a-input v-model:value="formData.remarkReport" placeholder="请输入巡检报告" allow-clear />
+			<a-form-item label="" name="inspectionDetail">
+				{{ "巡检报告：" }}
+				<a-form :inline="true" v-for="(_, index) in inspectionDetailArray" :key="index">
+					<a-input :addon-before="inspectionDetailArray[index].k" v-model:value="inspectionDetailArray[index].v"
+						placeholder="" allow-clear style="margin-top: 8px" />
+				</a-form>
 			</a-form-item>
 			<!-- <a-form-item label="作业计划：" name="workPlan">
 				<a-input v-model:value="formData.workPlan" placeholder="请输入作业计划" allow-clear />
-			</a-form-item>
-			<a-form-item label="创建用户：" name="createdBy">
-				<a-input v-model:value="formData.createdBy" placeholder="请输入创建用户" allow-clear />
-			</a-form-item>
-			<a-form-item label="修改时间：" name="updatedTime">
-				<a-date-picker v-model:value="formData.updatedTime" value-format="YYYY-MM-DD HH:mm:ss" show-time
-					placeholder="请选择修改时间" style="width: 100%" />
-			</a-form-item>
-			<a-form-item label="修改用户：" name="updatedBy">
-				<a-input v-model:value="formData.updatedBy" placeholder="请输入修改用户" allow-clear />
 			</a-form-item> -->
 		</a-form>
 		<template #footer>
@@ -78,6 +69,12 @@ const onOpen = (record) => {
 	if (record) {
 		let recordData = cloneDeep(record)
 		formData.value = Object.assign({}, recordData)
+		for (let i = 0; i < formData.value.remarkReport.length; i++) {
+			inspectionDetailArray.value.push({
+				k: formData.value.remarkReport[i].k,
+				v: formData.value.remarkReport[i].v
+			})
+		}
 	}
 	selectProjectList()
 	selectTypeList()
@@ -87,6 +84,7 @@ const onClose = () => {
 	formRef.value.resetFields()
 	formData.value = {}
 	visible.value = false
+	inspectionDetailArray.value = []
 }
 // 默认要校验的
 const formRules = {
@@ -96,10 +94,17 @@ const formRules = {
 const onSubmit = () => {
 	formRef.value.validate().then(() => {
 		submitLoading.value = true
+		let array = []
+		for (let i = 0; i < inspectionDetailArray.value.length; i++) {
+			if (inspectionDetailArray.value[i] && inspectionDetailArray.value[i] != "") {
+				array.push(inspectionDetailArray.value[i])
+			}
+		}
 		if (formData.value.userList.length < 1) {
 			message.warning('未选择巡检人员')
 			return
 		}
+		formData.value.remarkReport = JSON.stringify(array)
 		convFormData()
 		const formDataParam = cloneDeep(formData.value)
 		formDataParam.inspectionUsers = JSON.stringify(formDataParam.inspectionUsers)
@@ -169,10 +174,22 @@ const selectTypeList = () => {
 			const newI = {
 				value: i.pkId,
 				label: i.inspectionTypeName,
+				list: i.inspectionDetail,
 			};
 			typeList.value.push(newI)
 		})
 	})
+}
+const inspectionDetailArray = ref([])
+const selectTypeListOn = (value) => {
+	inspectionDetailArray.value = []
+	let list = typeList.value.filter(item => item.value == value)[0].list
+	for (let i = 0; i < list.length; i++) {
+		inspectionDetailArray.value.push({
+			k: list[i],
+			v: ""
+		})
+	}
 }
 // 抛出函数
 defineExpose({

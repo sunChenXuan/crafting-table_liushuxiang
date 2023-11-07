@@ -28,5 +28,9 @@ export default {
 	// 获取机房巡检类型详情
 	tComputerInspectionTypeDetail(data) {
 		return request('detail', data, 'get')
+	},
+	// 获取机房巡检类型详情
+	list(data) {
+		return request('list', data, 'get')
 	}
 }

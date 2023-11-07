@@ -9,9 +9,9 @@
 					</a-form-item>
 				</a-col>
 				<a-col :span="6">
-					<a-form-item label="巡检人员" name="inspectionUsers">
-						<a-select v-model:value="searchFormState.inspectionUsers" placeholder="请选择巡检人员"
-							:options="inspectionUsersOptions" />
+					<a-form-item label="巡检类型" name="inspectionType">
+						<a-select v-model:value="searchFormState.inspectionType" placeholder="巡检类型"
+							:options="typeList" />
 					</a-form-item>
 				</a-col>
 				<a-col :span="6">
@@ -56,9 +56,9 @@
 </template>
 
 <script setup name="computerinspection">
-import tool from '@/utils/tool'
 import Form from './form.vue'
 import tComputerInspectionApi from '@/api/biz/tComputerInspectionApi'
+import tComputerInspectionTypeApi from '@/api/biz/tComputerInspectionTypeApi'
 import tProjectApi from '@/api/biz/tProjectApi'
 let searchFormState = reactive({})
 const searchFormRef = ref()
@@ -84,7 +84,7 @@ const columns = [
 	// },
 	{
 		title: '巡检项目',
-		dataIndex: 'inspectionType'
+		dataIndex: 'inspectionTypeName'
 	},
 	{
 		title: '巡检报告',
@@ -134,6 +134,7 @@ const options = {
 }
 const loadData = (parameter) => {
 	selectProjectList()
+	selectTypeList()
 	const searchFormParam = JSON.parse(JSON.stringify(searchFormState))
 	return tComputerInspectionApi.tComputerInspectionPage(Object.assign(parameter, searchFormParam)).then((data) => {
 		return data
@@ -161,7 +162,6 @@ const deleteBatchTComputerInspection = (params) => {
 		table.value.clearRefreshSelected()
 	})
 }
-const inspectionUsersOptions = tool.dictList('GENDER')
 const projectList = ref([])
 const selectProjectList = () => {
 	projectList.value = [];
@@ -172,6 +172,19 @@ const selectProjectList = () => {
 				label: i.projectName,
 			};
 			projectList.value.push(newI)
+		})
+	})
+}
+const typeList = ref([])
+const selectTypeList = () => {
+	typeList.value = [];
+	tComputerInspectionTypeApi.list().then(res => {
+		res.forEach(i => {
+			const newI = {
+				value: i.pkId,
+				label: i.inspectionTypeName,
+			};
+			typeList.value.push(newI)
 		})
 	})
 }

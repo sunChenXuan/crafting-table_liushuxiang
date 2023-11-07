@@ -36,6 +36,7 @@ import vip.xiaonuo.biz.modular.computerinspectiontype.service.TComputerInspectio
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 /**
  * 机房巡检类型控制器
@@ -64,6 +65,20 @@ public class TComputerInspectionTypeController {
     @GetMapping("/biz/computerinspectiontype/page")
     public CommonResult<Page<TComputerInspectionType>> page(TComputerInspectionTypePageParam tComputerInspectionTypePageParam) {
         return CommonResult.data(tComputerInspectionTypeService.page(tComputerInspectionTypePageParam));
+    }
+
+    /**
+     * 获取机房巡检类型分页
+     *
+     * @author scx
+     * @date  2023/11/01 10:11
+     */
+    @ApiOperationSupport(order = 1)
+    @ApiOperation("获取机房巡检类型列表")
+    @SaCheckPermission("/biz/computerinspectiontype/list")
+    @GetMapping("/biz/computerinspectiontype/list")
+    public CommonResult<List<TComputerInspectionType>> list() {
+        return CommonResult.data(tComputerInspectionTypeService.list());
     }
 
     /**

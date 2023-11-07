@@ -29,6 +29,7 @@ import vip.xiaonuo.biz.modular.computerinspection.param.TComputerInspectionEditP
 import vip.xiaonuo.biz.modular.computerinspection.param.TComputerInspectionIdParam;
 import vip.xiaonuo.biz.modular.computerinspection.param.TComputerInspectionPageParam;
 import vip.xiaonuo.biz.modular.computerinspection.service.TComputerInspectionService;
+import vip.xiaonuo.biz.modular.computerinspectiontype.service.TComputerInspectionTypeService;
 import vip.xiaonuo.biz.modular.project.service.TProjectService;
 import vip.xiaonuo.common.enums.CommonSortOrderEnum;
 import vip.xiaonuo.common.exception.CommonException;
@@ -51,12 +52,17 @@ public class TComputerInspectionServiceImpl extends ServiceImpl<TComputerInspect
     private SysUserService sysUserService;
     @Resource
     private TProjectService projectService;
+    @Resource
+    private TComputerInspectionTypeService computerInspectionTypeService;
 
     @Override
     public Page<TComputerInspection> page(TComputerInspectionPageParam tComputerInspectionPageParam) {
         QueryWrapper<TComputerInspection> queryWrapper = new QueryWrapper<>();
         if(ObjectUtil.isNotEmpty(tComputerInspectionPageParam.getInspectionName())) {
             queryWrapper.lambda().eq(TComputerInspection::getInspectionName, tComputerInspectionPageParam.getInspectionName());
+        }
+        if(ObjectUtil.isNotEmpty(tComputerInspectionPageParam.getInspectionType())) {
+            queryWrapper.lambda().eq(TComputerInspection::getInspectionType, tComputerInspectionPageParam.getInspectionType());
         }
         if(ObjectUtil.isNotEmpty(tComputerInspectionPageParam.getInspectionUsers())) {
             queryWrapper.lambda().like(TComputerInspection::getInspectionUsers, tComputerInspectionPageParam.getInspectionUsers());
@@ -72,6 +78,9 @@ public class TComputerInspectionServiceImpl extends ServiceImpl<TComputerInspect
         for (TComputerInspection ci : page.getRecords()) {
             if (ci.getInspectionName() != null && !ci.getInspectionName().isEmpty()){
                 ci.setProjectName(projectService.getById(ci.getInspectionName()).getProjectName());
+            }
+            if (ci.getInspectionType() != null && !ci.getInspectionType().isEmpty()){
+                ci.setInspectionTypeName(computerInspectionTypeService.getById(ci.getInspectionType()).getInspectionTypeName());
             }
             SysUserIdListParam sysUserIdListParam = new SysUserIdListParam();
             if (ci.getInspectionUsers() != null && !ci.getInspectionUsers().isEmpty()){

@@ -74,4 +74,6 @@ public class TComputerInspection extends CommonEntity {
     private List<SysUserMini> userList;
     @TableField(exist = false)
     private String projectName;
+    @TableField(exist = false)
+    private String inspectionTypeName;
 }

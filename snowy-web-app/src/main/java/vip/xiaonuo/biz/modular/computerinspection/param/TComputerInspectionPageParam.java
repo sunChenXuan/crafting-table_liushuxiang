@@ -50,6 +50,10 @@ public class TComputerInspectionPageParam {
     @ApiModelProperty(value = "项目名称")
     private String inspectionName;
 
+    /** 项目名称 */
+    @ApiModelProperty(value = "巡检类型")
+    private String inspectionType;
+
     /** 巡检人员 */
     @ApiModelProperty(value = "巡检人员")
     private String inspectionUsers;

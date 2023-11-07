@@ -19,8 +19,12 @@
 			<a-form-item label="纬度：" name="latitude">
 				<a-input v-model:value="formData.latitude" placeholder="请输入纬度" allow-clear />
 			</a-form-item> -->
-			<a-form-item label="巡检项目：" name="inspectionType">
+			<!-- <a-form-item label="巡检项目：" name="inspectionType">
 				<a-input v-model:value="formData.inspectionType" placeholder="请输入巡检项目" allow-clear />
+			</a-form-item> -->
+			<a-form-item label="巡检项目：" name="inspectionType">
+				<a-select showSearch v-model:value="formData.inspectionType" placeholder="请选择项目" optionFilterProp="label"
+					:options="typeList" />
 			</a-form-item>
 			<a-form-item label="巡检报告：" name="remarkReport">
 				<a-input v-model:value="formData.remarkReport" placeholder="请输入巡检报告" allow-clear />
@@ -52,6 +56,7 @@
 <script setup name="tComputerInspectionForm">
 import { cloneDeep } from 'lodash-es'
 import tComputerInspectionApi from '@/api/biz/tComputerInspectionApi'
+import tComputerInspectionTypeApi from '@/api/biz/tComputerInspectionTypeApi'
 import tProjectApi from '@/api/biz/tProjectApi'
 import { required } from '@/utils/formRules'
 import userApi from '@/api/sys/userApi'
@@ -75,6 +80,7 @@ const onOpen = (record) => {
 		formData.value = Object.assign({}, recordData)
 	}
 	selectProjectList()
+	selectTypeList()
 }
 // 关闭抽屉
 const onClose = () => {
@@ -154,6 +160,19 @@ const selectorApiFunction = {
 			return Promise.resolve(data)
 		})
 	}
+}
+const typeList = ref([])
+const selectTypeList = () => {
+	typeList.value = [];
+	tComputerInspectionTypeApi.list().then(res => {
+		res.forEach(i => {
+			const newI = {
+				value: i.pkId,
+				label: i.inspectionTypeName,
+			};
+			typeList.value.push(newI)
+		})
+	})
 }
 // 抛出函数
 defineExpose({

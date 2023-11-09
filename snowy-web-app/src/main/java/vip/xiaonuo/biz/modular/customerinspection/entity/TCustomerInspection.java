@@ -12,6 +12,7 @@
  */
 package vip.xiaonuo.biz.modular.customerinspection.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
@@ -68,4 +69,8 @@ public class TCustomerInspection extends CommonEntity {
     /** 巡检内容 */
     @ApiModelProperty(value = "巡检内容", position = 9)
     private String remark;
+
+    /* ====额外的字段==== */
+    @TableField(exist = false)
+    String projectName;
 }

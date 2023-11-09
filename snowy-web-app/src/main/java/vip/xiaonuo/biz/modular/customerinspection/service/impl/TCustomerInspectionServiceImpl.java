@@ -28,10 +28,12 @@ import vip.xiaonuo.biz.modular.customerinspection.param.TCustomerInspectionEditP
 import vip.xiaonuo.biz.modular.customerinspection.param.TCustomerInspectionIdParam;
 import vip.xiaonuo.biz.modular.customerinspection.param.TCustomerInspectionPageParam;
 import vip.xiaonuo.biz.modular.customerinspection.service.TCustomerInspectionService;
+import vip.xiaonuo.biz.modular.project.service.TProjectService;
 import vip.xiaonuo.common.enums.CommonSortOrderEnum;
 import vip.xiaonuo.common.exception.CommonException;
 import vip.xiaonuo.common.page.CommonPageRequest;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -42,6 +44,8 @@ import java.util.List;
  **/
 @Service
 public class TCustomerInspectionServiceImpl extends ServiceImpl<TCustomerInspectionMapper, TCustomerInspection> implements TCustomerInspectionService {
+    @Resource
+    private TProjectService projectService;
 
     @Override
     public Page<TCustomerInspection> page(TCustomerInspectionPageParam tCustomerInspectionPageParam) {
@@ -62,7 +66,13 @@ public class TCustomerInspectionServiceImpl extends ServiceImpl<TCustomerInspect
         } else {
             queryWrapper.lambda().orderByAsc(TCustomerInspection::getPkId);
         }
-        return this.page(CommonPageRequest.defaultPage(), queryWrapper);
+        final Page<TCustomerInspection> page = this.page(CommonPageRequest.defaultPage(), queryWrapper);
+        for (TCustomerInspection ci : page.getRecords()) {
+            if (ci.getInspectionName() != null && !ci.getInspectionName().isEmpty()){
+                ci.setProjectName(projectService.getById(ci.getInspectionName()).getProjectName());
+            }
+        }
+        return page;
     }
 
     @Transactional(rollbackFor = Exception.class)

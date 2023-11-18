@@ -16,15 +16,10 @@
 </template>
 
 <script setup name="tCustomerInspectionForm">
-import tool from '@/utils/tool'
-import { cloneDeep } from 'lodash-es'
-import { required, rules } from '@/utils/formRules'
 import tCustomerInspectionFileApi from '@/api/biz/tCustomerInspectionFileApi.js'
 // 抽屉状态
 const visible = ref(false)
 const emit = defineEmits({ successful: null })
-const formRef = ref()
-const submitLoading = ref(false)
 // 表单数据
 const customerinspectionId = ref({})
 const fileList = ref([])
@@ -34,32 +29,36 @@ const onOpen = (record) => {
 	visible.value = true
 	if (record) {
 		customerinspectionId.value = record.pkId
+		selectFiles()
 	}
 }
 // 关闭抽屉
 const onClose = () => {
-	formRef.value.resetFields()
 	visible.value = false
 }
 const handlePreview = (file) => {
 }
-
 const customUpload = (e) => {
-	submitLoading.value = true
 	let formData = new FormData()
-	// customerinspectionId
-	console.log(customerinspectionId.value)
 	formData.append('data', customerinspectionId.value)
 	formData.append('file', e.file)
 	tCustomerInspectionFileApi
 		.tCustomerInspectionFileSubmitForm(formData)
 		.then(() => {
+			selectFiles()
 			emit('successful')
 		})
 		.finally(() => {
-			submitLoading.value = false
 		})
 };
+const selectFiles = () => {
+	const searchFormParam = JSON.parse(JSON.stringify({ "idxCustomerInspectionId": customerinspectionId.value }))
+	tCustomerInspectionFileApi.tCustomerInspectionFilePage(searchFormParam).then(res => {
+		fileList.value = res
+	})
+
+};
+
 
 // 抛出函数
 defineExpose({

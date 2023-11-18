@@ -13,6 +13,7 @@
 package vip.xiaonuo.biz.modular.customerinspectionfile.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
@@ -36,6 +37,7 @@ import vip.xiaonuo.dev.modular.file.service.DevFileService;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 /**
  * 客户巡检文件控制器
@@ -65,8 +67,12 @@ public class TCustomerInspectionFileController {
     @ApiOperation("获取客户巡检文件分页")
     @SaCheckPermission("/biz/customerinspectionfile/page")
     @GetMapping("/biz/customerinspectionfile/page")
-    public CommonResult<Page<TCustomerInspectionFile>> page(TCustomerInspectionFilePageParam tCustomerInspectionFilePageParam) {
-        return CommonResult.data(tCustomerInspectionFileService.page(tCustomerInspectionFilePageParam));
+    public CommonResult<List<TCustomerInspectionFile>> page(TCustomerInspectionFilePageParam tCustomerInspectionFilePageParam) {
+        // 重写为list
+        final QueryWrapper<TCustomerInspectionFile> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda()
+                .eq(TCustomerInspectionFile::getIdxCustomerInspectionId, tCustomerInspectionFilePageParam.getIdxCustomerInspectionId());
+        return CommonResult.data(tCustomerInspectionFileService.list(queryWrapper));
     }
 
     /**

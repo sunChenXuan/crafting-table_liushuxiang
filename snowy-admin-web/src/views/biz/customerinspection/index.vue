@@ -44,7 +44,7 @@
 				<template v-if="column.dataIndex === 'action'">
 					<a-space>
 						<a @click="formRef.onOpen(record)" v-if="hasPerm('tCustomerInspectionEdit')">编辑</a>
-						<a @click="uploadFormRef.onOpen(record)" v-if="hasPerm('tCustomerInspectionEdit')">上传图片</a>
+						<a @click="uploadFormRef.onOpen(record)" v-if="hasPerm('tCustomerInspectionEdit')">图片</a>
 						<a-popconfirm title="确定要删除吗？" @confirm="deleteTCustomerInspection(record)">
 							<a-button type="link" danger size="small"
 								v-if="hasPerm('tCustomerInspectionDelete')">删除</a-button>

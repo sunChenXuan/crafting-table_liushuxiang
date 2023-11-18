@@ -19,10 +19,8 @@ import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import vip.xiaonuo.common.annotation.CommonLog;
 import vip.xiaonuo.common.pojo.CommonResult;
 import vip.xiaonuo.common.pojo.CommonValidList;
@@ -32,6 +30,8 @@ import vip.xiaonuo.biz.modular.customerinspectionfile.param.TCustomerInspectionF
 import vip.xiaonuo.biz.modular.customerinspectionfile.param.TCustomerInspectionFileIdParam;
 import vip.xiaonuo.biz.modular.customerinspectionfile.param.TCustomerInspectionFilePageParam;
 import vip.xiaonuo.biz.modular.customerinspectionfile.service.TCustomerInspectionFileService;
+import vip.xiaonuo.dev.modular.file.enums.DevFileEngineTypeEnum;
+import vip.xiaonuo.dev.modular.file.service.DevFileService;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -51,6 +51,9 @@ public class TCustomerInspectionFileController {
 
     @Resource
     private TCustomerInspectionFileService tCustomerInspectionFileService;
+
+    @Resource
+    private DevFileService devFileService;
 
     /**
      * 获取客户巡检文件分页
@@ -77,7 +80,10 @@ public class TCustomerInspectionFileController {
     @CommonLog("添加客户巡检文件")
     @SaCheckPermission("/biz/customerinspectionfile/add")
     @PostMapping("/biz/customerinspectionfile/add")
-    public CommonResult<String> add(@RequestBody @Valid TCustomerInspectionFileAddParam tCustomerInspectionFileAddParam) {
+    public CommonResult<String> add(@RequestPart("file") MultipartFile file, @RequestPart("data") String string) {
+        final TCustomerInspectionFileAddParam tCustomerInspectionFileAddParam = new TCustomerInspectionFileAddParam();
+        tCustomerInspectionFileAddParam.setIdxCustomerInspectionId(string);
+        tCustomerInspectionFileAddParam.setUkFileId(devFileService.uploadReturnId(DevFileEngineTypeEnum.LOCAL.getValue(), file));
         tCustomerInspectionFileService.add(tCustomerInspectionFileAddParam);
         return CommonResult.ok();
     }

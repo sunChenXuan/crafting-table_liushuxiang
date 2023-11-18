@@ -44,8 +44,7 @@
 				<template v-if="column.dataIndex === 'action'">
 					<a-space>
 						<a @click="formRef.onOpen(record)" v-if="hasPerm('tCustomerInspectionEdit')">编辑</a>
-						<a-divider type="vertical"
-							v-if="hasPerm(['tCustomerInspectionEdit', 'tCustomerInspectionDelete'], 'and')" />
+						<a @click="uploadFormRef.onOpen(record)" v-if="hasPerm('tCustomerInspectionEdit')">上传图片</a>
 						<a-popconfirm title="确定要删除吗？" @confirm="deleteTCustomerInspection(record)">
 							<a-button type="link" danger size="small"
 								v-if="hasPerm('tCustomerInspectionDelete')">删除</a-button>
@@ -56,17 +55,20 @@
 		</s-table>
 	</a-card>
 	<Form ref="formRef" @successful="table.refresh(true)" />
+	<UploadForm ref="uploadFormRef" @successful="table.refresh(true)" />
 </template>
 
 <script setup name="customerinspection">
 import tool from '@/utils/tool'
 import Form from './form.vue'
+import UploadForm from './upload.vue'
 import tCustomerInspectionApi from '@/api/biz/tCustomerInspectionApi'
 import tProjectApi from '@/api/biz/tProjectApi'
 let searchFormState = reactive({})
 const searchFormRef = ref()
 const table = ref()
 const formRef = ref()
+const uploadFormRef = ref()
 const toolConfig = { refresh: true, height: true, columnSetting: true, striped: false }
 const columns = [
 	{
@@ -120,7 +122,7 @@ if (hasPerm(['tCustomerInspectionEdit', 'tCustomerInspectionDelete'])) {
 		title: '操作',
 		dataIndex: 'action',
 		align: 'center',
-		width: '150px'
+		width: '200px'
 	})
 }
 const selectedRowKeys = ref([])

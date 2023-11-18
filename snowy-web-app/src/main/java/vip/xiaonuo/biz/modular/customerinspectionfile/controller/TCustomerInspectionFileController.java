@@ -93,7 +93,7 @@ public class TCustomerInspectionFileController {
     public CommonResult<String> add(@RequestPart("file") MultipartFile file, @RequestPart("data") String string) {
         final TCustomerInspectionFileAddParam tCustomerInspectionFileAddParam = new TCustomerInspectionFileAddParam();
         tCustomerInspectionFileAddParam.setIdxCustomerInspectionId(string);
-        tCustomerInspectionFileAddParam.setUkFileId(devFileService.uploadReturnId(DevFileEngineTypeEnum.LOCAL.getValue(), file));
+        tCustomerInspectionFileAddParam.setUkFileId(devFileService.uploadReturnId(DevFileEngineTypeEnum.MINIO.getValue(), file));
         tCustomerInspectionFileService.add(tCustomerInspectionFileAddParam);
         return CommonResult.ok();
     }

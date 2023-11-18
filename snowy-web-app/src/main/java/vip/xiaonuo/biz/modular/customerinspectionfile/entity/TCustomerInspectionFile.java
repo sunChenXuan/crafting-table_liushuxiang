@@ -16,6 +16,9 @@ import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import vip.xiaonuo.dev.modular.file.entity.DevFile;
+import vip.xiaonuo.dev.modular.file.enums.DevFileEngineTypeEnum;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -65,4 +68,16 @@ public class TCustomerInspectionFile {
     /** 修改用户 */
     @ApiModelProperty(value = "修改用户", position = 8)
     private String updatedBy;
+
+    /* ====额外的字段==== */
+    @TableField(exist = false)
+    private DevFile file;
+
+    public String getName() {
+        return file == null ? null : file.getName();
+    }
+    public String getUrl() {
+//        return file == null ? null : (file.getEngine().equals(DevFileEngineTypeEnum.LOCAL.getValue()) ? file.getStoragePath() : file.getDownloadPath());
+        return file == null ? null : file.getDownloadPath();
+    }
 }

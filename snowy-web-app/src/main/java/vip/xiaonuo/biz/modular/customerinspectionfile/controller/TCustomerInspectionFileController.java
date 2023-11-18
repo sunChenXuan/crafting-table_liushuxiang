@@ -72,7 +72,11 @@ public class TCustomerInspectionFileController {
         final QueryWrapper<TCustomerInspectionFile> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
                 .eq(TCustomerInspectionFile::getIdxCustomerInspectionId, tCustomerInspectionFilePageParam.getIdxCustomerInspectionId());
-        return CommonResult.data(tCustomerInspectionFileService.list(queryWrapper));
+        final List<TCustomerInspectionFile> list = tCustomerInspectionFileService.list(queryWrapper);
+        for(TCustomerInspectionFile i : list){
+            i.setFile(devFileService.queryEntity(i.getUkFileId()));
+        }
+        return CommonResult.data(list);
     }
 
     /**

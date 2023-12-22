@@ -29,6 +29,7 @@ import vip.xiaonuo.biz.modular.computerinspection.param.TComputerInspectionEditP
 import vip.xiaonuo.biz.modular.computerinspection.param.TComputerInspectionIdParam;
 import vip.xiaonuo.biz.modular.computerinspection.param.TComputerInspectionPageParam;
 import vip.xiaonuo.biz.modular.computerinspection.service.TComputerInspectionService;
+import vip.xiaonuo.biz.modular.computerinspectiontype.entity.TComputerInspectionType;
 import vip.xiaonuo.biz.modular.computerinspectiontype.service.TComputerInspectionTypeService;
 import vip.xiaonuo.biz.modular.project.service.TProjectService;
 import vip.xiaonuo.common.enums.CommonSortOrderEnum;
@@ -80,7 +81,8 @@ public class TComputerInspectionServiceImpl extends ServiceImpl<TComputerInspect
                 ci.setProjectName(projectService.getById(ci.getInspectionName()).getProjectName());
             }
             if (ci.getInspectionType() != null && !ci.getInspectionType().isEmpty()){
-                ci.setInspectionTypeName(computerInspectionTypeService.getById(ci.getInspectionType()).getInspectionTypeName());
+                final TComputerInspectionType byId = computerInspectionTypeService.getById(ci.getInspectionType());
+                ci.setInspectionTypeName(byId == null ? null :byId.getInspectionTypeName());
             }
             SysUserIdListParam sysUserIdListParam = new SysUserIdListParam();
             if (ci.getInspectionUsers() != null && !ci.getInspectionUsers().isEmpty()){

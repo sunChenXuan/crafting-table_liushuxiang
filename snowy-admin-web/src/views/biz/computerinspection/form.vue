@@ -26,8 +26,21 @@
 			<a-form-item label="" name="inspectionDetail">
 				{{ "巡检报告：" }}
 				<a-form :inline="true" v-for="(_, index) in inspectionDetailArray" :key="index">
-					<a-input :addon-before="inspectionDetailArray[index].k" v-model:value="inspectionDetailArray[index].v"
-						placeholder="" allow-clear style="margin-top: 8px" />
+					<!-- <a-input :addon-before="inspectionDetailArray[index].k" v-model:value="inspectionDetailArray[index].v"
+						placeholder="" allow-clear style="margin-top: 8px" /> -->
+					<a-button style="margin-top: 8px; margin-right: 3px; pointer-events: none;">
+						{{ inspectionDetailArray[index].k }}
+					</a-button>
+					<a-radio-group v-model:value="inspectionDetailArray[index].flag">
+						<a-radio-button :value="'ok'">正常</a-radio-button>
+						<a-radio-button :value="'error'">异常</a-radio-button>
+						<a-radio-button :value="'text'">
+							其他
+							<a-input :bordered="false" placeholder="请输入报告内容" v-model:value="inspectionDetailArray[index].v"
+								v-if="inspectionDetailArray[index].flag === 'text'"
+								style="width: 200px; margin-left: -5px; margin-right: -15px" />
+						</a-radio-button>
+					</a-radio-group>
 				</a-form>
 			</a-form-item>
 			<!-- <a-form-item label="作业计划：" name="workPlan">
@@ -72,7 +85,8 @@ const onOpen = (record) => {
 		for (let i = 0; i < formData.value.remarkReport.length; i++) {
 			inspectionDetailArray.value.push({
 				k: formData.value.remarkReport[i].k,
-				v: formData.value.remarkReport[i].v
+				v: formData.value.remarkReport[i].v,
+				flag: valueByFlag(formData.value.remarkReport[i].v)
 			})
 		}
 	}
@@ -97,6 +111,8 @@ const onSubmit = () => {
 		let array = []
 		for (let i = 0; i < inspectionDetailArray.value.length; i++) {
 			if (inspectionDetailArray.value[i] && inspectionDetailArray.value[i] != "") {
+				inspectionDetailArray.value[i].v = flagByValue(inspectionDetailArray.value[i])
+				delete inspectionDetailArray.value[i].flag
 				array.push(inspectionDetailArray.value[i])
 			}
 		}
@@ -189,6 +205,24 @@ const selectTypeListOn = (value) => {
 			k: list[i],
 			v: ""
 		})
+	}
+}
+function flagByValue(value) {
+	if (value.flag === 'ok') {
+		return '正常'
+	} else if (value.flag === 'error') {
+		return '异常'
+	} else {
+		return value.v
+	}
+}
+function valueByFlag(value) {
+	if (value === '正常') {
+		return "ok"
+	} else if (value === '异常') {
+		return 'error'
+	} else {
+		return 'text'
 	}
 }
 // 抛出函数

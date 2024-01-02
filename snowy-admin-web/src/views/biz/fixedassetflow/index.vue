@@ -40,7 +40,7 @@
 					}}</a-tag>
 				</template>
 				<template v-if="column.dataIndex === 'isReturn'">
-					<a-tag color="cyan">{{
+					<a-tag color="green">{{
 						record.isReturn == 0 ? "未归还" : "已归还"
 					}}</a-tag>
 				</template>

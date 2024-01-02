@@ -39,7 +39,7 @@
 					}}</a-tag>
 				</template>
 				<template v-if="column.dataIndex === 'remarkReport'">
-					<a-tag v-for="(value, index) in record.remarkReport" color="cyan" :key="index">{{
+					<a-tag v-for="(value, index) in record.remarkReport" color="green" :key="index">{{
 						value.k + "：" + value.v
 					}}</a-tag>
 				</template>

@@ -79,7 +79,7 @@
 					{{ $TOOL.dictTypeData('FIXED_ASSET_TYPE', record.fixedAssetType) }}
 				</template>
 				<template v-if="column.dataIndex === 'isReturn'">
-					<a-tag color="cyan">{{
+					<a-tag color="green">{{
 						record.isReturn == 0 ? "已借出" : "未借出"
 					}}</a-tag>
 				</template>

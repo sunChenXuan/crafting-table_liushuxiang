@@ -26,7 +26,9 @@
 				<a-input v-model:value="formData.latitude" placeholder="请输入纬度" allow-clear />
 			</a-form-item> -->
 			<a-form-item label="巡检内容：" name="remark">
-				<a-input v-model:value="formData.remark" placeholder="请输入巡检内容" allow-clear />
+				<!-- <a-input v-model:value="formData.remark" placeholder="请输入巡检内容" allow-clear /> -->
+				<a-textarea v-model:value="formData.remark" placeholder="请输入巡检内容" allow-clear
+					:auto-size="{ minRows: 5, maxRows: 10 }" showCount :maxlength=255 />
 			</a-form-item>
 			<!-- <a-form-item label="创建用户：" name="createdBy">
 				<a-input v-model:value="formData.createdBy" placeholder="请输入创建用户" allow-clear />

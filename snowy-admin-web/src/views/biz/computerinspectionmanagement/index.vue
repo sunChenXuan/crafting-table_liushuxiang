@@ -38,11 +38,11 @@
 						user.name
 					}}</a-tag>
 				</template>
-				<template v-if="column.dataIndex === 'remarkReport'">
+				<!-- <template v-if="column.dataIndex === 'remarkReport'">
 					<a-tag v-for="(value, index) in record.remarkReport" color="green" :key="index">{{
 						value.k + "：" + value.v
 					}}</a-tag>
-				</template>
+				</template> -->
 				<template v-if="column.dataIndex === 'action'">
 					<a-space>
 						<a @click="formRef.onOpen(record)" v-if="hasPerm('tComputerInspectionEdit')">编辑</a>
@@ -91,10 +91,10 @@ const columns = [
 		title: '巡检项目',
 		dataIndex: 'inspectionTypeName'
 	},
-	{
-		title: '巡检报告',
-		dataIndex: 'remarkReport'
-	},
+	// {
+	// 	title: '巡检报告',
+	// 	dataIndex: 'remarkReport'
+	// },
 	// {
 	// 	title: '作业计划',
 	// 	dataIndex: 'workPlan'

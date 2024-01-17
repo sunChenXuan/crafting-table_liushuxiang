@@ -20,6 +20,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 机房巡检管理编辑参数
@@ -54,7 +55,7 @@ public class TComputerInspectionManagementEditParam {
 
     /** 巡检项目 */
     @ApiModelProperty(value = "巡检项目", position = 6)
-    private String inspectionType;
+    private List<String> inspectionType;
 
     /** 巡检报告 */
     @ApiModelProperty(value = "巡检报告", position = 7)

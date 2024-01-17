@@ -20,27 +20,26 @@
 				<a-input v-model:value="formData.latitude" placeholder="请输入纬度" allow-clear />
 			</a-form-item> -->
 			<a-form-item label="巡检项目：" name="inspectionType">
-				<a-select @change="selectTypeListOn" showSearch v-model:value="formData.inspectionType" placeholder="请选择项目"
-					optionFilterProp="label" :options="typeList" />
+				<a-select mode="multiple" @change="selectTypeListOn" showSearch v-model:value="formData.inspectionType"
+					placeholder="请选择项目" optionFilterProp="label" :options="typeList" />
 			</a-form-item>
 			<a-form-item label="" name="inspectionDetail">
-				{{ "巡检报告：" }}
-				<a-form :inline="true" v-for="(_, index) in inspectionDetailArray" :key="index">
-					<!-- <a-input :addon-before="inspectionDetailArray[index].k" v-model:value="inspectionDetailArray[index].v"
-						placeholder="" allow-clear style="margin-top: 8px" /> -->
-					<a-button style="margin-top: 8px; margin-right: 3px; pointer-events: none;">
-						{{ inspectionDetailArray[index].k }}
-					</a-button>
-					<a-radio-group v-model:value="inspectionDetailArray[index].flag">
-						<a-radio-button :value="'ok'">正常</a-radio-button>
-						<a-radio-button :value="'error'">异常</a-radio-button>
-						<a-radio-button :value="'text'">
-							其他
-							<a-input :bordered="false" placeholder="请输入报告内容" v-model:value="inspectionDetailArray[index].v"
-								v-if="inspectionDetailArray[index].flag === 'text'"
-								style="width: 200px; margin-left: -5px; margin-right: -15px" />
-						</a-radio-button>
-					</a-radio-group>
+				<a-form :inline="true" v-for="(from, _) in inspectionDetailArray" :key="index">
+					{{ from[0] + "：" }}
+					<a-form :inline="true" v-for="(i, index) in from[1]" :key="index">
+						<a-button style="margin-top: 2px; margin-bottom: 6px; margin-right: 3px; pointer-events: none;">
+							{{ i }}
+						</a-button>
+						<a-radio-group disabled v-model:value="i.flag">
+							<a-radio-button :value="'ok'">正常</a-radio-button>
+							<a-radio-button :value="'error'">异常</a-radio-button>
+							<a-radio-button :value="'text'">
+								其他
+								<a-input :bordered="false" placeholder="请输入报告内容" v-model:value="i.v"
+									v-if="i.flag === 'text'" style="width: 200px; margin-left: -5px; margin-right: -15px" />
+							</a-radio-button>
+						</a-radio-group>
+					</a-form>
 				</a-form>
 			</a-form-item>
 			<!-- <a-form-item label="作业计划：" name="workPlan">
@@ -77,28 +76,25 @@ const projectList = ref([])
 const userSelectorPlusRef = ref()
 
 // 打开抽屉
-const onOpen = (record) => {
+const onOpen = async (record) => {
+	selectProjectList()
+	await selectTypeList()
 	visible.value = true
 	if (record) {
 		let recordData = cloneDeep(record)
 		formData.value = Object.assign({}, recordData)
-		for (let i = 0; i < formData.value.remarkReport.length; i++) {
-			inspectionDetailArray.value.push({
-				k: formData.value.remarkReport[i].k,
-				v: formData.value.remarkReport[i].v,
-				flag: valueByFlag(formData.value.remarkReport[i].v)
-			})
-		}
+		formData.value.inspectionType = formData.value.inspectionType.replace(/(-?\d+)/g, '"$1"')
+		formData.value.inspectionType = JSON.parse(formData.value.inspectionType)
+
+		selectTypeListOn(formData.value.inspectionType);
 	}
-	selectProjectList()
-	selectTypeList()
 }
 // 关闭抽屉
 const onClose = () => {
 	formRef.value.resetFields()
 	formData.value = {}
 	visible.value = false
-	inspectionDetailArray.value = []
+	inspectionDetailArray.value = new Map()
 }
 // 默认要校验的
 const formRules = {
@@ -108,19 +104,16 @@ const formRules = {
 const onSubmit = () => {
 	formRef.value.validate().then(() => {
 		submitLoading.value = true
-		let array = []
-		for (let i = 0; i < inspectionDetailArray.value.length; i++) {
-			if (inspectionDetailArray.value[i] && inspectionDetailArray.value[i] != "") {
-				inspectionDetailArray.value[i].v = flagByValue(inspectionDetailArray.value[i])
-				delete inspectionDetailArray.value[i].flag
-				array.push(inspectionDetailArray.value[i])
-			}
-		}
+		let array = new Map()
+		inspectionDetailArray.value.forEach((value, key) => {
+			array.set(key, value)
+		})
+		console.log(array)
 		if (formData.value.userList.length < 1) {
 			message.warning('未选择巡检人员')
 			return
 		}
-		formData.value.remarkReport = JSON.stringify(array)
+		formData.value.remarkReport = JSON.stringify(Object.fromEntries(array))
 		convFormData()
 		const formDataParam = cloneDeep(formData.value)
 		formDataParam.inspectionUsers = JSON.stringify(formDataParam.inspectionUsers)
@@ -184,28 +177,47 @@ const selectorApiFunction = {
 }
 const typeList = ref([])
 const selectTypeList = () => {
-	typeList.value = [];
-	tComputerInspectionTypeApi.list().then(res => {
-		res.forEach(i => {
-			const newI = {
-				value: i.pkId,
-				label: i.inspectionTypeName,
-				list: i.inspectionDetail,
-			};
-			typeList.value.push(newI)
-		})
+	return new Promise((resolve, reject) => {
+		typeList.value = [];
+		tComputerInspectionTypeApi.list().then(res => {
+			res.forEach(i => {
+				const newI = {
+					value: i.pkId,
+					label: i.inspectionTypeName,
+					list: i.inspectionDetail,
+				};
+				typeList.value.push(newI)
+			})
+			resolve(); // 异步操作完成后解决Promise
+		}).catch(error => {
+			reject(error); // 异步操作出错时拒绝Promise
+		});
 	})
 }
+// const selectTypeList = () => {
+// 	typeList.value = [];
+// 	tComputerInspectionTypeApi.list().then(res => {
+// 		res.forEach(i => {
+// 			const newI = {
+// 				value: i.pkId,
+// 				label: i.inspectionTypeName,
+// 				list: i.inspectionDetail,
+// 			};
+// 			typeList.value.push(newI)
+// 		})
+// 	})
+// }
 const inspectionDetailArray = ref([])
-const selectTypeListOn = (value) => {
-	inspectionDetailArray.value = []
-	let list = typeList.value.filter(item => item.value == value)[0].list
-	for (let i = 0; i < list.length; i++) {
-		inspectionDetailArray.value.push({
-			k: list[i],
-			v: ""
-		})
-	}
+const selectTypeListOn = (selectArray) => {
+	console.log(formData.value.inspectionType)
+	inspectionDetailArray.value = new Map();
+	selectArray.forEach(selectValue => {
+		let listValue = typeList.value.filter(item => item.value == selectValue)[0]
+		inspectionDetailArray.value.set(listValue.label, [])
+		for (let i = 0; i < listValue.list.length; i++) {
+			inspectionDetailArray.value.get(listValue.label).push(listValue.list[i])
+		}
+	});
 }
 function flagByValue(value) {
 	if (value.flag === 'ok') {

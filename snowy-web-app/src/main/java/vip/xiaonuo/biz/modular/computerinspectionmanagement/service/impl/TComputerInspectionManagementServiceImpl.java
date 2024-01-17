@@ -65,7 +65,7 @@ public class TComputerInspectionManagementServiceImpl extends ServiceImpl<TCompu
             queryWrapper.lambda().eq(TComputerInspectionManagement::getInspectionName, tComputerInspectionManagementPageParam.getInspectionName());
         }
         if(ObjectUtil.isNotEmpty(tComputerInspectionManagementPageParam.getInspectionType())) {
-            queryWrapper.lambda().eq(TComputerInspectionManagement::getInspectionType, tComputerInspectionManagementPageParam.getInspectionType());
+            queryWrapper.lambda().like(TComputerInspectionManagement::getInspectionType, tComputerInspectionManagementPageParam.getInspectionType());
         }
         if(ObjectUtil.isNotEmpty(tComputerInspectionManagementPageParam.getInspectionUsers())) {
             queryWrapper.lambda().like(TComputerInspectionManagement::getInspectionUsers, tComputerInspectionManagementPageParam.getInspectionUsers());
@@ -83,8 +83,16 @@ public class TComputerInspectionManagementServiceImpl extends ServiceImpl<TCompu
                 cim.setProjectName(projectService.getById(cim.getInspectionName()).getProjectName());
             }
             if (cim.getInspectionType() != null && !cim.getInspectionType().isEmpty()){
-                final TComputerInspectionType byId = computerInspectionTypeService.getById(cim.getInspectionType());
-                cim.setInspectionTypeName(byId == null ? null :byId.getInspectionTypeName());
+                cim.setInspectionTypeName("");
+                for (String id : JSONArray.parseArray(cim.getInspectionType(), String.class)) {
+                    final TComputerInspectionType byId = computerInspectionTypeService.getById(id);
+                    if (!cim.getInspectionTypeName().isEmpty()){
+                        cim.setInspectionTypeName(cim.getInspectionTypeName() + ", ");
+                    }
+                    cim.setInspectionTypeName(cim.getInspectionTypeName() + (
+                            byId == null ? id : byId.getInspectionTypeName()
+                    ));
+                }
             }
             SysUserIdListParam sysUserIdListParam = new SysUserIdListParam();
             if (cim.getInspectionUsers() != null && !cim.getInspectionUsers().isEmpty()){

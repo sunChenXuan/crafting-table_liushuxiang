@@ -21,6 +21,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import vip.xiaonuo.auth.core.pojo.SaBaseLoginUser;
+import vip.xiaonuo.auth.core.util.StpLoginUserUtil;
 import vip.xiaonuo.biz.modular.customerinspection.entity.TCustomerInspection;
 import vip.xiaonuo.biz.modular.customerinspection.mapper.TCustomerInspectionMapper;
 import vip.xiaonuo.biz.modular.customerinspection.param.TCustomerInspectionAddParam;
@@ -79,6 +81,9 @@ public class TCustomerInspectionServiceImpl extends ServiceImpl<TCustomerInspect
     @Override
     public void add(TCustomerInspectionAddParam tCustomerInspectionAddParam) {
         TCustomerInspection tCustomerInspection = BeanUtil.toBean(tCustomerInspectionAddParam, TCustomerInspection.class);
+        final SaBaseLoginUser loginUser = StpLoginUserUtil.getLoginUser();
+        tCustomerInspection.setPhone(loginUser.getPhone());
+        tCustomerInspection.setUserName(loginUser.getName());
         this.save(tCustomerInspection);
     }
 
@@ -87,6 +92,9 @@ public class TCustomerInspectionServiceImpl extends ServiceImpl<TCustomerInspect
     public void edit(TCustomerInspectionEditParam tCustomerInspectionEditParam) {
         TCustomerInspection tCustomerInspection = this.queryEntity(tCustomerInspectionEditParam.getPkId());
         BeanUtil.copyProperties(tCustomerInspectionEditParam, tCustomerInspection);
+        final SaBaseLoginUser loginUser = StpLoginUserUtil.getLoginUser();
+        tCustomerInspection.setPhone(loginUser.getPhone());
+        tCustomerInspection.setUserName(loginUser.getName());
         this.updateById(tCustomerInspection);
     }
 

@@ -194,19 +194,6 @@ const selectTypeList = () => {
 		});
 	})
 }
-// const selectTypeList = () => {
-// 	typeList.value = [];
-// 	tComputerInspectionTypeApi.list().then(res => {
-// 		res.forEach(i => {
-// 			const newI = {
-// 				value: i.pkId,
-// 				label: i.inspectionTypeName,
-// 				list: i.inspectionDetail,
-// 			};
-// 			typeList.value.push(newI)
-// 		})
-// 	})
-// }
 const inspectionDetailArray = ref([])
 const selectTypeListOn = (selectArray) => {
 	console.log(formData.value.inspectionType)
@@ -218,24 +205,6 @@ const selectTypeListOn = (selectArray) => {
 			inspectionDetailArray.value.get(listValue.label).push(listValue.list[i])
 		}
 	});
-}
-function flagByValue(value) {
-	if (value.flag === 'ok') {
-		return '正常'
-	} else if (value.flag === 'error') {
-		return '异常'
-	} else {
-		return value.v
-	}
-}
-function valueByFlag(value) {
-	if (value === '正常') {
-		return "ok"
-	} else if (value === '异常') {
-		return 'error'
-	} else {
-		return 'text'
-	}
 }
 // 抛出函数
 defineExpose({

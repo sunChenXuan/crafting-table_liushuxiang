@@ -13,11 +13,15 @@
 package vip.xiaonuo.biz.modular.computerinspectionmanagement.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonRawValue;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import vip.xiaonuo.sys.modular.user.result.SysUserMini;
+
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 机房巡检管理实体
@@ -35,12 +39,13 @@ public class TComputerInspectionManagement {
     @ApiModelProperty(value = "id", position = 1)
     private String pkId;
 
-    /** 项目名称 */
+    /** 项目名称 存储项目列表的id*/
     @ApiModelProperty(value = "项目名称", position = 2)
     private String inspectionName;
 
     /** 巡检人员 */
     @ApiModelProperty(value = "巡检人员", position = 3)
+    @JsonRawValue
     private String inspectionUsers;
 
     /** 经度 */
@@ -57,35 +62,18 @@ public class TComputerInspectionManagement {
 
     /** 巡检报告 */
     @ApiModelProperty(value = "巡检报告", position = 7)
+    @JsonRawValue
     private String remarkReport;
 
     /** 作业计划 */
     @ApiModelProperty(value = "作业计划", position = 8)
     private String workPlan;
 
-    /** 删除标志 */
-    @ApiModelProperty(value = "删除标志", position = 9)
-    @TableLogic
-    @TableField(fill = FieldFill.INSERT)
-    private String deleteFlag;
-
-    /** 创建时间 */
-    @ApiModelProperty(value = "创建时间", position = 10)
-    @TableField(fill = FieldFill.INSERT)
-    private Date createTime;
-
-    /** 创建用户 */
-    @ApiModelProperty(value = "创建用户", position = 11)
-    @TableField(fill = FieldFill.INSERT)
-    private String createUser;
-
-    /** 修改时间 */
-    @ApiModelProperty(value = "修改时间", position = 12)
-    @TableField(fill = FieldFill.UPDATE)
-    private Date updateTime;
-
-    /** 修改用户 */
-    @ApiModelProperty(value = "修改用户", position = 13)
-    @TableField(fill = FieldFill.UPDATE)
-    private String updateUser;
+    /* ====额外的字段==== */
+    @TableField(exist = false)
+    private List<SysUserMini> userList;
+    @TableField(exist = false)
+    private String projectName;
+    @TableField(exist = false)
+    private String inspectionTypeName;
 }

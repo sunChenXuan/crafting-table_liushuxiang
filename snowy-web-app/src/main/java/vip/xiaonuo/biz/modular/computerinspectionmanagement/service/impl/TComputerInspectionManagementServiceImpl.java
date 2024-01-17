@@ -16,11 +16,17 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollStreamUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import vip.xiaonuo.biz.modular.computerinspection.entity.TComputerInspection;
+import vip.xiaonuo.biz.modular.computerinspection.param.TComputerInspectionPageParam;
+import vip.xiaonuo.biz.modular.computerinspectiontype.entity.TComputerInspectionType;
+import vip.xiaonuo.biz.modular.computerinspectiontype.service.TComputerInspectionTypeService;
+import vip.xiaonuo.biz.modular.project.service.TProjectService;
 import vip.xiaonuo.common.enums.CommonSortOrderEnum;
 import vip.xiaonuo.common.exception.CommonException;
 import vip.xiaonuo.common.page.CommonPageRequest;
@@ -31,7 +37,10 @@ import vip.xiaonuo.biz.modular.computerinspectionmanagement.param.TComputerInspe
 import vip.xiaonuo.biz.modular.computerinspectionmanagement.param.TComputerInspectionManagementIdParam;
 import vip.xiaonuo.biz.modular.computerinspectionmanagement.param.TComputerInspectionManagementPageParam;
 import vip.xiaonuo.biz.modular.computerinspectionmanagement.service.TComputerInspectionManagementService;
+import vip.xiaonuo.sys.modular.user.param.SysUserIdListParam;
+import vip.xiaonuo.sys.modular.user.service.SysUserService;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -42,10 +51,25 @@ import java.util.List;
  **/
 @Service
 public class TComputerInspectionManagementServiceImpl extends ServiceImpl<TComputerInspectionManagementMapper, TComputerInspectionManagement> implements TComputerInspectionManagementService {
+    @Resource
+    private SysUserService sysUserService;
+    @Resource
+    private TProjectService projectService;
+    @Resource
+    private TComputerInspectionTypeService computerInspectionTypeService;
 
     @Override
     public Page<TComputerInspectionManagement> page(TComputerInspectionManagementPageParam tComputerInspectionManagementPageParam) {
         QueryWrapper<TComputerInspectionManagement> queryWrapper = new QueryWrapper<>();
+        if(ObjectUtil.isNotEmpty(tComputerInspectionManagementPageParam.getInspectionName())) {
+            queryWrapper.lambda().eq(TComputerInspectionManagement::getInspectionName, tComputerInspectionManagementPageParam.getInspectionName());
+        }
+        if(ObjectUtil.isNotEmpty(tComputerInspectionManagementPageParam.getInspectionType())) {
+            queryWrapper.lambda().eq(TComputerInspectionManagement::getInspectionType, tComputerInspectionManagementPageParam.getInspectionType());
+        }
+        if(ObjectUtil.isNotEmpty(tComputerInspectionManagementPageParam.getInspectionUsers())) {
+            queryWrapper.lambda().like(TComputerInspectionManagement::getInspectionUsers, tComputerInspectionManagementPageParam.getInspectionUsers());
+        }
         if(ObjectUtil.isAllNotEmpty(tComputerInspectionManagementPageParam.getSortField(), tComputerInspectionManagementPageParam.getSortOrder())) {
             CommonSortOrderEnum.validate(tComputerInspectionManagementPageParam.getSortOrder());
             queryWrapper.orderBy(true, tComputerInspectionManagementPageParam.getSortOrder().equals(CommonSortOrderEnum.ASC.getValue()),
@@ -53,7 +77,22 @@ public class TComputerInspectionManagementServiceImpl extends ServiceImpl<TCompu
         } else {
             queryWrapper.lambda().orderByAsc(TComputerInspectionManagement::getPkId);
         }
-        return this.page(CommonPageRequest.defaultPage(), queryWrapper);
+        final Page<TComputerInspectionManagement> page = this.page(CommonPageRequest.defaultPage(), queryWrapper);
+        for (TComputerInspectionManagement cim : page.getRecords()) {
+            if (cim.getInspectionName() != null && !cim.getInspectionName().isEmpty()){
+                cim.setProjectName(projectService.getById(cim.getInspectionName()).getProjectName());
+            }
+            if (cim.getInspectionType() != null && !cim.getInspectionType().isEmpty()){
+                final TComputerInspectionType byId = computerInspectionTypeService.getById(cim.getInspectionType());
+                cim.setInspectionTypeName(byId == null ? null :byId.getInspectionTypeName());
+            }
+            SysUserIdListParam sysUserIdListParam = new SysUserIdListParam();
+            if (cim.getInspectionUsers() != null && !cim.getInspectionUsers().isEmpty()){
+                sysUserIdListParam.setIdList(JSONArray.parseArray(cim.getInspectionUsers(), String.class));
+                cim.setUserList(sysUserService.getUserListByIdList(sysUserIdListParam));
+            }
+        }
+        return page;
     }
 
     @Transactional(rollbackFor = Exception.class)

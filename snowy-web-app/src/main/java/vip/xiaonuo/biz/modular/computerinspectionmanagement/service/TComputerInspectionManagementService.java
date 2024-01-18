@@ -39,6 +39,14 @@ public interface TComputerInspectionManagementService extends IService<TComputer
     Page<TComputerInspectionManagement> page(TComputerInspectionManagementPageParam tComputerInspectionManagementPageParam);
 
     /**
+     * 获取机房巡检管理列表
+     *
+     * @author scx
+     * @date  2024/01/17 08:46
+     */
+    List<TComputerInspectionManagement> listByLoginUser();
+
+    /**
      * 添加机房巡检管理
      *
      * @author scx

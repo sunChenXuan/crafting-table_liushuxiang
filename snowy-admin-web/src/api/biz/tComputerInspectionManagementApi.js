@@ -14,8 +14,8 @@ export default {
 		return request('page', data, 'get')
 	},
 	// 获取机房巡检管理列表
-	tComputerInspectionManagementList(data) {
-		return request('list', data, 'get')
+	listByLoginUser(data) {
+		return request('listByLoginUser', data, 'get')
 	},
 	// 提交机房巡检管理表单 edit为true时为编辑，默认为新增
 	tComputerInspectionManagementSubmitForm(data, edit = false) {

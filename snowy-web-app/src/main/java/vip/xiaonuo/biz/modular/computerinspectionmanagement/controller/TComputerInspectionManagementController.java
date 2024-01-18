@@ -12,6 +12,7 @@
  */
 package vip.xiaonuo.biz.modular.computerinspectionmanagement.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
@@ -36,6 +37,7 @@ import vip.xiaonuo.biz.modular.computerinspectionmanagement.service.TComputerIns
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 /**
  * 机房巡检管理控制器
@@ -64,6 +66,20 @@ public class TComputerInspectionManagementController {
     @GetMapping("/biz/computerinspectionmanagement/page")
     public CommonResult<Page<TComputerInspectionManagement>> page(TComputerInspectionManagementPageParam tComputerInspectionManagementPageParam) {
         return CommonResult.data(tComputerInspectionManagementService.page(tComputerInspectionManagementPageParam));
+    }
+
+    /**
+     * 获取机房巡检管理分页
+     *
+     * @author scx
+     * @date  2024/01/17 08:46
+     */
+    @ApiOperationSupport(order = 1)
+    @ApiOperation("获取机房巡检管理列表")
+    @SaCheckLogin
+    @GetMapping("/biz/computerinspectionmanagement/listByLoginUser")
+    public CommonResult<List<TComputerInspectionManagement>> listByLoginUser() {
+        return CommonResult.data(tComputerInspectionManagementService.listByLoginUser());
     }
 
     /**

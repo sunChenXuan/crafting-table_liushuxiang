@@ -76,4 +76,7 @@ public class TComputerInspectionManagement {
     private String projectName;
     @TableField(exist = false)
     private String inspectionTypeName;
+    public String getNameName() {
+        return projectName + "-" + inspectionTypeName;
+    }
 }

@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import vip.xiaonuo.auth.core.util.StpLoginUserUtil;
 import vip.xiaonuo.biz.modular.computerinspection.entity.TComputerInspection;
 import vip.xiaonuo.biz.modular.computerinspection.param.TComputerInspectionPageParam;
 import vip.xiaonuo.biz.modular.computerinspectiontype.entity.TComputerInspectionType;
@@ -78,7 +79,12 @@ public class TComputerInspectionManagementServiceImpl extends ServiceImpl<TCompu
             queryWrapper.lambda().orderByAsc(TComputerInspectionManagement::getPkId);
         }
         final Page<TComputerInspectionManagement> page = this.page(CommonPageRequest.defaultPage(), queryWrapper);
-        for (TComputerInspectionManagement cim : page.getRecords()) {
+        this.addDetail(page.getRecords());
+        return page;
+    }
+
+    private List<TComputerInspectionManagement> addDetail(List<TComputerInspectionManagement> list) {
+        for (TComputerInspectionManagement cim : list) {
             if (cim.getInspectionName() != null && !cim.getInspectionName().isEmpty()){
                 cim.setProjectName(projectService.getById(cim.getInspectionName()).getProjectName());
             }
@@ -100,7 +106,21 @@ public class TComputerInspectionManagementServiceImpl extends ServiceImpl<TCompu
                 cim.setUserList(sysUserService.getUserListByIdList(sysUserIdListParam));
             }
         }
-        return page;
+        return list;
+    }
+
+    /**
+     * 获取机房巡检管理列表
+     *
+     * @author scx
+     * @date  2024/01/17 08:46
+     */
+    @Override
+    public List<TComputerInspectionManagement> listByLoginUser(){
+        final QueryWrapper<TComputerInspectionManagement> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda()
+                .like(TComputerInspectionManagement::getInspectionUsers, StpLoginUserUtil.getLoginUser().getId());
+        return this.addDetail(this.list(queryWrapper));
     }
 
     @Transactional(rollbackFor = Exception.class)

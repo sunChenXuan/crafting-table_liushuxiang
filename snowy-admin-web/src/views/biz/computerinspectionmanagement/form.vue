@@ -108,7 +108,6 @@ const onSubmit = () => {
 		inspectionDetailArray.value.forEach((value, key) => {
 			array.set(key, value)
 		})
-		console.log(array)
 		if (formData.value.userList.length < 1) {
 			message.warning('未选择巡检人员')
 			return
@@ -196,7 +195,6 @@ const selectTypeList = () => {
 }
 const inspectionDetailArray = ref([])
 const selectTypeListOn = (selectArray) => {
-	console.log(formData.value.inspectionType)
 	inspectionDetailArray.value = new Map();
 	selectArray.forEach(selectValue => {
 		let listValue = typeList.value.filter(item => item.value == selectValue)[0]

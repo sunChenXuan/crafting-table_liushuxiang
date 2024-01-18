@@ -34,9 +34,9 @@
 					{{ from[0] + "：" }}
 					<a-form :inline="true" v-for="(i, index) in from[1]" :key="index">
 						<a-button style="margin-top: 2px; margin-bottom: 6px; margin-right: 3px; pointer-events: none;">
-							{{ i }}
+							{{ i.k }}
 						</a-button>
-						<a-radio-group disabled v-model:value="i.flag">
+						<a-radio-group v-model:value="i.flag">
 							<a-radio-button :value="'ok'">正常</a-radio-button>
 							<a-radio-button :value="'error'">异常</a-radio-button>
 							<a-radio-button :value="'text'">
@@ -89,13 +89,21 @@ const onOpen = (record) => {
 	if (record) {
 		let recordData = cloneDeep(record)
 		formData.value = Object.assign({}, recordData)
-		for (let i = 0; i < formData.value.remarkReport.length; i++) {
-			inspectionDetailArray.value.push({
-				k: formData.value.remarkReport[i].k,
-				v: formData.value.remarkReport[i].v,
-				flag: valueByFlag(formData.value.remarkReport[i].v)
+
+		formData.value.inspectionType = JSON.parse(formData.value.inspectionType.replace(/(-?\d+)/g, '"$1"'))
+		inspectionDetailArray.value = new Map()
+		Object.entries(formData.value.remarkReport).forEach((value) => {
+			let objValue = [];
+			Object.entries(value[1]).forEach((item) => {
+				objValue.push({
+					k: item[0],
+					v: item[1],
+					flag: valueByFlag(item[1])
+				})
+
 			})
-		}
+			inspectionDetailArray.value.set(value[0], objValue)
+		})
 	}
 	listByLoginUser()
 	selectProjectList()
@@ -116,19 +124,19 @@ const formRules = {
 const onSubmit = () => {
 	formRef.value.validate().then(() => {
 		submitLoading.value = true
-		let array = []
-		for (let i = 0; i < inspectionDetailArray.value.length; i++) {
-			if (inspectionDetailArray.value[i] && inspectionDetailArray.value[i] != "") {
-				inspectionDetailArray.value[i].v = flagByValue(inspectionDetailArray.value[i])
-				delete inspectionDetailArray.value[i].flag
-				array.push(inspectionDetailArray.value[i])
-			}
-		}
+		let array = new Map()
+		inspectionDetailArray.value.forEach((value, key) => {
+			let arrObj = new Map()
+			value.forEach((item) => {
+				arrObj.set(item.k, flagByValue(item))
+			})
+			array.set(key, Object.fromEntries(arrObj))
+		})
 		if (formData.value.userList.length < 1) {
 			message.warning('未选择巡检人员')
 			return
 		}
-		formData.value.remarkReport = JSON.stringify(array)
+		formData.value.remarkReport = JSON.stringify(Object.fromEntries(array))
 		convFormData()
 		const formDataParam = cloneDeep(formData.value)
 		formDataParam.inspectionUsers = JSON.stringify(formDataParam.inspectionUsers)
@@ -159,10 +167,7 @@ const selectProjectList = () => {
 const listByLoginUser = () => {
 	loginUserSelectList.value = [];
 	tComputerInspectionManagementApi.listByLoginUser().then(res => {
-		res.forEach(item => {
-			item.inspectionType = JSON.parse(item.inspectionType.replace(/(-?\d+)/g, '"$1"'))
-			loginUserSelectList.value.push(item)
-		})
+		loginUserSelectList.value = res
 	})
 }
 
@@ -221,14 +226,21 @@ const selectTypeListOn = (selectArray) => {
 		let listValue = typeList.value.filter(item => item.value == selectValue)[0]
 		inspectionDetailArray.value.set(listValue.label, [])
 		for (let i = 0; i < listValue.list.length; i++) {
-			inspectionDetailArray.value.get(listValue.label).push(listValue.list[i])
+			inspectionDetailArray.value.get(listValue.label).push({
+				k: listValue.list[i],
+				v: "",
+				flag: ""
+			})
 		}
 	});
 }
 const selectLoginUserList = (value) => {
 	let temp = formData.value.temp
-	formData.value = loginUserSelectList.value.filter(item => item.pkId == value)[0]
+	let pkId = formData.value.pkId
+	formData.value = JSON.parse(JSON.stringify(loginUserSelectList.value.filter(item => item.pkId == value)[0]))
 	formData.value.temp = temp
+	formData.value.pkId = pkId
+	formData.value.inspectionType = JSON.parse(formData.value.inspectionType.replace(/(-?\d+)/g, '"$1"'))
 	selectTypeListOn(formData.value.inspectionType)
 }
 

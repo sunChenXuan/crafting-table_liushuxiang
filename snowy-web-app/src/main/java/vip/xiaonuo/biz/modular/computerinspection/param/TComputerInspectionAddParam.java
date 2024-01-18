@@ -16,6 +16,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 /**
  * 机房巡检添加参数
  *
@@ -44,7 +46,7 @@ public class TComputerInspectionAddParam {
 
     /** 巡检项目 */
     @ApiModelProperty(value = "巡检项目", position = 6)
-    private String inspectionType;
+    private List<String> inspectionType;
 
     /** 巡检报告 */
     @ApiModelProperty(value = "巡检报告", position = 7)

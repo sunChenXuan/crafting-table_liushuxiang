@@ -17,6 +17,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 /**
  * 机房巡检编辑参数
@@ -51,7 +52,7 @@ public class TComputerInspectionEditParam {
 
     /** 巡检项目 */
     @ApiModelProperty(value = "巡检项目", position = 6)
-    private String inspectionType;
+    private List<String> inspectionType;
 
     /** 巡检报告 */
     @ApiModelProperty(value = "巡检报告", position = 7)

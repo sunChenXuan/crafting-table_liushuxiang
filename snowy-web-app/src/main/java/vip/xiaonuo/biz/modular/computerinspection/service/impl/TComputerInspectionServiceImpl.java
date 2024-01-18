@@ -81,8 +81,16 @@ public class TComputerInspectionServiceImpl extends ServiceImpl<TComputerInspect
                 ci.setProjectName(projectService.getById(ci.getInspectionName()).getProjectName());
             }
             if (ci.getInspectionType() != null && !ci.getInspectionType().isEmpty()){
-                final TComputerInspectionType byId = computerInspectionTypeService.getById(ci.getInspectionType());
-                ci.setInspectionTypeName(byId == null ? null :byId.getInspectionTypeName());
+                ci.setInspectionTypeName("");
+                for (String id : JSONArray.parseArray(ci.getInspectionType(), String.class)) {
+                    final TComputerInspectionType byId = computerInspectionTypeService.getById(id);
+                    if (!ci.getInspectionTypeName().isEmpty()){
+                        ci.setInspectionTypeName(ci.getInspectionTypeName() + ", ");
+                    }
+                    ci.setInspectionTypeName(ci.getInspectionTypeName() + (
+                            byId == null ? id : byId.getInspectionTypeName()
+                    ));
+                }
             }
             SysUserIdListParam sysUserIdListParam = new SysUserIdListParam();
             if (ci.getInspectionUsers() != null && !ci.getInspectionUsers().isEmpty()){

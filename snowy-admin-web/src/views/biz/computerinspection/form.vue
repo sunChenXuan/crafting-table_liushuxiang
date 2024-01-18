@@ -8,8 +8,8 @@
 					@change="selectLoginUserList" />
 			</a-form-item>
 			<a-form-item label="项目名称：" name="inspectionName">
-				<a-select disabled showSearch v-model:value="formData.inspectionName" placeholder="请选择项目" optionFilterProp="label"
-					:options="projectList" />
+				<a-select disabled showSearch v-model:value="formData.inspectionName" placeholder="请选择项目"
+					optionFilterProp="label" :options="projectList" />
 			</a-form-item>
 			<a-form-item name="inspectionUsers">
 				<a-button disabled type="primary" @click="openUserSelector">巡检人员</a-button>
@@ -25,27 +25,27 @@
 				<a-input v-model:value="formData.latitude" placeholder="请输入纬度" allow-clear />
 			</a-form-item> -->
 			<a-form-item label="巡检项目：" name="inspectionType">
-				<a-select disabled @change="selectTypeListOn" showSearch v-model:value="formData.inspectionType" placeholder="请选择项目"
-					optionFilterProp="label" :options="typeList" />
+				<a-select disabled mode="multiple" @change="selectTypeListOn" showSearch
+					v-model:value="formData.inspectionType" placeholder="请选择项目" optionFilterProp="label"
+					:options="typeList" />
 			</a-form-item>
 			<a-form-item label="" name="inspectionDetail">
-				{{ "巡检报告：" }}
-				<a-form :inline="true" v-for="(_, index) in inspectionDetailArray" :key="index">
-					<!-- <a-input :addon-before="inspectionDetailArray[index].k" v-model:value="inspectionDetailArray[index].v"
-						placeholder="" allow-clear style="margin-top: 8px" /> -->
-					<a-button style="margin-top: 8px; margin-right: 3px; pointer-events: none;">
-						{{ inspectionDetailArray[index].k }}
-					</a-button>
-					<a-radio-group v-model:value="inspectionDetailArray[index].flag">
-						<a-radio-button :value="'ok'">正常</a-radio-button>
-						<a-radio-button :value="'error'">异常</a-radio-button>
-						<a-radio-button :value="'text'">
-							其他
-							<a-input :bordered="false" placeholder="请输入报告内容" v-model:value="inspectionDetailArray[index].v"
-								v-if="inspectionDetailArray[index].flag === 'text'"
-								style="width: 200px; margin-left: -5px; margin-right: -15px" />
-						</a-radio-button>
-					</a-radio-group>
+				<a-form :inline="true" v-for="(from, _) in inspectionDetailArray" :key="index">
+					{{ from[0] + "：" }}
+					<a-form :inline="true" v-for="(i, index) in from[1]" :key="index">
+						<a-button style="margin-top: 2px; margin-bottom: 6px; margin-right: 3px; pointer-events: none;">
+							{{ i }}
+						</a-button>
+						<a-radio-group disabled v-model:value="i.flag">
+							<a-radio-button :value="'ok'">正常</a-radio-button>
+							<a-radio-button :value="'error'">异常</a-radio-button>
+							<a-radio-button :value="'text'">
+								其他
+								<a-input :bordered="false" placeholder="请输入报告内容" v-model:value="i.v"
+									v-if="i.flag === 'text'" style="width: 200px; margin-left: -5px; margin-right: -15px" />
+							</a-radio-button>
+						</a-radio-group>
+					</a-form>
 				</a-form>
 			</a-form-item>
 			<!-- <a-form-item label="作业计划：" name="workPlan">
@@ -159,7 +159,10 @@ const selectProjectList = () => {
 const listByLoginUser = () => {
 	loginUserSelectList.value = [];
 	tComputerInspectionManagementApi.listByLoginUser().then(res => {
-		loginUserSelectList.value = res;
+		res.forEach(item => {
+			item.inspectionType = JSON.parse(item.inspectionType.replace(/(-?\d+)/g, '"$1"'))
+			loginUserSelectList.value.push(item)
+		})
 	})
 }
 
@@ -212,20 +215,21 @@ const selectTypeList = () => {
 	})
 }
 const inspectionDetailArray = ref([])
-const selectTypeListOn = (value) => {
-	inspectionDetailArray.value = []
-	let list = typeList.value.filter(item => item.value == value)[0].list
-	for (let i = 0; i < list.length; i++) {
-		inspectionDetailArray.value.push({
-			k: list[i],
-			v: ""
-		})
-	}
+const selectTypeListOn = (selectArray) => {
+	inspectionDetailArray.value = new Map();
+	selectArray.forEach(selectValue => {
+		let listValue = typeList.value.filter(item => item.value == selectValue)[0]
+		inspectionDetailArray.value.set(listValue.label, [])
+		for (let i = 0; i < listValue.list.length; i++) {
+			inspectionDetailArray.value.get(listValue.label).push(listValue.list[i])
+		}
+	});
 }
 const selectLoginUserList = (value) => {
-	let selectValue = loginUserSelectList.value.filter(item => item.pkId == value)[0]
-	formData.value = selectValue
-	console.log(selectValue)
+	let temp = formData.value.temp
+	formData.value = loginUserSelectList.value.filter(item => item.pkId == value)[0]
+	formData.value.temp = temp
+	selectTypeListOn(formData.value.inspectionType)
 }
 
 function flagByValue(value) {

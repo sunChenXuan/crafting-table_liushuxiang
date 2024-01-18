@@ -9,12 +9,12 @@
 			<a-form-item label="巡检类型：" name="inspectionType">
 				<a-select v-model:value="formData.inspectionType" placeholder="请选择巡检类型" :options="inspectionTypeOptions" />
 			</a-form-item>
-			<!-- <a-form-item label="联系人：" name="userName">
-				<a-input v-model:value="formData.userName" placeholder="请输入联系人" allow-clear />
-			</a-form-item> -->
-			<!-- <a-form-item label="联系电话：" name="phone">
-				<a-input v-model:value="formData.phone" placeholder="请输入联系电话" allow-clear />
-			</a-form-item> -->
+			<a-form-item label="联系人：" name="userName">
+				<a-input disabled v-model:value="formData.userName" placeholder="联系人系统自动填充" allow-clear />
+			</a-form-item>
+			<a-form-item label="联系电话：" name="phone">
+				<a-input disabled v-model:value="formData.phone" placeholder="联系电话系统自动填充" allow-clear />
+			</a-form-item>
 			<!-- <a-form-item label="开始时间：" name="startTime">
 				<a-date-picker v-model:value="formData.startTime" value-format="YYYY-MM-DD HH:mm:ss" show-time
 					placeholder="请选择开始时间" style="width: 100%" />

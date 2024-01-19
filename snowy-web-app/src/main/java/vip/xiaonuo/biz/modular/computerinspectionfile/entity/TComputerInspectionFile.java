@@ -10,29 +10,25 @@
  * 5.不可二次分发开源参与同类竞品，如有想法可联系团队xiaonuobase@qq.com商议合作。
  * 6.若您的项目无法满足以上几点，需要更多功能代码，获取Snowy商业授权许可，请在官网购买授权，地址为 https://www.xiaonuo.vip
  */
-package vip.xiaonuo.biz.modular.customerinspectionfile.entity;
+package vip.xiaonuo.biz.modular.computerinspectionfile.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
-import vip.xiaonuo.common.pojo.CommonEntity;
-import vip.xiaonuo.dev.modular.file.entity.DevFile;
-import vip.xiaonuo.dev.modular.file.enums.DevFileEngineTypeEnum;
-
 import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * 客户巡检文件实体
+ * 机房巡检文件实体
  *
  * @author scx
- * @date  2023/11/01 10:13
+ * @date  2024/01/19 09:56
  **/
 @Getter
 @Setter
-@TableName("t_customer_inspection_file")
-public class TCustomerInspectionFile extends CommonEntity {
+@TableName("t_computer_inspection_file")
+public class TComputerInspectionFile {
 
     /** id */
     @TableId
@@ -47,15 +43,29 @@ public class TCustomerInspectionFile extends CommonEntity {
     @ApiModelProperty(value = "文件id", position = 3)
     private String ukFileId;
 
-    /* ====额外的字段==== */
-    @TableField(exist = false)
-    private DevFile file;
+    /** 删除标志 */
+    @ApiModelProperty(value = "删除标志", position = 4)
+    @TableLogic
+    @TableField(fill = FieldFill.INSERT)
+    private String deleteFlag;
 
-    public String getName() {
-        return file == null ? null : file.getName();
-    }
-    public String getUrl() {
-//        return file == null ? null : (file.getEngine().equals(DevFileEngineTypeEnum.LOCAL.getValue()) ? file.getStoragePath() : file.getDownloadPath());
-        return file == null ? null : file.getDownloadPath();
-    }
+    /** 创建时间 */
+    @ApiModelProperty(value = "创建时间", position = 5)
+    @TableField(fill = FieldFill.INSERT)
+    private Date createTime;
+
+    /** 创建用户 */
+    @ApiModelProperty(value = "创建用户", position = 6)
+    @TableField(fill = FieldFill.INSERT)
+    private String createUser;
+
+    /** 修改时间 */
+    @ApiModelProperty(value = "修改时间", position = 7)
+    @TableField(fill = FieldFill.UPDATE)
+    private Date updateTime;
+
+    /** 修改用户 */
+    @ApiModelProperty(value = "修改用户", position = 8)
+    @TableField(fill = FieldFill.UPDATE)
+    private String updateUser;
 }

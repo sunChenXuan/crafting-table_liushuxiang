@@ -21,9 +21,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import vip.xiaonuo.common.enums.CommonSortOrderEnum;
-import vip.xiaonuo.common.exception.CommonException;
-import vip.xiaonuo.common.page.CommonPageRequest;
 import vip.xiaonuo.biz.modular.computerinspectiontype.entity.TComputerInspectionType;
 import vip.xiaonuo.biz.modular.computerinspectiontype.mapper.TComputerInspectionTypeMapper;
 import vip.xiaonuo.biz.modular.computerinspectiontype.param.TComputerInspectionTypeAddParam;
@@ -31,6 +28,9 @@ import vip.xiaonuo.biz.modular.computerinspectiontype.param.TComputerInspectionT
 import vip.xiaonuo.biz.modular.computerinspectiontype.param.TComputerInspectionTypeIdParam;
 import vip.xiaonuo.biz.modular.computerinspectiontype.param.TComputerInspectionTypePageParam;
 import vip.xiaonuo.biz.modular.computerinspectiontype.service.TComputerInspectionTypeService;
+import vip.xiaonuo.common.enums.CommonSortOrderEnum;
+import vip.xiaonuo.common.exception.CommonException;
+import vip.xiaonuo.common.page.CommonPageRequest;
 
 import java.util.List;
 

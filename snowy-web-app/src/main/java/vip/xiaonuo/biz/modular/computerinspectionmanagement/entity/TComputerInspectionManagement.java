@@ -12,15 +12,15 @@
  */
 package vip.xiaonuo.biz.modular.computerinspectionmanagement.entity;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonRawValue;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import vip.xiaonuo.sys.modular.user.result.SysUserMini;
 
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
 /**

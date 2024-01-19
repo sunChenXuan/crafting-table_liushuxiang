@@ -15,8 +15,6 @@ package vip.xiaonuo.biz.modular.customerinspectionfile.param;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
-import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * 客户巡检文件查询参数

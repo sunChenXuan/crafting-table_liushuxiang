@@ -14,7 +14,6 @@ package vip.xiaonuo.biz.modular.computerinspectionfile.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.annotations.Api;
@@ -22,17 +21,15 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import vip.xiaonuo.biz.modular.customerinspectionfile.entity.TCustomerInspectionFile;
-import vip.xiaonuo.biz.modular.customerinspectionfile.param.TCustomerInspectionFileAddParam;
-import vip.xiaonuo.common.annotation.CommonLog;
-import vip.xiaonuo.common.pojo.CommonResult;
-import vip.xiaonuo.common.pojo.CommonValidList;
 import vip.xiaonuo.biz.modular.computerinspectionfile.entity.TComputerInspectionFile;
 import vip.xiaonuo.biz.modular.computerinspectionfile.param.TComputerInspectionFileAddParam;
 import vip.xiaonuo.biz.modular.computerinspectionfile.param.TComputerInspectionFileEditParam;
 import vip.xiaonuo.biz.modular.computerinspectionfile.param.TComputerInspectionFileIdParam;
 import vip.xiaonuo.biz.modular.computerinspectionfile.param.TComputerInspectionFilePageParam;
 import vip.xiaonuo.biz.modular.computerinspectionfile.service.TComputerInspectionFileService;
+import vip.xiaonuo.common.annotation.CommonLog;
+import vip.xiaonuo.common.pojo.CommonResult;
+import vip.xiaonuo.common.pojo.CommonValidList;
 import vip.xiaonuo.dev.modular.file.enums.DevFileEngineTypeEnum;
 import vip.xiaonuo.dev.modular.file.service.DevFileService;
 

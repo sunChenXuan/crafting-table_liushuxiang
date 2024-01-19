@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonRawValue;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
-import java.math.BigDecimal;
+
 import java.util.Date;
 
 /**

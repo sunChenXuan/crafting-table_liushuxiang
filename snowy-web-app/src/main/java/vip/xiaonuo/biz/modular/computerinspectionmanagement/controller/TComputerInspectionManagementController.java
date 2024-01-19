@@ -24,15 +24,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import vip.xiaonuo.common.annotation.CommonLog;
-import vip.xiaonuo.common.pojo.CommonResult;
-import vip.xiaonuo.common.pojo.CommonValidList;
 import vip.xiaonuo.biz.modular.computerinspectionmanagement.entity.TComputerInspectionManagement;
 import vip.xiaonuo.biz.modular.computerinspectionmanagement.param.TComputerInspectionManagementAddParam;
 import vip.xiaonuo.biz.modular.computerinspectionmanagement.param.TComputerInspectionManagementEditParam;
 import vip.xiaonuo.biz.modular.computerinspectionmanagement.param.TComputerInspectionManagementIdParam;
 import vip.xiaonuo.biz.modular.computerinspectionmanagement.param.TComputerInspectionManagementPageParam;
 import vip.xiaonuo.biz.modular.computerinspectionmanagement.service.TComputerInspectionManagementService;
+import vip.xiaonuo.common.annotation.CommonLog;
+import vip.xiaonuo.common.pojo.CommonResult;
+import vip.xiaonuo.common.pojo.CommonValidList;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;

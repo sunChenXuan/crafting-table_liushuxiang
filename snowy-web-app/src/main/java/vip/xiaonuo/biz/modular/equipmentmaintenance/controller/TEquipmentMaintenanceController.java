@@ -28,7 +28,6 @@ import vip.xiaonuo.biz.modular.equipmentmaintenance.param.TEquipmentMaintenanceE
 import vip.xiaonuo.biz.modular.equipmentmaintenance.param.TEquipmentMaintenanceIdParam;
 import vip.xiaonuo.biz.modular.equipmentmaintenance.param.TEquipmentMaintenancePageParam;
 import vip.xiaonuo.biz.modular.equipmentmaintenance.service.TEquipmentMaintenanceService;
-import vip.xiaonuo.biz.modular.project.entity.TProject;
 import vip.xiaonuo.biz.modular.project.service.TProjectService;
 import vip.xiaonuo.common.annotation.CommonLog;
 import vip.xiaonuo.common.pojo.CommonResult;
@@ -37,7 +36,6 @@ import vip.xiaonuo.common.pojo.CommonValidList;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
-import java.util.List;
 
 /**
  * 设备维保控制器

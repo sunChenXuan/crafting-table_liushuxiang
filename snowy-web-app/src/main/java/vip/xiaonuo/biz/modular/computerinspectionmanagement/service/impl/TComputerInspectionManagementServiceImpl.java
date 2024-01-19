@@ -23,14 +23,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.xiaonuo.auth.core.util.StpLoginUserUtil;
-import vip.xiaonuo.biz.modular.computerinspection.entity.TComputerInspection;
-import vip.xiaonuo.biz.modular.computerinspection.param.TComputerInspectionPageParam;
-import vip.xiaonuo.biz.modular.computerinspectiontype.entity.TComputerInspectionType;
-import vip.xiaonuo.biz.modular.computerinspectiontype.service.TComputerInspectionTypeService;
-import vip.xiaonuo.biz.modular.project.service.TProjectService;
-import vip.xiaonuo.common.enums.CommonSortOrderEnum;
-import vip.xiaonuo.common.exception.CommonException;
-import vip.xiaonuo.common.page.CommonPageRequest;
 import vip.xiaonuo.biz.modular.computerinspectionmanagement.entity.TComputerInspectionManagement;
 import vip.xiaonuo.biz.modular.computerinspectionmanagement.mapper.TComputerInspectionManagementMapper;
 import vip.xiaonuo.biz.modular.computerinspectionmanagement.param.TComputerInspectionManagementAddParam;
@@ -38,6 +30,12 @@ import vip.xiaonuo.biz.modular.computerinspectionmanagement.param.TComputerInspe
 import vip.xiaonuo.biz.modular.computerinspectionmanagement.param.TComputerInspectionManagementIdParam;
 import vip.xiaonuo.biz.modular.computerinspectionmanagement.param.TComputerInspectionManagementPageParam;
 import vip.xiaonuo.biz.modular.computerinspectionmanagement.service.TComputerInspectionManagementService;
+import vip.xiaonuo.biz.modular.computerinspectiontype.entity.TComputerInspectionType;
+import vip.xiaonuo.biz.modular.computerinspectiontype.service.TComputerInspectionTypeService;
+import vip.xiaonuo.biz.modular.project.service.TProjectService;
+import vip.xiaonuo.common.enums.CommonSortOrderEnum;
+import vip.xiaonuo.common.exception.CommonException;
+import vip.xiaonuo.common.page.CommonPageRequest;
 import vip.xiaonuo.sys.modular.user.param.SysUserIdListParam;
 import vip.xiaonuo.sys.modular.user.service.SysUserService;
 

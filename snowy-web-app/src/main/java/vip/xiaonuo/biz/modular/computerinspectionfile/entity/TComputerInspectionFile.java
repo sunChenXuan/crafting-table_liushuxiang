@@ -16,6 +16,9 @@ import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import vip.xiaonuo.common.pojo.CommonEntity;
+import vip.xiaonuo.dev.modular.file.entity.DevFile;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -28,7 +31,7 @@ import java.util.Date;
 @Getter
 @Setter
 @TableName("t_computer_inspection_file")
-public class TComputerInspectionFile {
+public class TComputerInspectionFile extends CommonEntity {
 
     /** id */
     @TableId
@@ -43,29 +46,15 @@ public class TComputerInspectionFile {
     @ApiModelProperty(value = "文件id", position = 3)
     private String ukFileId;
 
-    /** 删除标志 */
-    @ApiModelProperty(value = "删除标志", position = 4)
-    @TableLogic
-    @TableField(fill = FieldFill.INSERT)
-    private String deleteFlag;
+    /* ====额外的字段==== */
+    @TableField(exist = false)
+    private DevFile file;
 
-    /** 创建时间 */
-    @ApiModelProperty(value = "创建时间", position = 5)
-    @TableField(fill = FieldFill.INSERT)
-    private Date createTime;
-
-    /** 创建用户 */
-    @ApiModelProperty(value = "创建用户", position = 6)
-    @TableField(fill = FieldFill.INSERT)
-    private String createUser;
-
-    /** 修改时间 */
-    @ApiModelProperty(value = "修改时间", position = 7)
-    @TableField(fill = FieldFill.UPDATE)
-    private Date updateTime;
-
-    /** 修改用户 */
-    @ApiModelProperty(value = "修改用户", position = 8)
-    @TableField(fill = FieldFill.UPDATE)
-    private String updateUser;
+    public String getName() {
+        return file == null ? null : file.getName();
+    }
+    public String getUrl() {
+//        return file == null ? null : (file.getEngine().equals(DevFileEngineTypeEnum.LOCAL.getValue()) ? file.getStoragePath() : file.getDownloadPath());
+        return file == null ? null : file.getDownloadPath();
+    }
 }

@@ -10,8 +10,7 @@
 				</a-col>
 				<a-col :span="6">
 					<a-form-item label="巡检类型" name="inspectionType">
-						<a-select v-model:value="searchFormState.inspectionType" placeholder="巡检类型"
-							:options="typeList" />
+						<a-select v-model:value="searchFormState.inspectionType" placeholder="巡检类型" :options="typeList" />
 					</a-form-item>
 				</a-col>
 				<a-col :span="6">
@@ -46,8 +45,7 @@
 				<template v-if="column.dataIndex === 'action'">
 					<a-space>
 						<a @click="formRef.onOpen(record)" v-if="hasPerm('tComputerInspectionEdit')">编辑</a>
-						<a-divider type="vertical"
-							v-if="hasPerm(['tComputerInspectionEdit', 'tComputerInspectionDelete'], 'and')" />
+						<a @click="uploadFormRef.onOpen(record)" v-if="hasPerm('tCustomerInspectionEdit')">图片</a>
 						<a-popconfirm title="确定要删除吗？" @confirm="deleteTComputerInspection(record)">
 							<a-button type="link" danger size="small"
 								v-if="hasPerm('tComputerInspectionDelete')">删除</a-button>
@@ -58,10 +56,12 @@
 		</s-table>
 	</a-card>
 	<Form ref="formRef" @successful="table.refresh(true)" />
+	<UploadForm ref="uploadFormRef" @successful="table.refresh(true)" />
 </template>
 
 <script setup name="computerinspection">
 import Form from './form.vue'
+import UploadForm from './upload.vue'
 import tComputerInspectionApi from '@/api/biz/tComputerInspectionApi'
 import tComputerInspectionTypeApi from '@/api/biz/tComputerInspectionTypeApi'
 import tProjectApi from '@/api/biz/tProjectApi'
@@ -69,6 +69,7 @@ let searchFormState = reactive({})
 const searchFormRef = ref()
 const table = ref()
 const formRef = ref()
+const uploadFormRef = ref()
 const toolConfig = { refresh: true, height: true, columnSetting: true, striped: false }
 const columns = [
 	{

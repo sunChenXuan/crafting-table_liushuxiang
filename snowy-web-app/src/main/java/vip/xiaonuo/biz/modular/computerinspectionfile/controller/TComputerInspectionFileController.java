@@ -13,16 +13,17 @@
 package vip.xiaonuo.biz.modular.computerinspectionfile.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import vip.xiaonuo.biz.modular.customerinspectionfile.entity.TCustomerInspectionFile;
+import vip.xiaonuo.biz.modular.customerinspectionfile.param.TCustomerInspectionFileAddParam;
 import vip.xiaonuo.common.annotation.CommonLog;
 import vip.xiaonuo.common.pojo.CommonResult;
 import vip.xiaonuo.common.pojo.CommonValidList;
@@ -32,10 +33,13 @@ import vip.xiaonuo.biz.modular.computerinspectionfile.param.TComputerInspectionF
 import vip.xiaonuo.biz.modular.computerinspectionfile.param.TComputerInspectionFileIdParam;
 import vip.xiaonuo.biz.modular.computerinspectionfile.param.TComputerInspectionFilePageParam;
 import vip.xiaonuo.biz.modular.computerinspectionfile.service.TComputerInspectionFileService;
+import vip.xiaonuo.dev.modular.file.enums.DevFileEngineTypeEnum;
+import vip.xiaonuo.dev.modular.file.service.DevFileService;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 /**
  * 机房巡检文件控制器
@@ -52,6 +56,9 @@ public class TComputerInspectionFileController {
     @Resource
     private TComputerInspectionFileService tComputerInspectionFileService;
 
+    @Resource
+    private DevFileService devFileService;
+
     /**
      * 获取机房巡检文件分页
      *
@@ -62,8 +69,16 @@ public class TComputerInspectionFileController {
     @ApiOperation("获取机房巡检文件分页")
     @SaCheckPermission("/biz/computerinspectionfile/page")
     @GetMapping("/biz/computerinspectionfile/page")
-    public CommonResult<Page<TComputerInspectionFile>> page(TComputerInspectionFilePageParam tComputerInspectionFilePageParam) {
-        return CommonResult.data(tComputerInspectionFileService.page(tComputerInspectionFilePageParam));
+    public CommonResult<List<TComputerInspectionFile>> page(TComputerInspectionFilePageParam tComputerInspectionFilePageParam) {
+        // 重写为list
+        final QueryWrapper<TComputerInspectionFile> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda()
+                .eq(TComputerInspectionFile::getIdxCustomerInspectionId, tComputerInspectionFilePageParam.getIdxCustomerInspectionId());
+        final List<TComputerInspectionFile> list = tComputerInspectionFileService.list(queryWrapper);
+        for(TComputerInspectionFile i : list){
+            i.setFile(devFileService.queryEntity(i.getUkFileId()));
+        }
+        return CommonResult.data(list);
     }
 
     /**
@@ -77,7 +92,10 @@ public class TComputerInspectionFileController {
     @CommonLog("添加机房巡检文件")
     @SaCheckPermission("/biz/computerinspectionfile/add")
     @PostMapping("/biz/computerinspectionfile/add")
-    public CommonResult<String> add(@RequestBody @Valid TComputerInspectionFileAddParam tComputerInspectionFileAddParam) {
+    public CommonResult<String> add(@RequestPart("file") MultipartFile file, @RequestPart("data") String string) {
+        final TComputerInspectionFileAddParam tComputerInspectionFileAddParam = new TComputerInspectionFileAddParam();
+        tComputerInspectionFileAddParam.setIdxCustomerInspectionId(string);
+        tComputerInspectionFileAddParam.setUkFileId(devFileService.uploadReturnId(DevFileEngineTypeEnum.MINIO.getValue(), file));
         tComputerInspectionFileService.add(tComputerInspectionFileAddParam);
         return CommonResult.ok();
     }

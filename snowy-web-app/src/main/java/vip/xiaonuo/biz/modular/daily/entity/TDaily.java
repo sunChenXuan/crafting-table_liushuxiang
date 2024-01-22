@@ -12,6 +12,7 @@
  */
 package vip.xiaonuo.biz.modular.daily.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
@@ -56,4 +57,11 @@ public class TDaily extends CommonEntity {
     /** 内容 */
     @ApiModelProperty(value = "内容", position = 6)
     private String remark;
+
+
+    /* ====额外的字段==== */
+    @TableField(exist = false)
+    private String createUserName;
+    @TableField(exist = false)
+    private String createUserPhone;
 }

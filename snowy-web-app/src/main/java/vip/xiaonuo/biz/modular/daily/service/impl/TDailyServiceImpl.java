@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import vip.xiaonuo.auth.core.util.StpLoginUserUtil;
 import vip.xiaonuo.biz.modular.daily.entity.TDaily;
 import vip.xiaonuo.biz.modular.daily.mapper.TDailyMapper;
 import vip.xiaonuo.biz.modular.daily.param.TDailyAddParam;
@@ -31,7 +32,10 @@ import vip.xiaonuo.biz.modular.daily.service.TDailyService;
 import vip.xiaonuo.common.enums.CommonSortOrderEnum;
 import vip.xiaonuo.common.exception.CommonException;
 import vip.xiaonuo.common.page.CommonPageRequest;
+import vip.xiaonuo.sys.modular.user.result.SysLoginUser;
+import vip.xiaonuo.sys.modular.user.service.SysUserService;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -42,7 +46,8 @@ import java.util.List;
  **/
 @Service
 public class TDailyServiceImpl extends ServiceImpl<TDailyMapper, TDaily> implements TDailyService {
-
+    @Resource
+    private SysUserService sysUserService;
     @Override
     public Page<TDaily> page(TDailyPageParam tDailyPageParam) {
         QueryWrapper<TDaily> queryWrapper = new QueryWrapper<>();
@@ -62,7 +67,15 @@ public class TDailyServiceImpl extends ServiceImpl<TDailyMapper, TDaily> impleme
         } else {
             queryWrapper.lambda().orderByAsc(TDaily::getPkId);
         }
-        return this.page(CommonPageRequest.defaultPage(), queryWrapper);
+        final Page<TDaily> page = this.page(CommonPageRequest.defaultPage(), queryWrapper);
+        for (TDaily d : page.getRecords()) {
+            if (d.getCreateUser() != null && !d.getCreateUser().isEmpty()){
+                final SysLoginUser user = sysUserService.getUserById(d.getCreateUser());
+                d.setCreateUserName(user.getName());
+                d.setCreateUserPhone(user.getPhone());
+            }
+        }
+        return page;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -75,6 +88,13 @@ public class TDailyServiceImpl extends ServiceImpl<TDailyMapper, TDaily> impleme
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void edit(TDailyEditParam tDailyEditParam) {
+        final TDaily byId = this.getById(tDailyEditParam.getPkId());
+        if (byId == null){
+            throw new CommonException("系统错误, 无ID为{}的数据", tDailyEditParam.getPkId());
+        }
+        if (!byId.getCreateUser().equals(StpLoginUserUtil.getLoginUser().getPhone())){
+            throw new CommonException("仅限创建人修改, 无修改此条权限");
+        }
         TDaily tDaily = this.queryEntity(tDailyEditParam.getPkId());
         BeanUtil.copyProperties(tDailyEditParam, tDaily);
         this.updateById(tDaily);
@@ -97,6 +117,9 @@ public class TDailyServiceImpl extends ServiceImpl<TDailyMapper, TDaily> impleme
         TDaily tDaily = this.getById(id);
         if(ObjectUtil.isEmpty(tDaily)) {
             throw new CommonException("日报不存在，id值为：{}", id);
+        }
+        if (!tDaily.getCreateUser().equals(StpLoginUserUtil.getLoginUser().getPhone())){
+            throw new CommonException("仅限创建人修改, 无修改此条权限");
         }
         return tDaily;
     }

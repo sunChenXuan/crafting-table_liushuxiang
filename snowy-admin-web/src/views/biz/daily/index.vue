@@ -3,9 +3,9 @@
 		<a-form ref="searchFormRef" name="advanced_search" :model="searchFormState" class="ant-advanced-search-form">
 			<a-row :gutter="24">
 				<a-col :span="6">
-					<a-form-item label="项目名称" name="objectName">
+					<!-- <a-form-item label="项目名称" name="objectName">
 						<a-input v-model:value="searchFormState.objectName" placeholder="请输入项目名称" />
-					</a-form-item>
+					</a-form-item> -->
 				</a-col>
 				<a-col :span="6">
 					<a-form-item label="时间" name="time">
@@ -13,9 +13,9 @@
 					</a-form-item>
 				</a-col>
 				<a-col :span="6">
-					<a-form-item label="内容" name="remark">
+					<!-- <a-form-item label="内容" name="remark">
 						<a-input v-model:value="searchFormState.remark" placeholder="请输入内容" />
-					</a-form-item>
+					</a-form-item> -->
 				</a-col>
 				<a-col :span="6">
 					<a-button type="primary" @click="table.refresh(true)">查询</a-button>

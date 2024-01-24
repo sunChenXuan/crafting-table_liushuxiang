@@ -16,7 +16,7 @@
 							<a-input v-model:value="inspectionDetailArray[index].text" placeholder="请输入检查细节" allow-clear />
 						</a-col>
 						<a-col :span="6">
-							<a-radio-group style="margin-left: 6px;" default-value=" true" button-style="solid"
+							<a-radio-group style="margin-left: 6px;" default-value="true"
 								v-model:value="inspectionDetailArray[index].isBool">
 								<a-radio-button value=true>
 									布尔

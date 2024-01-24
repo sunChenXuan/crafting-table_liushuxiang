@@ -57,14 +57,9 @@ const onOpen = (record) => {
 	if (record) {
 		let recordData = cloneDeep(record)
 		formData.value = Object.assign({}, recordData)
-		console.log(formData.value.inspectionDetail)
 		Object.entries(formData.value.inspectionDetail).forEach(item => {
 			add(item[0], item[1])
 		})
-		// for (let i = 0; i < formData.value.inspectionDetail.length; i++) {
-		// 	console.log(formData.value.inspectionDetail[i])
-		// 	inspectionDetailArray.value.push(formData.value.inspectionDetail[i])
-		// }
 	} else {
 		addDefault()
 	}

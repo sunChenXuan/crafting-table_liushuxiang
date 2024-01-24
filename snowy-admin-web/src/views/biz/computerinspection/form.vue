@@ -34,17 +34,14 @@
 					{{ from[0] + "：" }}
 					<a-form :inline="true" v-for="(i, index) in from[1]" :key="index">
 						<a-button style="margin-top: 2px; margin-bottom: 6px; margin-right: 3px; pointer-events: none;">
-							{{ i.k }}
+							{{ i.text }}
 						</a-button>
-						<a-radio-group v-model:value="i.flag">
-							<a-radio-button :value="'ok'">正常</a-radio-button>
-							<a-radio-button :value="'error'">异常</a-radio-button>
-							<a-radio-button :value="'text'">
-								其他
-								<a-input :bordered="false" placeholder="请输入报告内容" v-model:value="i.v"
-									v-if="i.flag === 'text'" style="width: 200px; margin-left: -5px; margin-right: -15px" />
-							</a-radio-button>
+						<a-radio-group v-if="i.isBool === 'true'" v-model:value="i.value">
+							<a-radio-button :value=true>正常</a-radio-button>
+							<a-radio-button :value=false>异常</a-radio-button>
 						</a-radio-group>
+						<a-input v-else placeholder="请输入报告内容" v-model:value="i.value"
+							style="width: 300px;  margin-right: -15px" />
 					</a-form>
 				</a-form>
 			</a-form-item>
@@ -96,9 +93,9 @@ const onOpen = (record) => {
 			let objValue = [];
 			Object.entries(value[1]).forEach((item) => {
 				objValue.push({
-					k: item[0],
-					v: item[1],
-					flag: valueByFlag(item[1])
+					text: item[0],
+					isBool: item[1] === true || item[1] === false ? "true" : "false",
+					value: item[1]
 				})
 
 			})
@@ -124,19 +121,30 @@ const formRules = {
 const onSubmit = () => {
 	formRef.value.validate().then(() => {
 		submitLoading.value = true
-		let array = new Map()
-		inspectionDetailArray.value.forEach((value, key) => {
-			let arrObj = new Map()
-			value.forEach((item) => {
-				arrObj.set(item.k, flagByValue(item))
+		let map = new Map()
+		try {
+			inspectionDetailArray.value.forEach((value, key) => {
+				let arrObj = new Map()
+				value.forEach((item) => {
+					if (item.isBool === "false") {
+						if (item.value === "true") {
+							message.warning('文本框不可填写 true')
+							throw new Error("warning")
+						} else if (item.value === "false") {
+							message.warning('文本框不可填写 false')
+							throw new Error("warning")
+						}
+					}
+					arrObj.set(item.text, item.value)
+				})
+
+				map.set(key, Object.fromEntries(arrObj))
 			})
-			array.set(key, Object.fromEntries(arrObj))
-		})
-		if (formData.value.userList.length < 1) {
-			message.warning('未选择巡检人员')
+		} catch (e) {
+			submitLoading.value = false
 			return
 		}
-		formData.value.remarkReport = JSON.stringify(Object.fromEntries(array))
+		formData.value.remarkReport = JSON.stringify(Object.fromEntries(map))
 		convFormData()
 		const formDataParam = cloneDeep(formData.value)
 		formDataParam.inspectionUsers = JSON.stringify(formDataParam.inspectionUsers)
@@ -225,13 +233,13 @@ const selectTypeListOn = (selectArray) => {
 	selectArray.forEach(selectValue => {
 		let listValue = typeList.value.filter(item => item.value == selectValue)[0]
 		inspectionDetailArray.value.set(listValue.label, [])
-		for (let i = 0; i < listValue.list.length; i++) {
+		Object.entries(listValue.list).forEach(item => {
 			inspectionDetailArray.value.get(listValue.label).push({
-				k: listValue.list[i],
-				v: "",
-				flag: ""
+				text: item[0],
+				isBool: item[1],
+				value: ""
 			})
-		}
+		})
 	});
 }
 const selectLoginUserList = (value) => {
@@ -242,16 +250,6 @@ const selectLoginUserList = (value) => {
 	formData.value.pkId = pkId
 	formData.value.inspectionType = JSON.parse(formData.value.inspectionType.replace(/(-?\d+)/g, '"$1"'))
 	selectTypeListOn(formData.value.inspectionType)
-}
-
-function flagByValue(value) {
-	if (value.flag === 'ok') {
-		return '正常'
-	} else if (value.flag === 'error') {
-		return '异常'
-	} else {
-		return value.v
-	}
 }
 function valueByFlag(value) {
 	if (value === '正常') {

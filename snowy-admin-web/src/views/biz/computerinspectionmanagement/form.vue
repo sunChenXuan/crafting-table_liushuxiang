@@ -30,11 +30,11 @@
 						<a-button style="margin-top: 2px; margin-bottom: 6px; margin-right: 3px; pointer-events: none;">
 							{{ i.text }}
 						</a-button>
-						<a-radio-group v-if="i.isBool === 'true'" disabled v-model:value="i.flag">
-							<a-radio-button :value="'ok'">正常</a-radio-button>
-							<a-radio-button :value="'error'">异常</a-radio-button>
+						<a-radio-group v-if="i.isBool === 'true'" disabled v-model:value="i.value">
+							<a-radio-button :value=true>正常</a-radio-button>
+							<a-radio-button :value=false>异常</a-radio-button>
 						</a-radio-group>
-						<a-input v-else disabled placeholder="请输入报告内容" v-model:value="i.v"
+						<a-input v-else disabled placeholder="请输入报告内容" v-model:value="i.value"
 							style="width: 200px; margin-left: -5px; margin-right: -15px" />
 					</a-form>
 				</a-form>

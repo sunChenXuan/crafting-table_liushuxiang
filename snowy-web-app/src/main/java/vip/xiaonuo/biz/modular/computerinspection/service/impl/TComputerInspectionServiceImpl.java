@@ -59,6 +59,7 @@ public class TComputerInspectionServiceImpl extends ServiceImpl<TComputerInspect
     @Override
     public Page<TComputerInspection> page(TComputerInspectionPageParam tComputerInspectionPageParam) {
         QueryWrapper<TComputerInspection> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().orderByDesc(TComputerInspection::getPkId);
         if(ObjectUtil.isNotEmpty(tComputerInspectionPageParam.getInspectionName())) {
             queryWrapper.lambda().eq(TComputerInspection::getInspectionName, tComputerInspectionPageParam.getInspectionName());
         }

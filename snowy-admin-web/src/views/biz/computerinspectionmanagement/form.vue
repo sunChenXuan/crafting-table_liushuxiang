@@ -1,5 +1,5 @@
 <template>
-	<xn-form-container :title="formData.pkId ? '编辑机房巡检' : '增加机房巡检'" :width="700" :visible="visible" :destroy-on-close="true"
+	<xn-form-container :title="formData.pkId ? '编辑机房巡检管理' : '增加机房巡检管理'" :width="700" :visible="visible" :destroy-on-close="true"
 		@close="onClose">
 		<a-form ref="formRef" :model="formData" :rules="formRules" layout="vertical">
 			<a-form-item label="项目名称：" name="inspectionName">

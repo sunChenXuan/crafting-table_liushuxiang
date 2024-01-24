@@ -63,6 +63,7 @@ public class TProjectServiceImpl extends ServiceImpl<TProjectMapper, TProject> i
     @Override
     public Page<TProject> page(TProjectPageParam tProjectPageParam) {
         QueryWrapper<TProject> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().orderByDesc(TProject::getPkId);
         if(ObjectUtil.isNotEmpty(tProjectPageParam.getProjectCompany())) {
             queryWrapper.lambda().eq(TProject::getProjectCompany, tProjectPageParam.getProjectCompany());
         }

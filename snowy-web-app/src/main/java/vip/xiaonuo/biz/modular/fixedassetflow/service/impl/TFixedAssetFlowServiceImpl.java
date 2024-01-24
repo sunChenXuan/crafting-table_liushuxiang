@@ -53,6 +53,7 @@ public class TFixedAssetFlowServiceImpl extends ServiceImpl<TFixedAssetFlowMappe
     @Override
     public Page<TFixedAssetFlow> page(TFixedAssetFlowPageParam tFixedAssetFlowPageParam) {
         QueryWrapper<TFixedAssetFlow> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().orderByDesc(TFixedAssetFlow::getPkId);
         if(ObjectUtil.isNotEmpty(tFixedAssetFlowPageParam.getIdxFixedAssetId())) {
             queryWrapper.lambda().eq(TFixedAssetFlow::getIdxFixedAssetId, tFixedAssetFlowPageParam.getIdxFixedAssetId());
         }

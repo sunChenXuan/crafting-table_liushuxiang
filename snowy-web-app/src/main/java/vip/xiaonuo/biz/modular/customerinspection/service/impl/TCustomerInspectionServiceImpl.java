@@ -52,6 +52,7 @@ public class TCustomerInspectionServiceImpl extends ServiceImpl<TCustomerInspect
     @Override
     public Page<TCustomerInspection> page(TCustomerInspectionPageParam tCustomerInspectionPageParam) {
         QueryWrapper<TCustomerInspection> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().orderByDesc(TCustomerInspection::getPkId);
         if(ObjectUtil.isNotEmpty(tCustomerInspectionPageParam.getInspectionName())) {
             queryWrapper.lambda().like(TCustomerInspection::getInspectionName, tCustomerInspectionPageParam.getInspectionName());
         }

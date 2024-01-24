@@ -13,6 +13,7 @@
 package vip.xiaonuo.biz.modular.project.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
@@ -148,6 +149,8 @@ public class TProjectController {
     @SaCheckPermission("/biz/project/projectList")
     @GetMapping("/biz/project/projectList")
     public CommonResult<List<TProject>> projectList() {
+        QueryWrapper<TProject> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().orderByDesc(TProject::getPkId);
         return CommonResult.data(tProjectService.list());
     }
 }

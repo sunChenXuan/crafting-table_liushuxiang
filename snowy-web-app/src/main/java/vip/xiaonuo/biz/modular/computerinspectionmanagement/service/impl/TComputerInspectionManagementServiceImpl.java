@@ -60,6 +60,7 @@ public class TComputerInspectionManagementServiceImpl extends ServiceImpl<TCompu
     @Override
     public Page<TComputerInspectionManagement> page(TComputerInspectionManagementPageParam tComputerInspectionManagementPageParam) {
         QueryWrapper<TComputerInspectionManagement> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().orderByDesc(TComputerInspectionManagement::getPkId);
         if(ObjectUtil.isNotEmpty(tComputerInspectionManagementPageParam.getInspectionName())) {
             queryWrapper.lambda().eq(TComputerInspectionManagement::getInspectionName, tComputerInspectionManagementPageParam.getInspectionName());
         }
@@ -118,6 +119,7 @@ public class TComputerInspectionManagementServiceImpl extends ServiceImpl<TCompu
         final QueryWrapper<TComputerInspectionManagement> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
                 .like(TComputerInspectionManagement::getInspectionUsers, StpLoginUserUtil.getLoginUser().getId());
+        queryWrapper.lambda().orderByDesc(TComputerInspectionManagement::getPkId);
         return this.addDetail(this.list(queryWrapper));
     }
 

@@ -46,6 +46,7 @@ public class TComputerInspectionTypeServiceImpl extends ServiceImpl<TComputerIns
     @Override
     public Page<TComputerInspectionType> page(TComputerInspectionTypePageParam tComputerInspectionTypePageParam) {
         QueryWrapper<TComputerInspectionType> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().orderByDesc(TComputerInspectionType::getPkId);
         if(ObjectUtil.isNotEmpty(tComputerInspectionTypePageParam.getInspectionTypeName())) {
             queryWrapper.lambda().like(TComputerInspectionType::getInspectionTypeName, tComputerInspectionTypePageParam.getInspectionTypeName());
         }
@@ -66,6 +67,12 @@ public class TComputerInspectionTypeServiceImpl extends ServiceImpl<TComputerIns
     @Override
     public void add(TComputerInspectionTypeAddParam tComputerInspectionTypeAddParam) {
         TComputerInspectionType tComputerInspectionType = BeanUtil.toBean(tComputerInspectionTypeAddParam, TComputerInspectionType.class);
+        QueryWrapper<TComputerInspectionType> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(TComputerInspectionType::getInspectionTypeName, tComputerInspectionType.getInspectionTypeName());
+        final List<TComputerInspectionType> list = this.list(queryWrapper);
+        if (!list.isEmpty()){
+            throw new CommonException("巡检类型名称不可重复, {}", tComputerInspectionType.getInspectionTypeName());
+        }
         this.save(tComputerInspectionType);
     }
 
@@ -74,6 +81,16 @@ public class TComputerInspectionTypeServiceImpl extends ServiceImpl<TComputerIns
     public void edit(TComputerInspectionTypeEditParam tComputerInspectionTypeEditParam) {
         TComputerInspectionType tComputerInspectionType = this.queryEntity(tComputerInspectionTypeEditParam.getPkId());
         BeanUtil.copyProperties(tComputerInspectionTypeEditParam, tComputerInspectionType);
+        QueryWrapper<TComputerInspectionType> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(TComputerInspectionType::getInspectionTypeName, tComputerInspectionType.getInspectionTypeName());
+        final List<TComputerInspectionType> list = this.list(queryWrapper);
+        if (!list.isEmpty()){
+            for (TComputerInspectionType i : list){
+                if (!i.getPkId().equals(tComputerInspectionType.getPkId())){
+                    throw new CommonException("巡检类型名称不可重复, {}", tComputerInspectionType.getInspectionTypeName());
+                }
+            }
+        }
         this.updateById(tComputerInspectionType);
     }
 

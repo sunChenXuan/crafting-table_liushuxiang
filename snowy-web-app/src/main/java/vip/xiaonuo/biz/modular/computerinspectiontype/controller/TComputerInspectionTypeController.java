@@ -13,6 +13,7 @@
 package vip.xiaonuo.biz.modular.computerinspectiontype.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
@@ -78,7 +79,9 @@ public class TComputerInspectionTypeController {
     @SaCheckPermission("/biz/computerinspectiontype/list")
     @GetMapping("/biz/computerinspectiontype/list")
     public CommonResult<List<TComputerInspectionType>> list() {
-        return CommonResult.data(tComputerInspectionTypeService.list());
+        QueryWrapper<TComputerInspectionType> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().orderByDesc(TComputerInspectionType::getPkId);
+        return CommonResult.data(tComputerInspectionTypeService.list(queryWrapper));
     }
 
     /**

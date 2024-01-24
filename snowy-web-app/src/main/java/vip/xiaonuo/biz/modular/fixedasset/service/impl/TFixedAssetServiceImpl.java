@@ -65,6 +65,7 @@ public class TFixedAssetServiceImpl extends ServiceImpl<TFixedAssetMapper, TFixe
     @Override
     public Page<TFixedAsset> page(TFixedAssetPageParam tFixedAssetPageParam) {
         QueryWrapper<TFixedAsset> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().orderByDesc(TFixedAsset::getPkId);
         if(ObjectUtil.isNotEmpty(tFixedAssetPageParam.getSerialNumber())) {
             queryWrapper.lambda().eq(TFixedAsset::getSerialNumber, tFixedAssetPageParam.getSerialNumber());
         }

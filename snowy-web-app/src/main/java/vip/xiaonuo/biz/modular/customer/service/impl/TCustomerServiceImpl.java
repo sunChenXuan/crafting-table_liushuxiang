@@ -46,6 +46,7 @@ public class TCustomerServiceImpl extends ServiceImpl<TCustomerMapper, TCustomer
     @Override
     public Page<TCustomer> page(TCustomerPageParam tCustomerPageParam) {
         QueryWrapper<TCustomer> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().orderByDesc(TCustomer::getPkId);
         if(ObjectUtil.isNotEmpty(tCustomerPageParam.getCustomerName())) {
             queryWrapper.lambda().like(TCustomer::getCustomerName, tCustomerPageParam.getCustomerName());
         }

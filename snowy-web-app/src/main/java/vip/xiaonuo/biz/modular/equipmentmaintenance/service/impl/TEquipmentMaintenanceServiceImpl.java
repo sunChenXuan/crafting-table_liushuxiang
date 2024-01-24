@@ -73,6 +73,7 @@ public class TEquipmentMaintenanceServiceImpl extends ServiceImpl<TEquipmentMain
     @Override
     public Page<TEquipmentMaintenance> page(TEquipmentMaintenancePageParam tEquipmentMaintenancePageParam) {
         QueryWrapper<TEquipmentMaintenance> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().orderByDesc(TEquipmentMaintenance::getPkId);
         if(ObjectUtil.isNotEmpty(tEquipmentMaintenancePageParam.getIdxProjectId())) {
             queryWrapper.lambda().eq(TEquipmentMaintenance::getIdxProjectId, tEquipmentMaintenancePageParam.getIdxProjectId());
         }

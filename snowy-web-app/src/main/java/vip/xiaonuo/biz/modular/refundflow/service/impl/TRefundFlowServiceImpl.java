@@ -50,6 +50,7 @@ public class TRefundFlowServiceImpl extends ServiceImpl<TRefundFlowMapper, TRefu
     @Override
     public Page<TRefundFlow> page(TRefundFlowPageParam tRefundFlowPageParam) {
         QueryWrapper<TRefundFlow> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().orderByDesc(TRefundFlow::getPkId);
         if(ObjectUtil.isNotEmpty(tRefundFlowPageParam.getIdxEquipmentMaintenanceId())) {
             queryWrapper.lambda().eq(TRefundFlow::getIdxEquipmentMaintenanceId, tRefundFlowPageParam.getIdxEquipmentMaintenanceId());
         }

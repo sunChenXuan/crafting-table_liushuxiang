@@ -51,6 +51,7 @@ public class TDailyServiceImpl extends ServiceImpl<TDailyMapper, TDaily> impleme
     @Override
     public Page<TDaily> page(TDailyPageParam tDailyPageParam) {
         QueryWrapper<TDaily> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().orderByDesc(TDaily::getPkId);
         if(ObjectUtil.isNotEmpty(tDailyPageParam.getObjectName())) {
             queryWrapper.lambda().like(TDaily::getObjectName, tDailyPageParam.getObjectName());
         }

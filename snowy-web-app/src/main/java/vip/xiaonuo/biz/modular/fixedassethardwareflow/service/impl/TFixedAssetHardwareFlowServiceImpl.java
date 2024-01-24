@@ -50,6 +50,7 @@ public class TFixedAssetHardwareFlowServiceImpl extends ServiceImpl<TFixedAssetH
     @Override
     public Page<TFixedAssetHardwareFlow> page(TFixedAssetHardwareFlowPageParam tFixedAssetHardwareFlowPageParam) {
         QueryWrapper<TFixedAssetHardwareFlow> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().orderByDesc(TFixedAssetHardwareFlow::getPkId);
         if(ObjectUtil.isNotEmpty(tFixedAssetHardwareFlowPageParam.getIdxFixedAssetId())) {
             queryWrapper.lambda().eq(TFixedAssetHardwareFlow::getIdxFixedAssetId, tFixedAssetHardwareFlowPageParam.getIdxFixedAssetId());
         }

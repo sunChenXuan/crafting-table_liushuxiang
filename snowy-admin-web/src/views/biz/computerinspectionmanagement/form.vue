@@ -1,6 +1,6 @@
 <template>
-	<xn-form-container :title="formData.pkId ? '编辑机房巡检管理' : '增加机房巡检管理'" :width="700" :visible="visible" :destroy-on-close="true"
-		@close="onClose">
+	<xn-form-container :title="formData.pkId ? '编辑机房巡检管理' : '增加机房巡检管理'" :width="700" :visible="visible"
+		:destroy-on-close="true" @close="onClose">
 		<a-form ref="formRef" :model="formData" :rules="formRules" layout="vertical">
 			<a-form-item label="项目名称：" name="inspectionName">
 				<a-select showSearch v-model:value="formData.inspectionName" placeholder="请选择项目" optionFilterProp="label"
@@ -28,17 +28,14 @@
 					{{ from[0] + "：" }}
 					<a-form :inline="true" v-for="(i, index) in from[1]" :key="index">
 						<a-button style="margin-top: 2px; margin-bottom: 6px; margin-right: 3px; pointer-events: none;">
-							{{ i }}
+							{{ i.text }}
 						</a-button>
-						<a-radio-group disabled v-model:value="i.flag">
+						<a-radio-group v-if="i.isBool === 'true'" disabled v-model:value="i.flag">
 							<a-radio-button :value="'ok'">正常</a-radio-button>
 							<a-radio-button :value="'error'">异常</a-radio-button>
-							<a-radio-button :value="'text'">
-								其他
-								<a-input :bordered="false" placeholder="请输入报告内容" v-model:value="i.v"
-									v-if="i.flag === 'text'" style="width: 200px; margin-left: -5px; margin-right: -15px" />
-							</a-radio-button>
 						</a-radio-group>
+						<a-input v-else disabled placeholder="请输入报告内容" v-model:value="i.v"
+							style="width: 200px; margin-left: -5px; margin-right: -15px" />
 					</a-form>
 				</a-form>
 			</a-form-item>
@@ -199,9 +196,12 @@ const selectTypeListOn = (selectArray) => {
 	selectArray.forEach(selectValue => {
 		let listValue = typeList.value.filter(item => item.value == selectValue)[0]
 		inspectionDetailArray.value.set(listValue.label, [])
-		for (let i = 0; i < listValue.list.length; i++) {
-			inspectionDetailArray.value.get(listValue.label).push(listValue.list[i])
-		}
+		Object.entries(listValue.list).forEach(item => {
+			inspectionDetailArray.value.get(listValue.label).push({
+				text: item[0],
+				isBool: item[1]
+			})
+		})
 	});
 }
 // 抛出函数

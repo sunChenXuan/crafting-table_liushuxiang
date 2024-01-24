@@ -104,15 +104,15 @@ const formRules = {
 const onSubmit = () => {
 	formRef.value.validate().then(() => {
 		submitLoading.value = true
-		let array = new Map()
+		let map = new Map()
 		inspectionDetailArray.value.forEach((value, key) => {
-			array.set(key, value)
+			map.set(key, value)
 		})
 		if (formData.value.userList.length < 1) {
 			message.warning('未选择巡检人员')
 			return
 		}
-		formData.value.remarkReport = JSON.stringify(Object.fromEntries(array))
+		formData.value.remarkReport = JSON.stringify(Object.fromEntries(map))
 		convFormData()
 		const formDataParam = cloneDeep(formData.value)
 		formDataParam.inspectionUsers = JSON.stringify(formDataParam.inspectionUsers)

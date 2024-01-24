@@ -7,11 +7,26 @@
 			</a-form-item>
 			<a-form-item label="" name="inspectionDetail">
 				{{ "检查细节" }}
-				<a-button size="small" shape="circle" type="primary" style="margin-right: 8px" @click="add">+</a-button>
+				<a-button size="small" shape="circle" type="primary" style="margin-right: 8px"
+					@click="addDefault">+</a-button>
 				<a-button size="small" shape="circle" v-if="inspectionDetailArray.length > 1" @click="del()">-</a-button>
 				<a-form :inline="true" v-for="(_, index) in inspectionDetailArray" :key="index">
-					<a-input v-model:value="inspectionDetailArray[index]" placeholder="" allow-clear
-						style="margin-top: 8px" />
+					<a-row style="margin-top: 8px; margin-left: 3px;">
+						<a-col :span="18">
+							<a-input v-model:value="inspectionDetailArray[index].text" placeholder="请输入检查细节" allow-clear />
+						</a-col>
+						<a-col :span="6">
+							<a-radio-group style="margin-left: 6px;" default-value=" true" button-style="solid"
+								v-model:value="inspectionDetailArray[index].isBool">
+								<a-radio-button value=true>
+									布尔
+								</a-radio-button>
+								<a-radio-button value=false>
+									文本
+								</a-radio-button>
+							</a-radio-group>
+						</a-col>
+					</a-row>
 				</a-form>
 			</a-form-item>
 		</a-form>
@@ -42,11 +57,16 @@ const onOpen = (record) => {
 	if (record) {
 		let recordData = cloneDeep(record)
 		formData.value = Object.assign({}, recordData)
-		for (let i = 0; i < formData.value.inspectionDetail.length; i++) {
-			inspectionDetailArray.value.push(formData.value.inspectionDetail[i])
-		}
+		console.log(formData.value.inspectionDetail)
+		Object.entries(formData.value.inspectionDetail).forEach(item => {
+			add(item[0], item[1])
+		})
+		// for (let i = 0; i < formData.value.inspectionDetail.length; i++) {
+		// 	console.log(formData.value.inspectionDetail[i])
+		// 	inspectionDetailArray.value.push(formData.value.inspectionDetail[i])
+		// }
 	} else {
-		add()
+		addDefault()
 	}
 }
 // 关闭抽屉
@@ -64,18 +84,23 @@ const formRules = {
 const onSubmit = () => {
 	formRef.value.validate().then(() => {
 		submitLoading.value = true
-		let array = []
+		let map = new Map()
 		for (let i = 0; i < inspectionDetailArray.value.length; i++) {
 			if (inspectionDetailArray.value[i] && inspectionDetailArray.value[i] != "") {
-				array.push(inspectionDetailArray.value[i])
+				if (map.has(inspectionDetailArray.value[i].text)) {
+					message.warning('检查细节不可重名')
+					submitLoading.value = false
+					return
+				}
+				map.set(inspectionDetailArray.value[i].text, inspectionDetailArray.value[i].isBool)
 			}
 		}
-		if (array.length == 0) {
+		if (map.length == 0) {
 			message.warning('请完善检查细节')
 			submitLoading.value = false
 			return
 		}
-		formData.value.inspectionDetail = JSON.stringify(array)
+		formData.value.inspectionDetail = JSON.stringify(Object.fromEntries(map))
 		const formDataParam = cloneDeep(formData.value)
 		tComputerInspectionTypeApi
 			.tComputerInspectionTypeSubmitForm(formDataParam, formDataParam.pkId)
@@ -88,8 +113,14 @@ const onSubmit = () => {
 			})
 	})
 }
-const add = () => {
-	inspectionDetailArray.value.push("")
+const add = (text, isBool) => {
+	inspectionDetailArray.value.push({
+		text: text,
+		isBool: isBool
+	})
+}
+const addDefault = () => {
+	add("", true)
 }
 const del = () => {
 	if (inspectionDetailArray.value.length > 1) {

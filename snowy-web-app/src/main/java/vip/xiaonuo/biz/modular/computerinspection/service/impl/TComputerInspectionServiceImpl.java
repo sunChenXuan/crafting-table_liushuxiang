@@ -16,12 +16,14 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollStreamUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONObject;
 import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import vip.xiaonuo.auth.core.util.StpLoginUserUtil;
 import vip.xiaonuo.biz.modular.computerinspection.entity.TComputerInspection;
 import vip.xiaonuo.biz.modular.computerinspection.mapper.TComputerInspectionMapper;
 import vip.xiaonuo.biz.modular.computerinspection.param.TComputerInspectionAddParam;
@@ -66,8 +68,12 @@ public class TComputerInspectionServiceImpl extends ServiceImpl<TComputerInspect
         if(ObjectUtil.isNotEmpty(tComputerInspectionPageParam.getInspectionType())) {
             queryWrapper.lambda().eq(TComputerInspection::getInspectionType, tComputerInspectionPageParam.getInspectionType());
         }
-        if(ObjectUtil.isNotEmpty(tComputerInspectionPageParam.getInspectionUsers())) {
-            queryWrapper.lambda().like(TComputerInspection::getInspectionUsers, tComputerInspectionPageParam.getInspectionUsers());
+        // 获取当前登录人的角色信息 判断角色
+        final List<JSONObject> roleList = sysUserService.getRoleList(StpLoginUserUtil.getLoginUser().getId());
+        boolean isComputerInspectionAdmin = roleList.stream()
+                .anyMatch(i -> "computerInspectionAdmin".equals(i.get("code")));
+        if(!isComputerInspectionAdmin) {
+            queryWrapper.lambda().like(TComputerInspection::getInspectionUsers, StpLoginUserUtil.getLoginUser().getId());
         }
         if(ObjectUtil.isAllNotEmpty(tComputerInspectionPageParam.getSortField(), tComputerInspectionPageParam.getSortOrder())) {
             CommonSortOrderEnum.validate(tComputerInspectionPageParam.getSortOrder());

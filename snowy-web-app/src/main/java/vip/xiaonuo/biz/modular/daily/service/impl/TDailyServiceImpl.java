@@ -93,7 +93,7 @@ public class TDailyServiceImpl extends ServiceImpl<TDailyMapper, TDaily> impleme
         if (byId == null){
             throw new CommonException("系统错误, 无ID为{}的数据", tDailyEditParam.getPkId());
         }
-        if (!byId.getCreateUser().equals(StpLoginUserUtil.getLoginUser().getPhone())){
+        if (!byId.getCreateUser().equals(StpLoginUserUtil.getLoginUser().getId())){
             throw new CommonException("仅限创建人修改, 无修改此条权限");
         }
         TDaily tDaily = this.queryEntity(tDailyEditParam.getPkId());
@@ -119,7 +119,7 @@ public class TDailyServiceImpl extends ServiceImpl<TDailyMapper, TDaily> impleme
         if(ObjectUtil.isEmpty(tDaily)) {
             throw new CommonException("日报不存在，id值为：{}", id);
         }
-        if (!tDaily.getCreateUser().equals(StpLoginUserUtil.getLoginUser().getPhone())){
+        if (!tDaily.getCreateUser().equals(StpLoginUserUtil.getLoginUser().getId())){
             throw new CommonException("仅限创建人修改, 无修改此条权限");
         }
         return tDaily;
